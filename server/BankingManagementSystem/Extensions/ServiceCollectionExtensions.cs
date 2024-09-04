@@ -3,6 +3,7 @@ using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -20,9 +21,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
         {
-            //Configure connection string
+            string connectionString = config.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationDbContext>();
+
+            services
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
         
             return services;
