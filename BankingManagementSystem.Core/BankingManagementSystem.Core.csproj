@@ -8,10 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Constants\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Models\Account\" />
-    <Folder Include="Models\Transaction\" />
-    <Folder Include="Models\User\" />
   </ItemGroup>
 
   <ItemGroup>

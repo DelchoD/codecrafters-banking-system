@@ -13,7 +13,6 @@ builder.Services.AddApplicationServices();
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,3 +29,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
