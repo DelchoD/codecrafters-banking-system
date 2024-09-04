@@ -12,10 +12,7 @@
             context = _context;
         }
 
-        public async Task GetAllAccountsAsync()
-        {
-            throw new NotImplementedException();
-        }
+       
 
     }
 }
