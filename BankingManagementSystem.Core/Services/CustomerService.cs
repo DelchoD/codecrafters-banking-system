@@ -2,11 +2,11 @@
 {
     using Contracts;
     using Infrastructure.Data;
-    public class UserService : IUserService 
+    public class CustomerService : ICustomerService 
     {
         private readonly ApplicationDbContext context;
 
-        public UserService(ApplicationDbContext _context)
+        public CustomerService(ApplicationDbContext _context)
         {
            context = _context;
         }

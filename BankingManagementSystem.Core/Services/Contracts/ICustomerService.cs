@@ -1,6 +1,6 @@
 ﻿namespace BankingManagementSystem.Core.Services.Contracts
 {
-    public interface IUserService
+    public interface ICustomerService
     {
         //Add methods
     }

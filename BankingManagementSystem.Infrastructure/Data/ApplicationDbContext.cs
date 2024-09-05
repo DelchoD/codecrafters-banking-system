@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BankingManagementSystem.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Infrastructure.Data
 {
@@ -11,8 +12,12 @@ namespace BankingManagementSystem.Infrastructure.Data
         }
 
 
-        //Create DbSets
-   
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; } 
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
