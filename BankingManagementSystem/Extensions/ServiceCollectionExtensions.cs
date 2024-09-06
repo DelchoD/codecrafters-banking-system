@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
             services
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+                .AddDbContext<ApplicationDbContext>();
 
         
             return services;
