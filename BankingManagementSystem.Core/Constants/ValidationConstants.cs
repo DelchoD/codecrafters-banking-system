@@ -18,10 +18,6 @@
         public const int CustomerPasswordMinLength = 6;
 
 
-
-
-
-
         //Account
         public const int AccountIBANMinLength = 5;
         public const int AccountIBANMaxLength = 34;
