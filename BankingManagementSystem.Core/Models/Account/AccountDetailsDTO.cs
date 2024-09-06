@@ -5,6 +5,7 @@ namespace BankingManagementSystem.Core.Models.Account
 
     public class AccountDetailsDTO : AccountAllDTO
     {
+        public string? CreatorId { get; set; }
 
         public string? Creator { get; set; }
 

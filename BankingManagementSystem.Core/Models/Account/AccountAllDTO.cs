@@ -3,16 +3,9 @@
 namespace BankingManagementSystem.Core.Models.Account
 {
 
-
-    public class AccountAllDTO
+    public class AccountAllDTO : AccountTransactionDTO
     {
-     
-        public string IBAN { get; set; } = string.Empty;
-
-
-        public string Name { get; set; } = string.Empty;
-
-
+        
         public decimal Balance { get; set; }
 
     }

@@ -1,10 +1,9 @@
 ﻿
 namespace BankingManagementSystem.Core.Models.Account
 {
-    public class AccountDeleteDTO
+    public class AccountTransactionDTO
     {
         public string Id { get; set; } = string.Empty;
-
 
         public string IBAN { get; set; } = string.Empty;
 
