@@ -38,16 +38,18 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<Transaction> ProcessTransaction(Transaction transaction)
         {
+            if (transaction == null)
+                throw new ArgumentNullException(nameof(transaction));
+
+            if (!int.TryParse(transaction.IBANFromId, out int ibanFromId))
+                throw new ArgumentException($"Invalid IBAN format for source account: '{transaction.IBANFromId}'.");
+
+            if (!int.TryParse(transaction.IBANToId, out int ibanToId))
+                throw new ArgumentException($"Invalid IBAN format for destination account: '{transaction.IBANToId}'.");
+
             using var transactionDb = await _context.Database.BeginTransactionAsync();
             try
             {
-                if (!int.TryParse(transaction.IBANFromId, out int ibanFromId))
-                    throw new ArgumentException($"Invalid IBAN format for source account: '{transaction.IBANFromId}'.");
-
-                if (!int.TryParse(transaction.IBANToId, out int ibanToId))
-                    throw new ArgumentException($"Invalid IBAN format for destination account: '{transaction.IBANToId}'.");
-
-
                 var accountFrom = await _accountService.GetAccountById(ibanFromId);
                 var accountTo = await _accountService.GetAccountById(ibanToId);
 
@@ -58,11 +60,10 @@ namespace BankingManagementSystem.Core.Services
                     throw new KeyNotFoundException($"Destination account with ID '{ibanToId}' was not found.");
 
                 if (accountFrom.Balance < transaction.TotalAmount)
-                    throw new InvalidOperationException($"Insufficient funds in source account with ID '{accountFrom.IBAN}'.");
+                    throw new InvalidOperationException($"Insufficient funds in source account with ID '{ibanFromId}'.");
 
                 accountFrom.Balance -= transaction.TotalAmount;
                 accountTo.Balance += transaction.TotalAmount;
-
 
                 _context.Transactions.Add(transaction);
                 _context.Accounts.Update(accountFrom);
@@ -78,30 +79,30 @@ namespace BankingManagementSystem.Core.Services
                 await transactionDb.RollbackAsync();
                 throw new InvalidOperationException("A database error occurred while processing the transaction.", dbEx);
             }
-            catch (KeyNotFoundException keyNotFoundEx)
+            catch (Exception ex)
             {
-                throw new KeyNotFoundException("An error occurred while retrieving the account.", keyNotFoundEx);
-            }
-            catch (InvalidOperationException invalidOpEx)
-            {
-                throw new InvalidOperationException("An error occurred while processing the transaction.", invalidOpEx);
+                await transactionDb.RollbackAsync();
+                throw new InvalidOperationException("An unexpected error occurred while processing the transaction.", ex);
             }
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAccountId(string accountId)
+
+        public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
-            if (string.IsNullOrWhiteSpace(accountId))
-                throw new ArgumentException("Account ID cannot be null or empty.", nameof(accountId));
+            if (accountId <= 0)
+                throw new ArgumentException("Account ID must be a positive integer.", nameof(accountId));
+
+            var accountIdString = accountId.ToString();
 
             return await _context.Transactions
-                                .Where(t => t.IBANFromId == accountId || t.IBANToId == accountId)
-                                .ToListAsync();
+                .Where(t => t.IBANFromId == accountIdString || t.IBANToId == accountIdString)
+                .ToListAsync();
         }
 
-        public async Task<Transaction> GetTransactionById(string transactionId)
+        public async Task<Transaction> GetTransactionById(int transactionId)
         {
-            if (string.IsNullOrWhiteSpace(transactionId))
-                throw new ArgumentException("Transaction ID cannot be null or empty.", nameof(transactionId));
+            if (transactionId <= 0)
+                throw new ArgumentException("Transaction ID must be a positive integer.", nameof(transactionId));
 
             var transaction = await _context.Transactions.FindAsync(transactionId);
 
