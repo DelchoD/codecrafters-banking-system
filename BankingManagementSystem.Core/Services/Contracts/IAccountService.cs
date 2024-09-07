@@ -1,8 +1,10 @@
-﻿namespace BankingManagementSystem.Core.Services.Contracts
+﻿using BankingManagementSystem.Infrastructure.Data.Models;
+
+namespace BankingManagementSystem.Core.Services.Contracts
 {
     public interface IAccountService
     {
-        Task GetAllAccountsAsync();
+        List<Account> GetCustomerAccounts(Customer customer);
 
         //Add more methods
 
