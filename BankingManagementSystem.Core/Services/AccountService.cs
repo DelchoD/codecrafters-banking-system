@@ -1,5 +1,7 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
 
+using BankingManagementSystem.Infrastructure.Data.Models;
+
 namespace BankingManagementSystem.Core.Services
 {
     using Contracts;
