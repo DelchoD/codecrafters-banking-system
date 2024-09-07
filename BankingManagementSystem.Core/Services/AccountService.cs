@@ -21,20 +21,10 @@ namespace BankingManagementSystem.Core.Services
             return _context.Accounts.Where(a => a.CustomerId == customer.Id).ToList();
         }
 
-        public async Task<Account> CreateAccount(Customer customer)
+        public async Task<Account> CreateAccount(Account account, Customer customer)
         {
-            // if this function receives only the customer's ID, uncomment line below:
-            //var customer = await _customerService.GetCustomerById(customerId);
-            if (customer == null)
-                throw new KeyNotFoundException("Customer not found. Cannot create an account");
-
-            var account = new Account
-            {
-                IBAN = "BG" + new Random().Next(100000000, 999999999),
-                Name = customer.FirstName + "'s " + "account",
-                Balance = 0m,
-                CustomerId = customer.Id
-            };
+            if (customer is null)
+                throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
             
             _context.Accounts.Add(account);
             _context.Customers.Update(customer);
