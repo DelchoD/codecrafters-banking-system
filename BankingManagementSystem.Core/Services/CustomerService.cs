@@ -3,6 +3,8 @@
     using BankingManagementSystem.Infrastructure.Data.Models;
     using Contracts;
     using Infrastructure.Data;
+    using Microsoft.EntityFrameworkCore;
+
     public class CustomerService : ICustomerService 
     {
         private readonly ApplicationDbContext _context;
@@ -12,7 +14,7 @@
             _context = context;
         }
 
-        public async Task<bool> RegisterCustomer(Customer customer)
+        public async Task<Customer> RegisterCustomer(Customer customer)
         {
             if (customer == null) 
             {
@@ -23,11 +25,11 @@
             {
                 _context.Customers.Add(customer);
                 await _context.SaveChangesAsync();
-                return true;
+                return customer;
             }
             catch (Exception ex) 
             {
-                throw new ApplicationException("Error while registering customer", ex);
+                throw new InvalidOperationException("Error while registering customer", ex);
             }
         }
 
@@ -44,7 +46,7 @@
             }
             catch (Exception ex)
             {
-                throw new ApplicationException($"Error retrieving customer with ID {customerId}.", ex);
+                throw new InvalidOperationException($"Error retrieving customer with ID {customerId}.", ex);
             }
         }
 
@@ -68,8 +70,35 @@
             }
             catch (Exception ex) 
             {
-                throw new ApplicationException($"Error updating profile for customer with ID {customerId}.", ex);
+                throw new InvalidOperationException($"Error updating profile for customer with ID {customerId}.", ex);
             }
         }
+
+        public async Task<bool> DeleteCustomer(int customerId)
+        {
+            try
+            {
+                var customer = await GetCustomerById(customerId);
+                _context.Customers.Remove(customer);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error deleting customer with ID {customerId}.", ex);
+            }
+        }
+
+        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        {
+            try
+            {
+                return await _context.Customers.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error retrieving customers list.", ex);
+            }
+        }   
     }
 }
