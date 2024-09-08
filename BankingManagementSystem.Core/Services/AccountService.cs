@@ -15,9 +15,9 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
         }
 
-        public Task<List<Account>> GetCustomerAccounts(Customer customer)
+        public async Task<List<Account>> GetCustomerAccounts(Customer customer)
         {
-            return _context.Accounts.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToListAsync();
+            return await _context.Accounts.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToListAsync();
         }
 
         public async Task<Account> CreateAccount(Account account, Customer customer)
@@ -25,7 +25,9 @@ namespace BankingManagementSystem.Core.Services
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
             
+            account.Customer = customer;
             await _context.Accounts.AddAsync(account);
+            customer.Accounts.Add(account);
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
             return account;
@@ -36,7 +38,7 @@ namespace BankingManagementSystem.Core.Services
             return await _context.Accounts.FindAsync(accountId);
         }
 
-        public async Task<bool> UpdateAccountBalance(int accountId, decimal newBalance)
+        public async Task<Account> UpdateAccountBalance(int accountId, decimal newBalance)
         {
             var account = GetAccountById(accountId).Result;
             if (account is null)
@@ -44,10 +46,10 @@ namespace BankingManagementSystem.Core.Services
 
             account.Balance = newBalance;
             await _context.SaveChangesAsync();
-            return true;
+            return account;
         }
 
-        public async Task<Account> CloseAccount(int accountId)
+        public async Task<bool> CloseAccount(int accountId)
         {
             var account = GetAccountById(accountId).Result;
             if (account is null)
@@ -55,7 +57,7 @@ namespace BankingManagementSystem.Core.Services
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
-            return account;
+            return true;
         }
     }
 }
