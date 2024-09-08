@@ -1,4 +1,5 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Core.Services
 {
@@ -8,17 +9,15 @@ namespace BankingManagementSystem.Core.Services
     public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ICustomerService _customerService;
 
-        public AccountService(ApplicationDbContext context, ICustomerService customerService)
+        public AccountService(ApplicationDbContext context)
         {
             _context = context;
-            _customerService = customerService;
         }
 
-        public List<Account> GetCustomerAccounts(Customer customer)
+        public Task<List<Account>> GetCustomerAccounts(Customer customer)
         {
-            return _context.Accounts.Where(a => a.CustomerId == customer.Id).ToList();
+            return _context.Accounts.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToListAsync();
         }
 
         public async Task<Account> CreateAccount(Account account, Customer customer)
@@ -26,7 +25,7 @@ namespace BankingManagementSystem.Core.Services
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
             
-            _context.Accounts.Add(account);
+            await _context.Accounts.AddAsync(account);
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
             return account;
@@ -37,15 +36,14 @@ namespace BankingManagementSystem.Core.Services
             return await _context.Accounts.FindAsync(accountId);
         }
 
-        public bool UpdateAccountBalance(int accountId, decimal newBalance)
+        public async Task<bool> UpdateAccountBalance(int accountId, decimal newBalance)
         {
             var account = GetAccountById(accountId).Result;
             if (account is null)
                 throw new KeyNotFoundException($"Account with ID {accountId} not found");
 
             account.Balance = newBalance;
-            _context.Accounts.Update(account);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
 
