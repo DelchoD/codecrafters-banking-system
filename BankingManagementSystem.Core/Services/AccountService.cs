@@ -1,5 +1,4 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Core.Services
 {
@@ -24,7 +23,7 @@ namespace BankingManagementSystem.Core.Services
         {
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
-            
+
             account.Customer = customer;
             await _context.Accounts.AddAsync(account);
             customer.Accounts.Add(account);
