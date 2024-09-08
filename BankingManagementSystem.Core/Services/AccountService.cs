@@ -15,9 +15,9 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
         }
 
-        public async Task<List<Account>> GetCustomerAccounts(Customer customer)
+        public List<Account> GetCustomerAccounts(Customer customer)
         {
-            return await _context.Accounts.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToListAsync();
+            return customer.Accounts.ToList();
         }
 
         public async Task<Account> CreateAccount(Account account, Customer customer)
