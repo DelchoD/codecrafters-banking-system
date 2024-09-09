@@ -1,5 +1,7 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
 
+using BankingManagementSystem.Infrastructure.Data.Models;
+
 namespace BankingManagementSystem.Core.Services
 {
     using Contracts;
@@ -8,25 +10,25 @@ namespace BankingManagementSystem.Core.Services
     public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ICustomerService _customerService;
 
-        public AccountService(ApplicationDbContext context, ICustomerService customerService)
+        public AccountService(ApplicationDbContext context)
         {
             _context = context;
-            _customerService = customerService;
         }
 
         public List<Account> GetCustomerAccounts(Customer customer)
         {
-            return _context.Accounts.Where(a => a.CustomerId == customer.Id).ToList();
+            return customer.Accounts.ToList();
         }
 
         public async Task<Account> CreateAccount(Account account, Customer customer)
         {
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
-            
-            _context.Accounts.Add(account);
+
+            account.Customer = customer;
+            await _context.Accounts.AddAsync(account);
+            customer.Accounts.Add(account);
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();
             return account;
@@ -37,19 +39,18 @@ namespace BankingManagementSystem.Core.Services
             return await _context.Accounts.FindAsync(accountId);
         }
 
-        public bool UpdateAccountBalance(int accountId, decimal newBalance)
+        public async Task<Account> UpdateAccountBalance(int accountId, decimal newBalance)
         {
             var account = GetAccountById(accountId).Result;
             if (account is null)
                 throw new KeyNotFoundException($"Account with ID {accountId} not found");
 
             account.Balance = newBalance;
-            _context.Accounts.Update(account);
-            _context.SaveChangesAsync();
-            return true;
+            await _context.SaveChangesAsync();
+            return account;
         }
 
-        public async Task<Account> CloseAccount(int accountId)
+        public async Task<bool> CloseAccount(int accountId)
         {
             var account = GetAccountById(accountId).Result;
             if (account is null)
@@ -57,7 +58,7 @@ namespace BankingManagementSystem.Core.Services
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
-            return account;
+            return true;
         }
     }
 }
