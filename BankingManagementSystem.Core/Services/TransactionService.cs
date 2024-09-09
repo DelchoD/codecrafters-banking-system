@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BankingManagementSystem.Infrastructure.Data;
+﻿using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,11 +19,6 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<List<Transaction>> GetAllTransactionsAsync()
         {
-            if (_context == null)
-            {
-                throw new InvalidOperationException("DbContext is not initialized.");
-            }
-
             try
             {
                 return await _context.Transactions.ToListAsync();
@@ -41,69 +34,46 @@ namespace BankingManagementSystem.Core.Services
             if (transaction == null)
                 throw new ArgumentNullException(nameof(transaction));
 
-            if (!int.TryParse(transaction.IBANFromId, out int ibanFromId))
-                throw new ArgumentException($"Invalid IBAN format for source account: '{transaction.IBANFromId}'.");
 
-            if (!int.TryParse(transaction.IBANToId, out int ibanToId))
-                throw new ArgumentException($"Invalid IBAN format for destination account: '{transaction.IBANToId}'.");
+            var accountFrom = await _accountService.GetAccountByIBAN(transaction.IBANFromId);
+            var accountTo = await _accountService.GetAccountByIBAN(transaction.IBANToId);
 
-            using var transactionDb = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var accountFrom = await _accountService.GetAccountById(ibanFromId);
-                var accountTo = await _accountService.GetAccountById(ibanToId);
+            if (accountFrom == null)
+                throw new KeyNotFoundException($"Source account with IBAN '{transaction.IBANFromId}' was not found.");
 
-                if (accountFrom == null)
-                    throw new KeyNotFoundException($"Source account with ID '{ibanFromId}' was not found.");
+            if (accountTo == null)
+                throw new KeyNotFoundException($"Destination account with IBAN '{transaction.IBANToId}' was not found.");
 
-                if (accountTo == null)
-                    throw new KeyNotFoundException($"Destination account with ID '{ibanToId}' was not found.");
+            if (accountFrom.Balance < transaction.TotalAmount)
+                throw new InvalidOperationException($"Insufficient funds in source account with IBAN '{transaction.IBANFromId}'.");
 
-                if (accountFrom.Balance < transaction.TotalAmount)
-                    throw new InvalidOperationException($"Insufficient funds in source account with ID '{ibanFromId}'.");
+            accountFrom.Balance -= transaction.TotalAmount;
+            accountTo.Balance += transaction.TotalAmount;
 
-                accountFrom.Balance -= transaction.TotalAmount;
-                accountTo.Balance += transaction.TotalAmount;
+            accountFrom.TransactionsFrom.Add(transaction);
+            accountTo.TransactionsTo.Add(transaction);
 
-                _context.Transactions.Add(transaction);
-                _context.Accounts.Update(accountFrom);
-                _context.Accounts.Update(accountTo);
+            _context.Transactions.Add(transaction);
+            _context.Accounts.Update(accountFrom);
+            _context.Accounts.Update(accountTo);
 
-                await _context.SaveChangesAsync();
-                await transactionDb.CommitAsync();
+            await _context.SaveChangesAsync();
 
-                return transaction;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                await transactionDb.RollbackAsync();
-                throw new InvalidOperationException("A database error occurred while processing the transaction.", dbEx);
-            }
-            catch (Exception ex)
-            {
-                await transactionDb.RollbackAsync();
-                throw new InvalidOperationException("An unexpected error occurred while processing the transaction.", ex);
-            }
+            return transaction;
+
         }
-
 
         public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
-            if (accountId <= 0)
-                throw new ArgumentException("Account ID must be a positive integer.", nameof(accountId));
+            var account = _accountService.GetAccountById(accountId).Result;
+            if(account == null)
+                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
+            return account.TransactionsFrom;
 
-            var accountIdString = accountId.ToString();
-
-            return await _context.Transactions
-                .Where(t => t.IBANFromId == accountIdString || t.IBANToId == accountIdString)
-                .ToListAsync();
         }
 
         public async Task<Transaction> GetTransactionById(int transactionId)
         {
-            if (transactionId <= 0)
-                throw new ArgumentException("Transaction ID must be a positive integer.", nameof(transactionId));
-
             var transaction = await _context.Transactions.FindAsync(transactionId);
 
             if (transaction == null)

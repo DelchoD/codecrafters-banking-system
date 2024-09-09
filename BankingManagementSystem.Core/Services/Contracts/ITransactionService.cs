@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BankingManagementSystem.Infrastructure.Data.Models;
+﻿using BankingManagementSystem.Infrastructure.Data.Models;
 namespace BankingManagementSystem.Core.Services.Contracts
 {
     public interface ITransactionService
@@ -9,5 +7,6 @@ namespace BankingManagementSystem.Core.Services.Contracts
         Task<Transaction> ProcessTransaction(Transaction transaction);
         Task<List<Transaction>> GetTransactionsByAccountId(int accountId);
         Task<Transaction> GetTransactionById(int transactionId);
+       
     }
 }
