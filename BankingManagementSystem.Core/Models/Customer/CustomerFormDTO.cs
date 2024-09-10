@@ -60,8 +60,7 @@ namespace BankingManagementSystem.Core.Models.Customer
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        public string DateOfBirth { get; set; } = string.Empty;
-
+        public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
