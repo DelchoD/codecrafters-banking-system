@@ -26,6 +26,10 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public string PersonalIDNumber { get; set; } = string.Empty;
 
         [Required]
+        [EmailAddress]
+        public override string Email { get; set; } = string.Empty;
+
+        [Required]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
