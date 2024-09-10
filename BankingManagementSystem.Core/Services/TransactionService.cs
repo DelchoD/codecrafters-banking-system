@@ -65,7 +65,7 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
-            var account = _accountService.GetAccountById(accountId).Result;
+            var account = await _accountService.GetAccountById(accountId);
             if(account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
             return account.TransactionsFrom;
