@@ -1,4 +1,5 @@
-﻿using BankingManagementSystem.Infrastructure.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using BankingManagementSystem.Infrastructure.Data.Models;
 
 namespace BankingManagementSystem.Core.Services
 {
@@ -17,6 +18,14 @@ namespace BankingManagementSystem.Core.Services
         public List<Account> GetCustomerAccounts(Customer customer)
         {
             return customer.Accounts.ToList();
+        }
+
+        public async Task<Account> GetAccountByIBAN(string iban)
+        {
+            if (iban is null)
+                throw new ArgumentNullException(nameof(iban));
+            return await _context.Accounts
+            .FirstOrDefaultAsync(a => a.IBAN == iban);
         }
 
         public async Task<Account> CreateAccount(Account account, Customer customer)

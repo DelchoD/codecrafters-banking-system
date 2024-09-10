@@ -9,5 +9,6 @@ namespace BankingManagementSystem.Core.Services.Contracts
         Task<Account> UpdateAccountBalance(int accountId, decimal newBalance);
         Task<Account?> GetAccountById(int accountId);
         Task<Account> CreateAccount(Account account, Customer customer);
+        Task<Account> GetAccountByIBAN(string iban);
     }
 }
