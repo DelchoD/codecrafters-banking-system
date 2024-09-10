@@ -1,0 +1,17 @@
+.login-title {
+    font-size: 3em;
+}
+
+.login-form {
+    margin-top: 2em;
+}
+
+.form-label {
+    text-align: start;
+}
+
+.login-btn {
+    display: block;
+    width: 30em;
+    margin-top: 3em;
+}

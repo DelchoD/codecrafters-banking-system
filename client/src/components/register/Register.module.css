@@ -1,0 +1,17 @@
+.register-title {
+    font-size: 3em;
+}
+
+.register-form {
+    margin-top: 2em;
+}
+
+.register-label {
+    text-align: start;
+}
+
+.register-btn {
+    display: block;
+    width: 30em;
+    margin-top: 3em;
+}
