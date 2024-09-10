@@ -36,5 +36,9 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [ForeignKey(nameof(IBANToId))]
         public Account IBANTo { get; set; } = null!;
 
+        [Required]
+        [MaxLength(50)]
+        public string Status { get; set; } = string.Empty;
+
     }
 }

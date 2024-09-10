@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingManagementSystem.Core.Services
 {
     using Contracts;
+    using Microsoft.EntityFrameworkCore.Update;
 
     public class TransactionService : ITransactionService
     {
@@ -28,6 +29,8 @@ namespace BankingManagementSystem.Core.Services
                 throw new InvalidOperationException("A database error occurred while retrieving transactions.", dbEx);
             }
         }
+
+        //CREATE
 
         public async Task<Transaction> ProcessTransaction(Transaction transaction)
         {
@@ -63,13 +66,14 @@ namespace BankingManagementSystem.Core.Services
 
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAccountId(string accountId)
+        //READ
+
+        public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
-            if(account == null)
+            var account = await _accountService.GetAccountById(accountId);
+            if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
             return account.TransactionsFrom;
-
         }
 
         public async Task<Transaction> GetTransactionById(string transactionId)
@@ -81,5 +85,91 @@ namespace BankingManagementSystem.Core.Services
 
             return transaction;
         }
+
+        public async Task<List<Transaction>> GetTransactionsByIBAN(string iban)
+        {
+            var account = await _accountService.GetAccountByIBAN(iban);
+            if (account == null)
+                throw new KeyNotFoundException($"Account with IBAN '{iban}' was not found.");
+
+            var transactions = account.TransactionsFrom.Concat(account.TransactionsTo).ToList();
+            return transactions;
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByDate(string iban, DateTime startDate, DateTime endDate)
+        {
+            var transactions = await GetTransactionsByIBAN(iban);
+
+            var filteredTransactions = transactions.Where(t => t.Date >= startDate && t.Date <= endDate)
+                .OrderByDescending(t => t.Date).ToList();
+
+            return filteredTransactions;
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByAmount(string iban, decimal minAmount, decimal maxAmount)
+        {
+            var transactions = await GetTransactionsByIBAN(iban);
+            var filteredTransactions = transactions.Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount)
+                .OrderByDescending(t => t.TotalAmount).ToList();
+
+            return filteredTransactions;
+        }
+
+        public async Task<List<Transaction>> GetOutgoingTransactions(string iban)
+        {
+            var account = await _accountService.GetAccountByIBAN(iban);
+            if (account == null)
+                throw new KeyNotFoundException($"Account with IBAN '{iban}' was not found.");
+            var outgoingTransactions = account.TransactionsFrom.ToList();
+                return outgoingTransactions;
+        }
+
+        public async Task<List<Transaction>> GetIncomingTransactions(string iban)
+        {
+            var account = await _accountService.GetAccountByIBAN(iban);
+            if (account == null)
+                throw new KeyNotFoundException($"Account with IBAN '{iban}' was not found.");
+            var incomingTransactions = account.TransactionsTo.ToList();
+                return incomingTransactions;
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByStatus(string iban, string status)
+        {
+            var transactions = await GetTransactionsByIBAN(iban);
+            var filteredTransactions = transactions.Where(t => t.Status == status).ToList();
+
+            return filteredTransactions;
+        }
+
+        //UPDATE
+        public async Task<Transaction> UpdateTransactionStatus(int transactionId, string newStatus)
+        {
+            var transaction = await _context.Transactions.FindAsync(transactionId);
+            if (transaction == null)
+                throw new KeyNotFoundException($"Transaction with ID '{transactionId}' was not found.");
+            transaction.Status = newStatus;
+            _context.Transactions.Update(transaction);
+            await _context.SaveChangesAsync();
+
+            return transaction;
+        }
+
+        //DELETE
+        public async Task CancelTransaction(int transactionId)
+        {
+            var transaction = await GetTransactionById(transactionId);
+                if (transaction == null)
+                throw new KeyNotFoundException($"Transaction with ID '{transactionId}' was not found.");
+            var accountFrom = await _accountService.GetAccountByIBAN(transaction.IBANFromId);
+            var accountTo = await _accountService.GetAccountByIBAN(transaction.IBANToId);
+            if(accountFrom != null)
+                accountFrom.Balance += transaction.TotalAmount;
+            if(accountTo != null)
+                accountTo.Balance -= transaction.TotalAmount;   
+            _context.Transactions.Remove(transaction);
+            await _context.SaveChangesAsync();
+        }
+
     }
+
 }
