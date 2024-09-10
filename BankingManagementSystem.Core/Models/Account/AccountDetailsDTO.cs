@@ -18,4 +18,3 @@ namespace BankingManagementSystem.Core.Models.Account
           = new List<TransactionAllDTO>();
     }
 }
-
