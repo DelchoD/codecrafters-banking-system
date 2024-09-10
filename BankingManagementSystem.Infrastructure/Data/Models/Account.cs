@@ -20,7 +20,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
    
         [Required]
-        public string CustomerId { get; set; } = string.Empty;
+        public int CustomerId { get; set; }
 
 
         [Required]

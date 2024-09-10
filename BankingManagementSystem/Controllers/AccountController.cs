@@ -43,7 +43,7 @@ namespace BankingManagementSystem.Controllers
             var accountDetailsDto = new AccountDetailsDto
             {
                 Balance = account.Balance,
-                CustomerId = int.Parse(account.CustomerId),
+                CustomerId = account.CustomerId,
                 Iban = account.IBAN,
                 Name = account.Name,
                 TransactionsFrom = new List<TransactionAllDTO>(),
