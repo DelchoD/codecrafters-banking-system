@@ -1,4 +1,6 @@
-﻿using BankingManagementSystem.Infrastructure.Data.Models;
+﻿using BankingManagementSystem.Core.Models.Account;
+using BankingManagementSystem.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Core.Services
 {
@@ -19,12 +21,25 @@ namespace BankingManagementSystem.Core.Services
             return customer.Accounts.ToList();
         }
 
-        public async Task<Account> CreateAccount(Account account, Customer customer)
+        public async Task<List<Account>> GetAllAccountsAsync()
         {
+            return await _context.Accounts.ToListAsync();
+        }   
+
+        public async Task<Account> CreateAccountAsync(AccountCreateDto dto)
+        {
+            var customer = await _context.Customers.FindAsync(dto.CustomerId);
             if (customer is null)
                 throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
 
-            account.Customer = customer;
+            var account = new Account
+            {
+                IBAN = dto.Iban,
+                Name = dto.Name,
+                Balance = dto.Balance,
+                Customer = customer
+            };
+
             await _context.Accounts.AddAsync(account);
             customer.Accounts.Add(account);
             _context.Customers.Update(customer);
@@ -32,14 +47,14 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<Account?> GetAccountById(int accountId)
+        public async Task<Account?> GetAccountByIdAsync(int accountId)
         {
             return await _context.Accounts.FindAsync(accountId);
         }
 
         public async Task<Account> UpdateAccountBalance(int accountId, decimal newBalance)
         {
-            var account = GetAccountById(accountId).Result;
+            var account = GetAccountByIdAsync(accountId).Result;
             if (account is null)
                 throw new KeyNotFoundException($"Account with ID {accountId} not found");
 
@@ -48,9 +63,9 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<bool> CloseAccount(int accountId)
+        public async Task<bool> CloseAccountAsync(int accountId)
         {
-            var account = GetAccountById(accountId).Result;
+            var account = GetAccountByIdAsync(accountId).Result;
             if (account is null)
                 throw new KeyNotFoundException($"Account with ID {accountId} not found");
 

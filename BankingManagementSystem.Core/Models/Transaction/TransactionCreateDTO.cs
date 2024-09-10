@@ -27,11 +27,11 @@ namespace BankingManagementSystem.Core.Models.Transaction
         public string Reason { get; set; } = string.Empty;
 
         [Required]
-        public AccountTransactionDTO IBANFrom { get; set; } = null!;
+        public AccountTransactionDto IBANFrom { get; set; } = null!;
 
 
         [Required]
-        public AccountTransactionDTO IBANTo { get; set; } = null!;
+        public AccountTransactionDto IBANTo { get; set; } = null!;
 
         public string? CreatorId { get; set; }
 

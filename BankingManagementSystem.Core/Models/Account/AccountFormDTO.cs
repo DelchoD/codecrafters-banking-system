@@ -4,7 +4,7 @@ namespace BankingManagementSystem.Core.Models.Account
 {
     using static BankingManagementSystem.Core.Constants.ErrorMessages;
     using static BankingManagementSystem.Core.Constants.ValidationConstants;
-    public class AccountFormDTO
+    public class AccountFormDto
     {
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
@@ -12,7 +12,7 @@ namespace BankingManagementSystem.Core.Models.Account
             MinimumLength = AccountIBANMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
-        public string IBAN { get; set; } = string.Empty;
+        public string Iban { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = RequireErrorMessage)]

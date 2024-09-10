@@ -12,8 +12,8 @@
 
         public string Address { get; set; } = string.Empty;
 
-       public ICollection<AccountAllDTO> Accounts { get; set; }
-           = new List<AccountAllDTO>();
+       public ICollection<AccountAllDto> Accounts { get; set; }
+           = new List<AccountAllDto>();
 
         public ICollection<TransactionAllDTO> Transactions { get; set; }
            = new List<TransactionAllDTO>();

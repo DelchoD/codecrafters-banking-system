@@ -3,7 +3,7 @@ namespace BankingManagementSystem.Core.Models.Account
 {
     using Transaction;
 
-    public class AccountDetailsDTO : AccountAllDTO
+    public class AccountDetailsDto : AccountCreateDto
     {
         public string? CreatorId { get; set; }
 
@@ -18,3 +18,4 @@ namespace BankingManagementSystem.Core.Models.Account
           = new List<TransactionAllDTO>();
     }
 }
+
