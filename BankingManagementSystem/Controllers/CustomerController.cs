@@ -15,7 +15,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerFormDTO>> GetCustomerById(int id)
+    public async Task<ActionResult<CustomerAllDTO>> GetCustomerById(int id)
     {
         var customer = await _customerService.GetCustomerDTOById(id);
         if (customer == null) return NotFound();
