@@ -4,6 +4,8 @@
     using Contracts;
     using Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
+    using BankingManagementSystem.Core.Models.Customer;
+    using BankingManagementSystem.Core.Models.User;
 
     public class CustomerService : ICustomerService 
     {
@@ -14,18 +16,61 @@
             _context = context;
         }
 
-        public async Task<Customer> RegisterCustomer(Customer customer)
+        private Customer toCustomer(CustomerFormDTO customerDTO) 
         {
-            if (customer == null) 
+            return new Customer
             {
-                throw new ArgumentNullException(nameof(customer));
+                FirstName = customerDTO.FirstName,
+                MiddleName = customerDTO.MiddleName,
+                LastName = customerDTO.LastName,
+                Email = customerDTO.Email,
+                PersonalIDNumber = customerDTO.PersonalIDNumber,
+                DateOfBirth = customerDTO.DateOfBirth,
+                Address = customerDTO.Address,
+            };
+        }
+
+        private CustomerFormDTO toCustomerFormDTO(Customer customer) 
+        {
+            return new CustomerFormDTO
+            {
+                FirstName = customer.FirstName,
+                MiddleName = customer.MiddleName,
+                LastName = customer.LastName,
+                Email = customer.Email,
+                PersonalIDNumber = customer.PersonalIDNumber,
+                DateOfBirth = customer.DateOfBirth,
+                Address = customer.Address,
+            };
+        }
+
+        private CustomerAllDTO toCustomerAllDTO(Customer customer)
+        {
+            return new CustomerAllDTO
+            {
+                Id = customer.Id,
+                FirstName = customer.FirstName,
+                MiddleName = customer.MiddleName,
+                LastName = customer.LastName,
+                Email = customer.Email,
+                PersonalIDNumber = customer.PersonalIDNumber,
+            };
+        }
+
+        public async Task<CustomerAllDTO> RegisterCustomer(CustomerFormDTO customerDTO)
+        {
+            if (customerDTO == null) 
+            {
+                throw new ArgumentNullException(nameof(customerDTO));
             }
 
             try
             {
+                Customer customer = toCustomer(customerDTO);
                 _context.Customers.Add(customer);
                 await _context.SaveChangesAsync();
-                return customer;
+
+                return toCustomerAllDTO(customer);
             }
             catch (Exception ex) 
             {
@@ -33,7 +78,8 @@
             }
         }
 
-        public async Task<Customer> GetCustomerById(int customerId)
+        // for internal use only
+        private async Task<Customer> GetCustomerById(int customerId) 
         {
             try
             {
@@ -50,19 +96,32 @@
             }
         }
 
-        public async Task<bool> UpdateCustomerProfile(int customerId, Customer updatedCustomer)
+        public async Task<CustomerAllDTO> GetCustomerDTOById(int customerId)
+        {
+            var customer = await GetCustomerById(customerId);
+
+            return toCustomerAllDTO(customer);
+        }
+
+        public async Task<bool> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
         {
             try
             {
                 var customer = await GetCustomerById(customerId);
 
-                customer.FirstName = updatedCustomer.FirstName;
-                customer.MiddleName = updatedCustomer.MiddleName;
-                customer.LastName = updatedCustomer.LastName;
-                customer.Email = updatedCustomer.Email;
-                customer.PersonalIDNumber = updatedCustomer.PersonalIDNumber;
-                customer.DateOfBirth = updatedCustomer.DateOfBirth;
-                customer.Address = updatedCustomer.Address;
+                if (!string.IsNullOrWhiteSpace(customerUpdates.Email) && customer.Email != customerUpdates.Email)
+                {
+                    customer.Email = customerUpdates.Email;
+                }
+                else if (!string.IsNullOrWhiteSpace(customerUpdates.PhoneNumber) && customer.PhoneNumber != customerUpdates.PhoneNumber)
+                {
+                    customer.PhoneNumber = customerUpdates.PhoneNumber;
+                }
+                else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.PasswordHash != customerUpdates.Password) // ?
+                {
+                    // PasswordHash??
+                    customer.PasswordHash = customerUpdates.Password;
+                }
 
                 _context.Customers.Update(customer);
                 await _context.SaveChangesAsync();
@@ -89,11 +148,13 @@
             }
         }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<IEnumerable<CustomerAllDTO>> GetAllCustomers()
         {
             try
             {
-                return await _context.Customers.ToListAsync();
+                var customers = await _context.Customers.ToListAsync();
+                var customerDTOs = customers.Select(customer => toCustomerAllDTO(customer));
+                return customerDTOs;
             }
             catch (Exception ex)
             {
