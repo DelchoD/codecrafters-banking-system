@@ -73,9 +73,9 @@
 
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByDate(DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByDateint(int accountId, DateTime startDate, DateTime endDate)
         {
-            var transactions = await _transactionService.GetTransactionsByDate(startDate, endDate);
+            var transactions = await _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
             if (transactions == null || !transactions.Any())
             {
                 return NoContent();
@@ -86,9 +86,9 @@
 
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByAmount(decimal minAmount, decimal maxAmount)
+        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByAmount(int accountId, decimal minAmount, decimal maxAmount)
         {
-            var transactions = await _transactionService.GetTransactionsByAmount(minAmount, maxAmount);
+            var transactions = await _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
             if (transactions == null || !transactions.Any())
             {
                 return NoContent();
