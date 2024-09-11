@@ -6,6 +6,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 {
     using static Data.Constants.ValidationConstants;
 
+
     public class Customer : IdentityUser
     {
         [Required]
@@ -28,6 +29,10 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [Required]
         [EmailAddress]
         public override string Email { get; set; } = string.Empty;
+
+        [Required]
+        [MinLength(CustomerPasswordMinLength)]
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         public DateTime DateOfBirth { get; set; }

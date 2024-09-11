@@ -8,6 +8,7 @@
         public const int CustomerLastNameMaxLength = 50;
         public const int CustomerIdNumberMaxLength = 10;
         public const int CustomerAddressMaxLength = 300;
+        public const int CustomerPasswordMinLength = 6;
 
 
         //Account
