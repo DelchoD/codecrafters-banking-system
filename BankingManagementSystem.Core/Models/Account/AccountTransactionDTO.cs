@@ -1,9 +1,8 @@
-﻿
-namespace BankingManagementSystem.Core.Models.Account
+﻿namespace BankingManagementSystem.Core.Models.Account
 {
     public class AccountTransactionDto
     {
-        public string TransactionId { get; set; } = string.Empty;
+        public long TransactionId { get; set; }
 
         public string Iban { get; set; } = string.Empty;
 

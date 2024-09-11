@@ -34,10 +34,13 @@ namespace BankingManagementSystem.Core.Services
 
             var account = new Account
             {
-                IBAN = dto.Iban,
+                Iban = dto.Iban,
                 Name = dto.Name,
                 Balance = dto.Balance,
-                Customer = customer
+                CustomerId = dto.CustomerId,
+                Customer = customer,
+                TransactionsFrom = new List<Transaction>(),
+                TransactionsTo = new List<Transaction>()
             };
 
             await _context.Accounts.AddAsync(account);

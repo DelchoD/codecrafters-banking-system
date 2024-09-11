@@ -1,15 +1,14 @@
 ﻿using BankingManagementSystem.Core.Models.Account;
-using BankingManagementSystem.Core.Models.Transaction;
 using BankingManagementSystem.Core.Services;
 using BankingManagementSystem.Infrastructure.Data.Models;
 
 namespace BankingManagementSystem.Controllers
 {
-
+    using BankingManagementSystem.Core.Models.Transaction;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/accounts")]
     public class AccountController : ControllerBase
     {
 
@@ -20,43 +19,56 @@ namespace BankingManagementSystem.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AccountCreateDto>> GetAccountById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<AccountDetailsDto>> GetAccountById(int id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
             if (account is null)
                 return NotFound();
-            return Ok(account);
+
+            var accountDetails = MapAccountToDetailsDto(account);
+            return Ok(accountDetails);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Account>>> GetAllAccount()
+        public async Task<ActionResult<List<Account>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
-            return Ok(accounts);
+            var accountDetails = accounts.Select(MapAccountToDetailsDto).ToList();
+            return Ok(accountDetails);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAccount([FromBody] AccountCreateDto dto)
-        { 
-            var account = await _accountService.CreateAccountAsync(dto);
-            var accountDetailsDto = new AccountDetailsDto
-            {
-                Balance = account.Balance,
-                CustomerId = account.CustomerId,
-                Iban = account.IBAN,
-                Name = account.Name,
-                TransactionsFrom = new List<TransactionAllDTO>(),
-                TransactionsTo = new List<TransactionAllDTO>()
-            };
-            return Ok(account);
-        }
-
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult> DeleteAccount(int id)
         {
             await _accountService.CloseAccountAsync(id);
             return NoContent();
+        }
+
+        private AccountDetailsDto MapAccountToDetailsDto(Account account)
+        {
+            return new AccountDetailsDto
+            {
+                AccountId = account.Id,
+                Name = account.Name,
+                Iban = account.Iban,
+                Balance = account.Balance,
+                CustomerId = account.CustomerId,
+                TransactionsFrom = account.TransactionsFrom.Select(MapTransactionToAllDto).ToList(),
+                TransactionsTo = account.TransactionsTo.Select(MapTransactionToAllDto).ToList()
+            };
+        }
+
+        private TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
+        {
+            return new TransactionDetailsDTO
+            {
+                Id = transaction.Id,
+                TotalAmount = transaction.TotalAmount,
+                Date = transaction.Date,
+                IbanFrom = transaction.IBANFrom.Iban,
+                IbanTo = transaction.IBANTo.Iban
+            };
         }
     }
 }

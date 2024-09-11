@@ -8,9 +8,9 @@ namespace BankingManagementSystem.Core.Models.Transaction
     {
         public string Reason { get; set; } = string.Empty;
 
-        public AccountAllDto? IBANFrom { get; set; }
+        public string? IbanFrom { get; set; }
 
-        public AccountAllDto? IBANTo { get; set; } 
+        public string? IbanTo { get; set; } 
 
         public string? CreatorId { get; set; }
 
