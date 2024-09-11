@@ -141,18 +141,6 @@ namespace BankingManagementSystem.Core.Services
             return filteredTransactions;
         }
 
-        //UPDATE
-        public async Task<Transaction> UpdateTransactionStatus(int transactionId, string newStatus)
-        {
-            var transaction = await _context.Transactions.FindAsync(transactionId);
-            if (transaction == null)
-                throw new KeyNotFoundException($"Transaction with ID '{transactionId}' was not found.");
-            transaction.Status = newStatus;
-            _context.Transactions.Update(transaction);
-            await _context.SaveChangesAsync();
-
-            return transaction;
-        }
 
         //DELETE
         public async Task CancelTransaction(int transactionId)

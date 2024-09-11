@@ -13,7 +13,6 @@ namespace BankingManagementSystem.Core.Services.Contracts
         Task<List<Transaction>> GetTransactionsByAmount(string iban, decimal minAmount, decimal maxAmount);
         Task<List<Transaction>> GetOutgoingTransactions(string iban);
         Task<List<Transaction>> GetIncomingTransactions(string iban);
-        Task<List<Transaction>> GetTransactionsByStatus(string iban, string status);
         Task<Transaction> UpdateTransactionStatus(int transactionId, string newStatus);
         Task CancelTransaction(int transactionId);
     }
