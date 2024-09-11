@@ -8,7 +8,8 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Transaction
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        public int Id { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -35,5 +36,6 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [Required]
         [ForeignKey(nameof(IBANToId))]
         public Account IBANTo { get; set; } = null!;
+
     }
 }

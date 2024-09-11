@@ -1,19 +1,19 @@
-﻿using BankingManagementSystem.Infrastructure.Data.Models;
-namespace BankingManagementSystem.Core.Services.Contracts
+﻿namespace BankingManagementSystem.Core.Services.Contracts
 {
+    using BankingManagementSystem.Infrastructure.Data.Models;
+    using BankingManagementSystem.Core.Models.Transaction;
+
+
     public interface ITransactionService
     {
-        Task<List<Transaction>> GetAllTransactionsAsync();
-        Task<Transaction> ProcessTransaction(Transaction transaction);
-        Task<List<Transaction>> GetTransactionsByAccountId(int accountId);
-        Task<Transaction> GetTransactionById(int transactionId);
-
-        Task<List<Transaction>> GetTransactionsByIBAN(string iban);
-        Task<List<Transaction>> GetTransactionsByDate(string iban, DateTime startDate, DateTime endDate);
-        Task<List<Transaction>> GetTransactionsByAmount(string iban, decimal minAmount, decimal maxAmount);
-        Task<List<Transaction>> GetOutgoingTransactions(string iban);
-        Task<List<Transaction>> GetIncomingTransactions(string iban);
-        Task<Transaction> UpdateTransactionStatus(int transactionId, string newStatus);
-        Task CancelTransaction(int transactionId);
+        Task<List<TransactionDetailsDTO>> GetAllTransactionsAsync();
+        Task<TransactionDetailsDTO> ProcessTransaction(TransactionCreateDTO transactionCreateDTO);
+        Task<List<TransactionDetailsDTO>> GetTransactionsByAccountId(int accountId);
+        Task<TransactionDetailsDTO> GetTransactionById(int transactionId);
+        Task<List<TransactionDetailsDTO>> GetTransactionsByDate(int accountId, DateTime startDate, DateTime endDate);
+        Task<List<TransactionDetailsDTO>> GetTransactionsByAmount(int accountId, decimal minAmount, decimal maxAmount);
+        Task<List<TransactionDetailsDTO>> GetOutgoingTransactions(int accountId);
+        Task<List<TransactionDetailsDTO>> GetIncomingTransactions(int accountId);
+        Task<bool> CancelTransaction(int transactionId);
     }
 }
