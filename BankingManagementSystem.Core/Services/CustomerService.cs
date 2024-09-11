@@ -6,6 +6,8 @@
     using Microsoft.EntityFrameworkCore;
     using BankingManagementSystem.Core.Models.Customer;
     using BankingManagementSystem.Core.Models.User;
+    using BankingManagementSystem.Core.Models.Account;
+    using BankingManagementSystem.Core.Models.Transaction;
 
     public class CustomerService : ICustomerService 
     {
@@ -46,6 +48,15 @@
             };
         }
 
+
+        private ICollection<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
+        {
+            return accounts.Select(account => new AccountAllDTO
+            {
+                Balance = account.Balance,
+            }).ToList();
+        }
+
         private CustomerAllDTO toCustomerAllDTO(Customer customer)
         {
             return new CustomerAllDTO
@@ -56,6 +67,7 @@
                 LastName = customer.LastName,
                 Email = customer.Email,
                 PersonalIDNumber = customer.PersonalIDNumber,
+                Accounts = toAccountsDTO(customer.Accounts),
             };
         }
 
