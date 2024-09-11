@@ -24,6 +24,7 @@
                 MiddleName = customerDTO.MiddleName,
                 LastName = customerDTO.LastName,
                 Email = customerDTO.Email,
+                Password = customerDTO.Password,
                 PersonalIDNumber = customerDTO.PersonalIDNumber,
                 DateOfBirth = customerDTO.DateOfBirth,
                 Address = customerDTO.Address,
@@ -38,6 +39,7 @@
                 MiddleName = customer.MiddleName,
                 LastName = customer.LastName,
                 Email = customer.Email,
+                Password = customer.Password,
                 PersonalIDNumber = customer.PersonalIDNumber,
                 DateOfBirth = customer.DateOfBirth,
                 Address = customer.Address,
@@ -117,10 +119,9 @@
                 {
                     customer.PhoneNumber = customerUpdates.PhoneNumber;
                 }
-                else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.PasswordHash != customerUpdates.Password) // ?
+                else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.Password != customerUpdates.Password)
                 {
-                    // PasswordHash??
-                    customer.PasswordHash = customerUpdates.Password;
+                    customer.Password = customerUpdates.Password;
                 }
 
                 _context.Customers.Update(customer);
