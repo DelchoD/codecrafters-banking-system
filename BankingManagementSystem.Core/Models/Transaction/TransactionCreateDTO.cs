@@ -33,7 +33,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
         [Required]
         public AccountTransactionDto IBANTo { get; set; } = null!;
 
-        public string? CreatorId { get; set; }
+        
 
     }
 }
