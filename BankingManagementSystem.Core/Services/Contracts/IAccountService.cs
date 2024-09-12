@@ -1,4 +1,4 @@
-﻿using BankingManagementSystem.Core.Models.Account;
+using BankingManagementSystem.Core.Models.Account;
 using BankingManagementSystem.Infrastructure.Data.Models;
 
 namespace BankingManagementSystem.Core.Services.Contracts
@@ -16,5 +16,7 @@ namespace BankingManagementSystem.Core.Services.Contracts
         Task<Account?> GetAccountByIdAsync(int accountId);
 
         Task<Account> CreateAccountAsync(AccountCreateDto dto, long customerId);
+      
+        Task<Account> GetAccountByIbanAsync(string iban);
     }
 }

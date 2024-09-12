@@ -29,11 +29,11 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public Customer Customer { get; set; } = null!;
 
         [InverseProperty(nameof(Transaction.IBANFrom))]
-        public ICollection<Transaction> TransactionsFrom { get; set; }
+        public List<Transaction> TransactionsFrom { get; set; }
             = new List<Transaction>();
 
         [InverseProperty(nameof(Transaction.IBANTo))]
-        public ICollection<Transaction> TransactionsTo { get; set; }
+        public List<Transaction> TransactionsTo { get; set; }
          = new List<Transaction>();
     }
 }
