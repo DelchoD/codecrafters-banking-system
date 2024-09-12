@@ -37,6 +37,7 @@ This module automates loan and mortgage application workflows, encompassing cred
 - Provide a seamless experience for customers applying for loans and mortgages.
 ### 3. Financial Analytics and Reporting
 **Description:**
+
 This module equips bank administrators with tools to generate financial reports and predictive analytics to better forecast financial trends and improve decision-making.
 
 **Key Features:**
