@@ -62,7 +62,7 @@ Objectives:
 **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-repo/banking-management-system.git
+   git clone https://github.com/DelchoD/codecrafters-banking-system.git
    ```
 
 
