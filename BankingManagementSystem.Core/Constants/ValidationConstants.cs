@@ -19,9 +19,9 @@
 
 
         //Account
-        public const int AccountIBANMinLength = 5;
-        public const int AccountIBANMaxLength = 34;
-        public const int AccoutNameMinLength = 4;
+        public const int AccountIbanMinLength = 5;
+        public const int AccountIbanMaxLength = 34;
+        public const int AccountNameMinLength = 4;
         public const int AccountNameMaxLength = 120;
 
 

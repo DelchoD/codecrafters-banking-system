@@ -103,37 +103,37 @@
             return toCustomerAllDTO(customer);
         }
         
-        public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
-        {
-            try
-            {
-                var customer = await GetCustomerById(customerId);
+         public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
+   {
+       try
+       {
+           var customer = await GetCustomerById(customerId);
 
-                if (!string.IsNullOrWhiteSpace(customerUpdates.Email) && customer.Email != customerUpdates.Email)
-                {
-                    customer.Email = customerUpdates.Email;
-                }
-                else if (!string.IsNullOrWhiteSpace(customerUpdates.PhoneNumber) && customer.PhoneNumber != customerUpdates.PhoneNumber)
-                {
-                    customer.PhoneNumber = customerUpdates.PhoneNumber;
-                }
-                else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.Password != customerUpdates.Password)
-                {
-                    customer.Password = customerUpdates.Password;
-                }
-                else if (!string.IsNullOrEmpty(customerUpdates.Address) && customer.Address != customerUpdates.Address)
-                {
-                    customer.Address = customerUpdates.Address;
-                }
-                _context.Customers.Update(customer);
-                await _context.SaveChangesAsync();
-                return toCustomerAllDTO(customer);
-            }
-            catch (Exception ex) 
-            {
-                throw new InvalidOperationException($"Error updating profile for customer with ID {customerId}.", ex);
-            }
-        }
+           if (!string.IsNullOrWhiteSpace(customerUpdates.Email) && customer.Email != customerUpdates.Email)
+           {
+               customer.Email = customerUpdates.Email;
+           }
+           else if (!string.IsNullOrWhiteSpace(customerUpdates.PhoneNumber) && customer.PhoneNumber != customerUpdates.PhoneNumber)
+           {
+               customer.PhoneNumber = customerUpdates.PhoneNumber;
+           }
+           else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.Password != customerUpdates.Password)
+           {
+               customer.Password = customerUpdates.Password;
+           }
+           else if (!string.IsNullOrEmpty(customerUpdates.Address) && customer.Address != customerUpdates.Address)
+           {
+               customer.Address = customerUpdates.Address;
+           }
+           _context.Customers.Update(customer);
+           await _context.SaveChangesAsync();
+           return toCustomerAllDTO(customer);
+       }
+       catch (Exception ex) 
+       {
+           throw new InvalidOperationException($"Error updating profile for customer with ID {customerId}.", ex);
+       }
+   }
 
         public async Task<bool> DeleteCustomer(int customerId)
         {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankingManagementSystem.Infrastructure.Data.Models
 {
-    using static Data.Constants.ValidationConstants;
+    using static Constants.ValidationConstants;
 
 
     public class Customer : IdentityUser
@@ -24,7 +24,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(CustomerIdNumberMaxLength)]
-        public string PersonalIDNumber { get; set; } = string.Empty;
+        public long PersonalIdNumber { get; set; }
 
         [Required]
         [EmailAddress]

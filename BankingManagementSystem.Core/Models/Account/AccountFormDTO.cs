@@ -4,21 +4,21 @@ namespace BankingManagementSystem.Core.Models.Account
 {
     using static BankingManagementSystem.Core.Constants.ErrorMessages;
     using static BankingManagementSystem.Core.Constants.ValidationConstants;
-    public class AccountFormDTO
+    public class AccountFormDto
     {
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-            AccountIBANMaxLength,
-            MinimumLength = AccountIBANMinLength,
+            AccountIbanMaxLength,
+            MinimumLength = AccountIbanMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
-        public string IBAN { get; set; } = string.Empty;
+        public string Iban { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
             AccountNameMaxLength,
-            MinimumLength = AccoutNameMinLength,
+            MinimumLength = AccountNameMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string Name { get; set; } = string.Empty;
