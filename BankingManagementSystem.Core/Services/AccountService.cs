@@ -25,7 +25,8 @@ namespace BankingManagementSystem.Core.Services
         {
             if (iban is null)
                 throw new ArgumentNullException(nameof(iban));
-            return await _context.Accounts.FirstOrDefaultAsync(a => a.IBAN == iban);
+
+            return (await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban))!;
         }
 
         public async Task<List<Account>> GetAllAccountsAsync()
