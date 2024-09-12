@@ -60,7 +60,7 @@
                 customer.MiddleName = updatedCustomer.MiddleName;
                 customer.LastName = updatedCustomer.LastName;
                 customer.Email = updatedCustomer.Email;
-                customer.PersonalIDNumber = updatedCustomer.PersonalIDNumber;
+                customer.PersonalIdNumber = updatedCustomer.PersonalIdNumber;
                 customer.DateOfBirth = updatedCustomer.DateOfBirth;
                 customer.Address = updatedCustomer.Address;
 

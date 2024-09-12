@@ -15,6 +15,6 @@ namespace BankingManagementSystem.Core.Services.Contracts
 
         Task<Account?> GetAccountByIdAsync(int accountId);
 
-        Task<Account> CreateAccountAsync(AccountCreateDto dto);
+        Task<Account> CreateAccountAsync(AccountCreateDto dto, long customerId);
     }
 }

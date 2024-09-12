@@ -8,8 +8,8 @@ namespace BankingManagementSystem.Core.Models.Account
     {
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-            AccountIBANMaxLength,
-            MinimumLength = AccountIBANMinLength,
+            AccountIbanMaxLength,
+            MinimumLength = AccountIbanMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string Iban { get; set; } = string.Empty;

@@ -26,18 +26,18 @@ namespace BankingManagementSystem.Core.Services
             return await _context.Accounts.ToListAsync();
         }   
 
-        public async Task<Account> CreateAccountAsync(AccountCreateDto dto)
+        public async Task<Account> CreateAccountAsync(AccountCreateDto dto, long customerId)
         {
-            var customer = await _context.Customers.FindAsync(dto.CustomerId);
+            var customer = await _context.Customers.FindAsync(customerId);
             if (customer is null)
-                throw new KeyNotFoundException("Customer not found (is null). Cannot create an account");
+                throw new KeyNotFoundException($"Customer with ID: {customerId} not found. Cannot create an account");
 
             var account = new Account
             {
                 Iban = dto.Iban,
                 Name = dto.Name,
                 Balance = dto.Balance,
-                CustomerId = dto.CustomerId,
+                CustomerId = customerId,
                 Customer = customer,
                 TransactionsFrom = new List<Transaction>(),
                 TransactionsTo = new List<Transaction>()

@@ -6,6 +6,7 @@ namespace BankingManagementSystem.Controllers
 {
     using BankingManagementSystem.Core.Models.Transaction;
     using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
 
     [ApiController]
     [Route("api/accounts")]
@@ -31,7 +32,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Account>>> GetAllAccounts()
+        public async Task<ActionResult<List<AccountDetailsDto>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
             var accountDetails = accounts.Select(MapAccountToDetailsDto).ToList();
@@ -67,7 +68,8 @@ namespace BankingManagementSystem.Controllers
                 TotalAmount = transaction.TotalAmount,
                 Date = transaction.Date,
                 IbanFrom = transaction.IBANFrom.Iban,
-                IbanTo = transaction.IBANTo.Iban
+                IbanTo = transaction.IBANTo.Iban,
+                Reason = transaction.Reason
             };
         }
     }

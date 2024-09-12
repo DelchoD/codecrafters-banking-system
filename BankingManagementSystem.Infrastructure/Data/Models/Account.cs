@@ -8,6 +8,9 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Account
     {
         [Key]
+        [Required]
+        public long Id { get; set; }
+
         [MaxLength(AccountIBANMaxLength)]
         public string Iban { get; set; } = string.Empty;
 
@@ -17,9 +20,6 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         [Required]
         public decimal Balance { get; set; }
-
-        [Required]
-        public long Id { get; set; }
 
         [Required]
         public long CustomerId { get; set; }
