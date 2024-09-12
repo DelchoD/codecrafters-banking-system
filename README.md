@@ -65,15 +65,19 @@ Objectives:
    git clone https://github.com/your-repo/banking-management-system.git
    ```
 
+
 **Set up the environment:**
 Follow the instructions in the SETUP.md to get started.
+
 
 **Create a new branch for your feature or bug fix:**
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
+
 **Push your changes and create a pull request**
+
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
