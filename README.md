@@ -17,10 +17,11 @@ This module handles customer accounts, enabling functionalities such as account 
   
 **Objectives:**
 
-Provide a secure and user-friendly interface for managing customer accounts.
-Ensure smooth handling of customer inquiries and account data.
+- Provide a secure and user-friendly interface for managing customer accounts.
+- Ensure smooth handling of customer inquiries and account data.
+  
 ### 2. Loan and Mortgage Processing
-Description:
+**Description:**
 This module automates loan and mortgage application workflows, encompassing credit scoring, risk assessment, and approval tracking.
 
 **Key Features:**
@@ -54,6 +55,7 @@ Objectives:
    ```bash
    git clone https://github.com/your-repo/banking-management-system.git
    ```
+
 **Set up the environment:**
 Follow the instructions in the SETUP.md to get started.
 
@@ -61,6 +63,7 @@ Follow the instructions in the SETUP.md to get started.
 ```bash
 git checkout -b feature/your-feature-name
 ```
+
 **Push your changes and create a pull request**
 
 ### License
