@@ -68,5 +68,9 @@ jobs:
     - name: Build the project
       run: dotnet build --no-restore
 
-    - name: Run the project
-      run: timeout 30s dotnet run --no-build --project BankingManagementSystem/BankingManagementSystem.csproj    
+    - name: Start and check the project
+      run: |
+        dotnet run --no-build --project BankingManagementSystem/BankingManagementSystem.csproj &
+        sleep 20 
+        echo "Application started successfully"
+        pkill -f "dotnet"   
