@@ -69,4 +69,4 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Run the project
-      run: dotnet run --no-build --project BankingManagementSystem/BankingManagementSystem.csproj    
+      run: timeout 30s dotnet run --no-build --project BankingManagementSystem/BankingManagementSystem.csproj    
