@@ -4,6 +4,10 @@
     using Contracts;
     using Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
+    using BankingManagementSystem.Core.Models.Customer;
+    using BankingManagementSystem.Core.Models.User;
+    using BankingManagementSystem.Core.Models.Account;
+    using BankingManagementSystem.Core.Models.Transaction;
 
     public class CustomerService : ICustomerService 
     {
@@ -14,18 +18,60 @@
             _context = context;
         }
 
-        public async Task<Customer> RegisterCustomer(Customer customer)
+        private Customer toCustomer(CustomerFormDTO customerDTO) 
         {
-            if (customer == null) 
+            return new Customer
             {
-                throw new ArgumentNullException(nameof(customer));
+                FirstName = customerDTO.FirstName,
+                MiddleName = customerDTO.MiddleName,
+                LastName = customerDTO.LastName,
+                Email = customerDTO.Email,
+                Password = customerDTO.Password,
+                PersonalIDNumber = customerDTO.PersonalIDNumber,
+                DateOfBirth = customerDTO.DateOfBirth,
+                Address = customerDTO.Address,
+            };
+        }
+
+        public List<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
+        {
+            return accounts.Select(account => new AccountAllDTO
+            {
+                Id = account.CustomerId,
+                IBAN = account.IBAN,
+                Name = account.Name,
+                Balance = account.Balance,
+            }).ToList();
+        }
+
+        public CustomerAllDTO toCustomerAllDTO(Customer customer)
+        {
+            return new CustomerAllDTO
+            {
+                Id = customer.Id,
+                FirstName = customer.FirstName,
+                MiddleName = customer.MiddleName,
+                LastName = customer.LastName,
+                Email = customer.Email,
+                PersonalIDNumber = customer.PersonalIDNumber,
+                Accounts = toAccountsDTO(customer.Accounts),
+            };
+        }
+
+        public async Task<CustomerAllDTO> RegisterCustomer(CustomerFormDTO customerDTO)
+        {
+            if (customerDTO == null) 
+            {
+                throw new ArgumentNullException(nameof(customerDTO));
             }
 
             try
             {
+                Customer customer = toCustomer(customerDTO);
                 _context.Customers.Add(customer);
                 await _context.SaveChangesAsync();
-                return customer;
+
+                return toCustomerAllDTO(customer);
             }
             catch (Exception ex) 
             {
@@ -33,7 +79,7 @@
             }
         }
 
-        public async Task<Customer> GetCustomerById(int customerId)
+        public async Task<Customer> GetCustomerById(int customerId) 
         {
             try
             {
@@ -50,29 +96,44 @@
             }
         }
 
-        public async Task<bool> UpdateCustomerProfile(int customerId, Customer updatedCustomer)
+        public async Task<CustomerAllDTO> GetCustomerDTOById(int customerId)
         {
-            try
-            {
-                var customer = await GetCustomerById(customerId);
+            var customer = await GetCustomerById(customerId);
 
-                customer.FirstName = updatedCustomer.FirstName;
-                customer.MiddleName = updatedCustomer.MiddleName;
-                customer.LastName = updatedCustomer.LastName;
-                customer.Email = updatedCustomer.Email;
-                customer.PersonalIdNumber = updatedCustomer.PersonalIdNumber;
-                customer.DateOfBirth = updatedCustomer.DateOfBirth;
-                customer.Address = updatedCustomer.Address;
-
-                _context.Customers.Update(customer);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex) 
-            {
-                throw new InvalidOperationException($"Error updating profile for customer with ID {customerId}.", ex);
-            }
+            return toCustomerAllDTO(customer);
         }
+        
+         public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
+   {
+       try
+       {
+           var customer = await GetCustomerById(customerId);
+
+           if (!string.IsNullOrWhiteSpace(customerUpdates.Email) && customer.Email != customerUpdates.Email)
+           {
+               customer.Email = customerUpdates.Email;
+           }
+           else if (!string.IsNullOrWhiteSpace(customerUpdates.PhoneNumber) && customer.PhoneNumber != customerUpdates.PhoneNumber)
+           {
+               customer.PhoneNumber = customerUpdates.PhoneNumber;
+           }
+           else if (!string.IsNullOrWhiteSpace(customerUpdates.Password) && customer.Password != customerUpdates.Password)
+           {
+               customer.Password = customerUpdates.Password;
+           }
+           else if (!string.IsNullOrEmpty(customerUpdates.Address) && customer.Address != customerUpdates.Address)
+           {
+               customer.Address = customerUpdates.Address;
+           }
+           _context.Customers.Update(customer);
+           await _context.SaveChangesAsync();
+           return toCustomerAllDTO(customer);
+       }
+       catch (Exception ex) 
+       {
+           throw new InvalidOperationException($"Error updating profile for customer with ID {customerId}.", ex);
+       }
+   }
 
         public async Task<bool> DeleteCustomer(int customerId)
         {
@@ -89,11 +150,13 @@
             }
         }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<List<CustomerAllDTO>> GetAllCustomers()
         {
             try
             {
-                return await _context.Customers.ToListAsync();
+                var customers = await _context.Customers.ToListAsync();
+                var customerDTOs = customers.Select(customer => toCustomerAllDTO(customer)).ToList();
+                return customerDTOs;
             }
             catch (Exception ex)
             {

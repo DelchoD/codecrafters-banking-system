@@ -1,20 +1,53 @@
-﻿
-namespace BankingManagementSystem.Controllers
+﻿using BankingManagementSystem.Core.Models.Customer;
+using BankingManagementSystem.Core.Models.User;
+using BankingManagementSystem.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/customers")]
+public class CustomerController : ControllerBase
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Core.Services.Contracts;
+    private readonly CustomerService _customerService;
 
-
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CustomerController : ControllerBase
+    public CustomerController(CustomerService customerService)
     {
-        private readonly ICustomerService customerService;
+        _customerService = customerService;
+    }
 
-        public CustomerController(ICustomerService _customerService)
-        {
-            customerService = _customerService;
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<CustomerAllDTO>> GetCustomerById(int id)
+    {
+        var customer = await _customerService.GetCustomerDTOById(id);
+        if (customer == null) return NotFound();
+        return Ok(customer);
+    }
 
+    [HttpGet]
+    public async Task<ActionResult<List<CustomerAllDTO>>> GetAllCustomers()
+    {
+        var customers = await _customerService.GetAllCustomers();
+        return Ok(customers);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CustomerAllDTO>> CreateCustomer([FromBody] CustomerFormDTO dto)
+    {
+        var customerAllDTO = await _customerService.RegisterCustomer(dto);
+        return CreatedAtAction(nameof(GetCustomerById), new { id = customerAllDTO.Id}, customerAllDTO);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<CustomerAllDTO>> UpdateCustomer(int id, [FromBody] CustomerUpdateDTO dto)
+    {
+        await _customerService.UpdateCustomerProfile(id, dto);
+        var updatedCustomerDTO = await _customerService.GetCustomerDTOById(id);
+        return Ok(updatedCustomerDTO);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomer(int id)
+    {
+        await _customerService.DeleteCustomer(id);
+        return NoContent();
     }
 }

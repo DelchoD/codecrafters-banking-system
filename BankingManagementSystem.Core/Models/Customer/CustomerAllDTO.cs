@@ -1,4 +1,6 @@
-﻿namespace BankingManagementSystem.Core.Models.User
+﻿using BankingManagementSystem.Core.Models.Account;
+
+namespace BankingManagementSystem.Core.Models.User
 {
 
     public class CustomerAllDTO
@@ -13,9 +15,9 @@
 
         public string Email { get; set; } = string.Empty;
 
-
         public string PersonalIDNumber { get; set; } = string.Empty;
 
-
+        public ICollection<AccountAllDTO> Accounts { get; set; }
+         = new List<AccountAllDTO>();
     }
 }
