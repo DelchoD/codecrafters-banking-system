@@ -54,6 +54,7 @@ Objectives:
 **Frontend:**
 - React.js
 - HTML, CSS, JavaScript
+  
 **Backend:**
 - C#
 
