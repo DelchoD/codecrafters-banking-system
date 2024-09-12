@@ -9,9 +9,9 @@ namespace BankingManagementSystem.Core.Services
     public class TransactionService : ITransactionService
     {
         private readonly ApplicationDbContext _context;
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public TransactionService(ApplicationDbContext context, AccountService accountService)
+        public TransactionService(ApplicationDbContext context, IAccountService accountService)
         {
             _context = context;
             _accountService = accountService;
