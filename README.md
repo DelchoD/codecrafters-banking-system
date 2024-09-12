@@ -58,7 +58,7 @@ Follow the instructions in the SETUP.md to get started.
 
 **Create a new branch for your feature or bug fix:**
 ```bash
-- git checkout -b feature/your-feature-name
+git checkout -b feature/your-feature-name
 ```
 **Push your changes and create a pull request**
 
