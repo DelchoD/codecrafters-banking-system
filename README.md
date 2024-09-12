@@ -54,7 +54,7 @@ Objectives:
    git clone https://github.com/your-repo/banking-management-system.git
    ```
 **Set up the environment:**
-- Follow the instructions in the SETUP.md to get started.
+Follow the instructions in the SETUP.md to get started.
 
 **Create a new branch for your feature or bug fix:**
 ```bash
