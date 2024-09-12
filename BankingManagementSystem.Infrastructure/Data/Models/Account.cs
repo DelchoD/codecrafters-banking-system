@@ -8,9 +8,9 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Account
     {
         [Key]
-        [Required]
-        public long Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString(); 
 
+        [Required]
         [MaxLength(AccountIBANMaxLength)]
         public string Iban { get; set; } = string.Empty;
 
@@ -22,7 +22,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public decimal Balance { get; set; }
 
         [Required]
-        public long CustomerId { get; set; }
+        public string CustomerId { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey(nameof(CustomerId))]

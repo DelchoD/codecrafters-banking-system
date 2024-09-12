@@ -17,7 +17,7 @@ namespace BankingManagementSystem.Core.Models.User
 
         public string PersonalIDNumber { get; set; } = string.Empty;
 
-        public ICollection<AccountAllDTO> Accounts { get; set; }
-         = new List<AccountAllDTO>();
+        public ICollection<AccountDetailsDto> Accounts { get; set; }
+         = new List<AccountDetailsDto>();
     }
 }

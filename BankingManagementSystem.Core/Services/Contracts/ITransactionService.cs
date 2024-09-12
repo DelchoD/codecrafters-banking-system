@@ -5,8 +5,8 @@ namespace BankingManagementSystem.Core.Services.Contracts
     {
         Task<List<Transaction>> GetAllTransactionsAsync();
         Task<Transaction> ProcessTransaction(Transaction transaction);
-        Task<List<Transaction>> GetTransactionsByAccountId(int accountId);
-        Task<Transaction> GetTransactionById(int transactionId);
+        Task<List<Transaction>> GetTransactionsByAccountId(string accountId);
+        Task<Transaction> GetTransactionById(string transactionId);
        
     }
 }

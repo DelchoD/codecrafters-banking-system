@@ -2,7 +2,7 @@
 {
     public class AccountTransactionDto
     {
-        public long TransactionId { get; set; }
+        public string TransactionId { get; set; } = string.Empty;
 
         public string Iban { get; set; } = string.Empty;
 
