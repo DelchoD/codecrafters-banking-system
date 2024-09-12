@@ -14,6 +14,7 @@ This module handles customer accounts, enabling functionalities such as account 
 - Secure account creation and profile management.
 - Access to detailed transaction history and account statements.
 - Customer support for account-related queries.
+  
 **Objectives:**
 
 Provide a secure and user-friendly interface for managing customer accounts.
