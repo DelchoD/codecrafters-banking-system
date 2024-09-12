@@ -7,6 +7,7 @@ This project is developed following Agile methodology over the course of one mon
 ## Project Modules and Key Features
 ### 1. Customer Account Management
 **Description:**
+
 This module handles customer accounts, enabling functionalities such as account creation, profile management, balance inquiries, and transaction history review.
 
 **Key Features:**
@@ -22,6 +23,7 @@ This module handles customer accounts, enabling functionalities such as account 
   
 ### 2. Loan and Mortgage Processing
 **Description:**
+
 This module automates loan and mortgage application workflows, encompassing credit scoring, risk assessment, and approval tracking.
 
 **Key Features:**
