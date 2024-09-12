@@ -20,6 +20,7 @@ namespace BankingManagementSystem.Core.Models.User
          )]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        public string Address { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [MinLength(CustomerPasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]

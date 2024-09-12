@@ -33,31 +33,18 @@
             };
         }
 
-        private CustomerFormDTO toCustomerFormDTO(Customer customer) 
-        {
-            return new CustomerFormDTO
-            {
-                FirstName = customer.FirstName,
-                MiddleName = customer.MiddleName,
-                LastName = customer.LastName,
-                Email = customer.Email,
-                Password = customer.Password,
-                PersonalIDNumber = customer.PersonalIDNumber,
-                DateOfBirth = customer.DateOfBirth,
-                Address = customer.Address,
-            };
-        }
-
-
-        private ICollection<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
+        public List<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
         {
             return accounts.Select(account => new AccountAllDTO
             {
+                Id = account.CustomerId,
+                IBAN = account.IBAN,
+                Name = account.Name,
                 Balance = account.Balance,
             }).ToList();
         }
 
-        private CustomerAllDTO toCustomerAllDTO(Customer customer)
+        public CustomerAllDTO toCustomerAllDTO(Customer customer)
         {
             return new CustomerAllDTO
             {
@@ -92,8 +79,7 @@
             }
         }
 
-        // for internal use only
-        private async Task<Customer> GetCustomerById(int customerId) 
+        public async Task<Customer> GetCustomerById(int customerId) 
         {
             try
             {
@@ -116,8 +102,8 @@
 
             return toCustomerAllDTO(customer);
         }
-
-        public async Task<bool> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
+        
+        public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
         {
             try
             {
@@ -135,10 +121,13 @@
                 {
                     customer.Password = customerUpdates.Password;
                 }
-
+                else if (!string.IsNullOrEmpty(customerUpdates.Address) && customer.Address != customerUpdates.Address)
+                {
+                    customer.Address = customerUpdates.Address;
+                }
                 _context.Customers.Update(customer);
                 await _context.SaveChangesAsync();
-                return true;
+                return toCustomerAllDTO(customer);
             }
             catch (Exception ex) 
             {
@@ -161,12 +150,12 @@
             }
         }
 
-        public async Task<IEnumerable<CustomerAllDTO>> GetAllCustomers()
+        public async Task<List<CustomerAllDTO>> GetAllCustomers()
         {
             try
             {
                 var customers = await _context.Customers.ToListAsync();
-                var customerDTOs = customers.Select(customer => toCustomerAllDTO(customer));
+                var customerDTOs = customers.Select(customer => toCustomerAllDTO(customer)).ToList();
                 return customerDTOs;
             }
             catch (Exception ex)

@@ -17,7 +17,6 @@ namespace BankingManagementSystem.Core.Models.User
 
         public string PersonalIDNumber { get; set; } = string.Empty;
 
-        //this TDO only has the balance
         public ICollection<AccountAllDTO> Accounts { get; set; }
          = new List<AccountAllDTO>();
     }

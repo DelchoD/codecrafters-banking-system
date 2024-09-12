@@ -23,24 +23,25 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CustomerAllDTO>>> GetAllCustomers()
+    public async Task<ActionResult<List<CustomerAllDTO>>> GetAllCustomers()
     {
         var customers = await _customerService.GetAllCustomers();
         return Ok(customers);
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateCustomer([FromBody] CustomerFormDTO dto)
+    public async Task<ActionResult<CustomerAllDTO>> CreateCustomer([FromBody] CustomerFormDTO dto)
     {
         var customerAllDTO = await _customerService.RegisterCustomer(dto);
-        return CreatedAtAction(nameof(GetCustomerById), new { id = customerAllDTO.Id}, dto);
+        return CreatedAtAction(nameof(GetCustomerById), new { id = customerAllDTO.Id}, customerAllDTO);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateDTO dto)
+    public async Task<ActionResult<CustomerAllDTO>> UpdateCustomer(int id, [FromBody] CustomerUpdateDTO dto)
     {
         await _customerService.UpdateCustomerProfile(id, dto);
-        return NoContent();
+        var updatedCustomerDTO = await _customerService.GetCustomerDTOById(id);
+        return Ok(updatedCustomerDTO);
     }
 
     [HttpDelete("{id}")]
