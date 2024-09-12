@@ -18,7 +18,7 @@ namespace BankingManagementSystem.Core.Models.Account
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
             AccountNameMaxLength,
-            MinimumLength = AccoutNameMinLength,
+            MinimumLength = AccountNameMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string Name { get; set; } = string.Empty;
