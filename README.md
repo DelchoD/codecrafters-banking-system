@@ -49,6 +49,14 @@ Objectives:
 - Project Timeline
 - Development Duration: 1 month
 - Methodology: Agile, with continuous iterations and feedback loops.
+
+### Technology Stack
+**Frontend:**
+- React.js
+- HTML, CSS, JavaScript
+**Backend:**
+- C#
+
 ### How to Contribute
 **Clone the repository:**
 
