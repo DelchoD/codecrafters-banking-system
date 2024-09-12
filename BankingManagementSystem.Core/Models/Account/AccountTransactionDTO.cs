@@ -1,12 +1,10 @@
-﻿
-namespace BankingManagementSystem.Core.Models.Account
+﻿namespace BankingManagementSystem.Core.Models.Account
 {
-    public class AccountTransactionDTO
+    public class AccountTransactionDto
     {
-        public string Id { get; set; } = string.Empty;
+        public long TransactionId { get; set; }
 
-        public string IBAN { get; set; } = string.Empty;
-
+        public string Iban { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
     }

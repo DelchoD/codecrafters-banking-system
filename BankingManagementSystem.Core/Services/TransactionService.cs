@@ -9,9 +9,9 @@ namespace BankingManagementSystem.Core.Services
     public class TransactionService : ITransactionService
     {
         private readonly ApplicationDbContext _context;
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public TransactionService(ApplicationDbContext context, AccountService accountService)
+        public TransactionService(ApplicationDbContext context, IAccountService accountService)
         {
             _context = context;
             _accountService = accountService;
@@ -35,8 +35,8 @@ namespace BankingManagementSystem.Core.Services
                 throw new ArgumentNullException(nameof(transaction));
 
 
-            var accountFrom = await _accountService.GetAccountByIBAN(transaction.IBANFromId);
-            var accountTo = await _accountService.GetAccountByIBAN(transaction.IBANToId);
+            var accountFrom = await _accountService.GetAccountByIbanAsync(transaction.IBANFromId);
+            var accountTo = await _accountService.GetAccountByIbanAsync(transaction.IBANToId);
 
             if (accountFrom == null)
                 throw new KeyNotFoundException($"Source account with IBAN '{transaction.IBANFromId}' was not found.");
@@ -65,7 +65,7 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
-            var account = await _accountService.GetAccountById(accountId);
+            var account = await _accountService.GetAccountByIdAsync(accountId);
             if(account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
             return account.TransactionsFrom;
