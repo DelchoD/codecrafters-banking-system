@@ -1,6 +1,39 @@
-using BankingManagementSystem.Extensions;
 using BankingManagementSystem.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using BankingManagementSystem.Infrastructure.Data.Models;
+using BankingManagementSystem.Core.Authorization;
+using Microsoft.AspNetCore.Identity;
+using BankingManagementSystem.Extensions;
+
+void ConfigureServices(IServiceCollection services)
+{
+    // Add Identity services to the app, using Customer as the user model
+    services.AddIdentity<Customer, IdentityRole>(options =>
+        {
+            // Optional: Configure password settings, etc.
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireUppercase = true;
+        })
+        .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+    // Add authentication and authorization services
+    services.AddAuthentication();
+    services.AddAuthorization(options =>
+    {
+        // Define policies based on roles
+        options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+        options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+    });
+
+    services.AddControllersWithViews();
+}
+
+void InitializeDatabase(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var scopedServices = scope.ServiceProvider;
+    DatabaseSeeder.Initialize(scopedServices).Wait();
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +49,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationIdentity();
+
+ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
@@ -45,6 +80,8 @@ appLifetime.ApplicationStopping.Register(() =>
         }
     }
 });
+
+InitializeDatabase(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
