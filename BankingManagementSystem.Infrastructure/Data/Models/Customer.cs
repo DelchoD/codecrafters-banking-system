@@ -24,7 +24,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(CustomerIdNumberMaxLength)]
-        public long PersonalIdNumber { get; set; }
+        public string PersonalIdNumber { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]

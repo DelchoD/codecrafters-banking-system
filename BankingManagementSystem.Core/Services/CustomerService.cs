@@ -18,6 +18,34 @@
             _context = context;
         }
 
+        //this should be imported
+        private AccountDetailsDto MapAccountToDetailsDto(Account account)
+        {
+            return new AccountDetailsDto
+            {
+                AccountId = account.Id,
+                Name = account.Name,
+                Iban = account.Iban,
+                Balance = account.Balance,
+                CustomerId = account.CustomerId,
+                TransactionsFrom = account.TransactionsFrom.Select(MapTransactionToAllDto).ToList(),
+                TransactionsTo = account.TransactionsTo.Select(MapTransactionToAllDto).ToList()
+            };
+        }
+        //this should be imported
+        private TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
+        {
+            return new TransactionDetailsDTO
+            {
+                Id = transaction.Id,
+                TotalAmount = transaction.TotalAmount,
+                Date = transaction.Date,
+                IbanFrom = transaction.IBANFrom.Iban,
+                IbanTo = transaction.IBANTo.Iban,
+                Reason = transaction.Reason
+            };
+        }
+
         private Customer toCustomer(CustomerFormDTO customerDTO) 
         {
             return new Customer
@@ -27,21 +55,10 @@
                 LastName = customerDTO.LastName,
                 Email = customerDTO.Email,
                 Password = customerDTO.Password,
-                PersonalIDNumber = customerDTO.PersonalIDNumber,
+                PersonalIdNumber = customerDTO.PersonalIDNumber,
                 DateOfBirth = customerDTO.DateOfBirth,
                 Address = customerDTO.Address,
             };
-        }
-
-        public List<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
-        {
-            return accounts.Select(account => new AccountAllDTO
-            {
-                Id = account.CustomerId,
-                IBAN = account.IBAN,
-                Name = account.Name,
-                Balance = account.Balance,
-            }).ToList();
         }
 
         public CustomerAllDTO toCustomerAllDTO(Customer customer)
@@ -53,8 +70,8 @@
                 MiddleName = customer.MiddleName,
                 LastName = customer.LastName,
                 Email = customer.Email,
-                PersonalIDNumber = customer.PersonalIDNumber,
-                Accounts = toAccountsDTO(customer.Accounts),
+                PersonalIDNumber = customer.PersonalIdNumber,
+                Accounts = customer.Accounts.Select(MapAccountToDetailsDto).ToList(),
             };
         }
 

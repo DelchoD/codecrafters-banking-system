@@ -46,7 +46,7 @@ namespace BankingManagementSystem.Controllers
             return NoContent();
         }
 
-        private AccountDetailsDto MapAccountToDetailsDto(Account account)
+        public static AccountDetailsDto MapAccountToDetailsDto(Account account)
         {
             return new AccountDetailsDto
             {
@@ -60,7 +60,7 @@ namespace BankingManagementSystem.Controllers
             };
         }
 
-        private TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
+        public static TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
         {
             return new TransactionDetailsDTO
             {

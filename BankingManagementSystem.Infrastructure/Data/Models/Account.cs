@@ -22,7 +22,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public decimal Balance { get; set; }
 
         [Required]
-        public long CustomerId { get; set; }
+        public string CustomerId { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey(nameof(CustomerId))]
