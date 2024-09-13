@@ -53,7 +53,7 @@ Objectives:
 - Development Duration: 1 month
 - Methodology: Agile, with continuous iterations and feedback loops.
 
-### Technology Stack
+### :computer: Technology Stack
 **Frontend:**
 - React.js
 - HTML, CSS, JavaScript
