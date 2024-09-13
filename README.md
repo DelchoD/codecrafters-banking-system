@@ -32,7 +32,7 @@ This module automates loan and mortgage application workflows, encompassing cred
 - Automated credit scoring and risk assessment.
 - Simplified approval workflows with comprehensive documentation.
   
-**:dart:- Objectives:**
+**:dart: Objectives:**
 
 - Streamline the loan and mortgage process with fast, efficient assessments.
 - Provide a seamless experience for customers applying for loans and mortgages.
