@@ -19,7 +19,7 @@
         }
 
         //this should be imported
-        private AccountDetailsDto MapAccountToDetailsDto(Account account)
+        private AccountDetailsDto mapAccountToDetailsDto(Account account)
         {
             return new AccountDetailsDto
             {
@@ -33,7 +33,7 @@
             };
         }
         //this should be imported
-        private TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
+        private TransactionDetailsDTO mapAccountToDetailsDto(Transaction transaction)
         {
             return new TransactionDetailsDTO
             {
