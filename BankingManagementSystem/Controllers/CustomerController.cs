@@ -15,7 +15,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerAllDTO>> GetCustomerById(int id)
+    public async Task<ActionResult<CustomerAllDTO>> GetCustomerById(string id)
     {
         var customer = await _customerService.GetCustomerDTOById(id);
         if (customer == null) return NotFound();
@@ -37,7 +37,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<CustomerAllDTO>> UpdateCustomer(int id, [FromBody] CustomerUpdateDTO dto)
+    public async Task<ActionResult<CustomerAllDTO>> UpdateCustomer(string id, [FromBody] CustomerUpdateDTO dto)
     {
         await _customerService.UpdateCustomerProfile(id, dto);
         var updatedCustomerDTO = await _customerService.GetCustomerDTOById(id);
@@ -45,7 +45,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteCustomer(int id)
+    public async Task<ActionResult> DeleteCustomer(string id)
     {
         await _customerService.DeleteCustomer(id);
         return NoContent();

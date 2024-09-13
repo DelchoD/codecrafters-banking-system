@@ -63,7 +63,7 @@ namespace BankingManagementSystem.Core.Services
 
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
+        public async Task<List<Transaction>> GetTransactionsByAccountId(string accountId)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
             if(account == null)
@@ -72,7 +72,7 @@ namespace BankingManagementSystem.Core.Services
 
         }
 
-        public async Task<Transaction> GetTransactionById(int transactionId)
+        public async Task<Transaction> GetTransactionById(string transactionId)
         {
             var transaction = await _context.Transactions.FindAsync(transactionId);
 

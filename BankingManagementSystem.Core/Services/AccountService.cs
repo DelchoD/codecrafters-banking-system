@@ -34,7 +34,7 @@ namespace BankingManagementSystem.Core.Services
             return await _context.Accounts.ToListAsync();
         }   
 
-        public async Task<Account> CreateAccountAsync(AccountCreateDto dto, long customerId)
+        public async Task<Account> CreateAccountAsync(AccountCreateDto dto, string customerId)
         {
             var customer = await _context.Customers.FindAsync(customerId);
             if (customer is null)
@@ -58,12 +58,12 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<Account?> GetAccountByIdAsync(int accountId)
+        public async Task<Account?> GetAccountByIdAsync(string accountId)
         {
             return await _context.Accounts.FindAsync(accountId);
         }
 
-        public async Task<Account> UpdateAccountBalance(int accountId, decimal newBalance)
+        public async Task<Account> UpdateAccountBalance(string accountId, decimal newBalance)
         {
             var account = GetAccountByIdAsync(accountId).Result;
             if (account is null)
@@ -74,7 +74,7 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<bool> CloseAccountAsync(int accountId)
+        public async Task<bool> CloseAccountAsync(string accountId)
         {
             var account = GetAccountByIdAsync(accountId).Result;
             if (account is null)

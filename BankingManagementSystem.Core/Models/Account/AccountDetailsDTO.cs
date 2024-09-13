@@ -8,7 +8,7 @@
 
         public string? Creator { get; set; }
 
-        public long AccountId { get; set; }
+        public string AccountId { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
 
@@ -16,7 +16,7 @@
 
         public decimal Balance { get; set; }
 
-        public long CustomerId { get; set; }
+        public string CustomerId { get; set; } = string.Empty;
 
         public ICollection<TransactionDetailsDTO> TransactionsFrom { get; set; } 
             = new List<TransactionDetailsDTO>();

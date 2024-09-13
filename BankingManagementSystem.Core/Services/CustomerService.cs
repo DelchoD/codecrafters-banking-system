@@ -27,18 +27,18 @@
                 LastName = customerDTO.LastName,
                 Email = customerDTO.Email,
                 Password = customerDTO.Password,
-                PersonalIDNumber = customerDTO.PersonalIDNumber,
+                PersonalIdNumber = customerDTO.PersonalIDNumber,
                 DateOfBirth = customerDTO.DateOfBirth,
                 Address = customerDTO.Address,
             };
         }
 
-        public List<AccountAllDTO> toAccountsDTO(ICollection<Account> accounts)
+        public List<AccountDetailsDto> toAccountsDTO(ICollection<Account> accounts)
         {
-            return accounts.Select(account => new AccountAllDTO
+            return accounts.Select(account => new AccountDetailsDto()
             {
-                Id = account.CustomerId,
-                IBAN = account.IBAN,
+                CustomerId = account.CustomerId,
+                Iban = account.Iban,
                 Name = account.Name,
                 Balance = account.Balance,
             }).ToList();
@@ -53,7 +53,7 @@
                 MiddleName = customer.MiddleName,
                 LastName = customer.LastName,
                 Email = customer.Email,
-                PersonalIDNumber = customer.PersonalIDNumber,
+                PersonalIDNumber = customer.PersonalIdNumber,
                 Accounts = toAccountsDTO(customer.Accounts),
             };
         }
@@ -79,7 +79,7 @@
             }
         }
 
-        public async Task<Customer> GetCustomerById(int customerId) 
+        public async Task<Customer> GetCustomerById(string customerId) 
         {
             try
             {
@@ -96,14 +96,14 @@
             }
         }
 
-        public async Task<CustomerAllDTO> GetCustomerDTOById(int customerId)
+        public async Task<CustomerAllDTO> GetCustomerDTOById(string customerId)
         {
             var customer = await GetCustomerById(customerId);
 
             return toCustomerAllDTO(customer);
         }
         
-         public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
+         public async Task<CustomerAllDTO> UpdateCustomerProfile(string customerId, CustomerUpdateDTO customerUpdates)
    {
        try
        {
@@ -135,7 +135,7 @@
        }
    }
 
-        public async Task<bool> DeleteCustomer(int customerId)
+        public async Task<bool> DeleteCustomer(string customerId)
         {
             try
             {
