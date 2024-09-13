@@ -28,8 +28,8 @@
                 Iban = account.Iban,
                 Balance = account.Balance,
                 CustomerId = account.CustomerId,
-                TransactionsFrom = account.TransactionsFrom.Select(MapTransactionToAllDto).ToList(),
-                TransactionsTo = account.TransactionsTo.Select(MapTransactionToAllDto).ToList()
+                TransactionsFrom = account.TransactionsFrom.Select(mapAccountToDetailsDto).ToList(),
+                TransactionsTo = account.TransactionsTo.Select(mapAccountToDetailsDto).ToList()
             };
         }
         //this should be imported
