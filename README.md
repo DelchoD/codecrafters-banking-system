@@ -1,5 +1,5 @@
 # Experian Workshop 2024 - Banking Management System (BMS)
-## Project Overview
+## :star2: Project Overview
 The **Banking Management System (BMS)** is a web-based platform designed to improve the operational efficiency of banking institutions by streamlining customer service processes, enhancing security, and automating routine tasks. The platform is structured to meet the growing demands of modern banking with three primary modules, each tailored to address key banking operations.
 
 This project is developed following Agile methodology over the course of one month. It will ensure iterative development, continuous feedback, and adaptability throughout the development process.
