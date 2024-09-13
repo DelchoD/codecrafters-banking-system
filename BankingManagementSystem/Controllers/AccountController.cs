@@ -21,7 +21,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<AccountDetailsDto>> GetAccountById(int id)
+        public async Task<ActionResult<AccountDetailsDto>> GetAccountById(string id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
             if (account is null)
@@ -40,7 +40,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> DeleteAccount(int id)
+        public async Task<ActionResult> DeleteAccount(string id)
         {
             await _accountService.CloseAccountAsync(id);
             return NoContent();

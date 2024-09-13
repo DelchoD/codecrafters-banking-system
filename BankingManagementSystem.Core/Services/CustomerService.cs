@@ -63,16 +63,16 @@
 
         public CustomerAllDTO toCustomerAllDTO(Customer customer)
         {
-            return new CustomerAllDTO
-            {
-                Id = customer.Id,
-                FirstName = customer.FirstName,
-                MiddleName = customer.MiddleName,
-                LastName = customer.LastName,
-                Email = customer.Email,
-                PersonalIDNumber = customer.PersonalIdNumber,
-                Accounts = customer.Accounts.Select(MapAccountToDetailsDto).ToList(),
-            };
+             return new CustomerAllDTO
+               {
+                   Id = customer.Id,
+                   FirstName = customer.FirstName,
+                   MiddleName = customer.MiddleName,
+                   LastName = customer.LastName,
+                   Email = customer.Email,
+                   PersonalIDNumber = customer.PersonalIdNumber,
+                   Accounts = customer.Accounts.Select(mapAccountToDetailsDto).ToList(),
+               };
         }
 
         public async Task<CustomerAllDTO> RegisterCustomer(CustomerFormDTO customerDTO)
@@ -96,7 +96,7 @@
             }
         }
 
-        public async Task<Customer> GetCustomerById(int customerId) 
+        public async Task<Customer> GetCustomerById(string customerId) 
         {
             try
             {
@@ -113,14 +113,14 @@
             }
         }
 
-        public async Task<CustomerAllDTO> GetCustomerDTOById(int customerId)
+        public async Task<CustomerAllDTO> GetCustomerDTOById(string customerId)
         {
             var customer = await GetCustomerById(customerId);
 
             return toCustomerAllDTO(customer);
         }
         
-         public async Task<CustomerAllDTO> UpdateCustomerProfile(int customerId, CustomerUpdateDTO customerUpdates)
+         public async Task<CustomerAllDTO> UpdateCustomerProfile(string customerId, CustomerUpdateDTO customerUpdates)
    {
        try
        {
@@ -152,7 +152,7 @@
        }
    }
 
-        public async Task<bool> DeleteCustomer(int customerId)
+        public async Task<bool> DeleteCustomer(string customerId)
         {
             try
             {

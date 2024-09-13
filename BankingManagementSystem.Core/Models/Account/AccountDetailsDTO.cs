@@ -8,7 +8,7 @@
 
         public string? Creator { get; set; }
 
-        public long AccountId { get; set; }
+        public string AccountId { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
 

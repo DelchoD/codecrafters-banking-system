@@ -19,8 +19,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("BankingManagementSystem.Infrastructure.Data.Models.Account", b =>
                 {
-                    b.Property<string>("IBAN")
-                        .HasMaxLength(34)
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Balance")
@@ -30,12 +29,17 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Iban")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IBAN");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -62,6 +66,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
@@ -94,10 +99,14 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PersonalIDNumber")
+                    b.Property<string>("PersonalIdNumber")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
