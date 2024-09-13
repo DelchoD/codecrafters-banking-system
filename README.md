@@ -10,7 +10,7 @@ This project is developed following Agile methodology over the course of one mon
 
 This module handles customer accounts, enabling functionalities such as account creation, profile management, balance inquiries, and transaction history review.
 
-**Key Features:**
+**:key: Key Features:**
 
 - Secure account creation and profile management.
 - Access to detailed transaction history and account statements.
@@ -26,7 +26,7 @@ This module handles customer accounts, enabling functionalities such as account 
 
 This module automates loan and mortgage application workflows, encompassing credit scoring, risk assessment, and approval tracking.
 
-**Key Features:**
+**:key: Key Features:**
 
 - Loan and mortgage application submission and tracking.
 - Automated credit scoring and risk assessment.
@@ -40,7 +40,7 @@ This module automates loan and mortgage application workflows, encompassing cred
 
 This module equips bank administrators with tools to generate financial reports and predictive analytics to better forecast financial trends and improve decision-making.
 
-**Key Features:**
+**:key: Key Features:**
 
 - Financial dashboards displaying performance metrics.
 - Predictive analytics for financial forecasting.
