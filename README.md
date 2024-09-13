@@ -61,7 +61,7 @@ Objectives:
 **Backend:**
 - C#
 
-### How to Contribute
+### :technologist: How to Contribute
 **Clone the repository:**
 
    ```bash
@@ -69,7 +69,7 @@ Objectives:
    ```
 
 
-**Set up the environment:**
+**:outbox_tray: Set up the environment:**
 Follow the instructions in the SETUP.md to get started.
 
 
