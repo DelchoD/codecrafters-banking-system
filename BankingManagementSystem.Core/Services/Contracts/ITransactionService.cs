@@ -6,7 +6,7 @@
     public interface ITransactionService
     {
         Task<List<Transaction>> GetAllTransactionsAsync();
-        Task<Transaction> ProcessTransaction(TransactionCreateDTO transactionCreateDto);
+        Task<Transaction> ProcessTransaction(TransactionCreateDTO transactionCreateDTO);
         Task<List<Transaction>> GetTransactionsByAccountId(string accountId);
         Task<Transaction> GetTransactionById(int transactionId);
         Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate);
