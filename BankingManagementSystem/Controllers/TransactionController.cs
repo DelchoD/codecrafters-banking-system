@@ -3,11 +3,12 @@
     using Microsoft.AspNetCore.Mvc;
     using Core.Services.Contracts;
     using BankingManagementSystem.Core.Models.Transaction;
+    using BankingManagementSystem.Core.Models.Account;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/transactions")]
     [ApiController]
     public class TransactionController : ControllerBase
     {
@@ -20,107 +21,151 @@
 
         // POST: api/transaction
         [HttpPost]
-        public async Task<IActionResult> CreateTransaction([FromBody] TransactionCreateDTO transactionCreateDTO)
+        public async Task<ActionResult<TransactionDetailsDTO>> CreateTransaction([FromBody] TransactionCreateDTO transactionCreateDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var createdTransaction = await _transactionService.ProcessTransaction(transactionCreateDTO);
 
-            var createdTransactionDTO = await _transactionService.ProcessTransaction(transactionCreateDTO);
-            return CreatedAtAction(nameof(GetTransaction), new { id = createdTransactionDTO.Id }, createdTransactionDTO);
+            var transactionDTO = new TransactionDetailsDTO
+            {
+                Id = createdTransaction.Id,
+                Date = createdTransaction.Date,
+                TotalAmount = createdTransaction.TotalAmount,
+                Reason = createdTransaction.Reason,
+                IBANFrom = new AccountTransactionDto { Iban = createdTransaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = createdTransaction.IBANToId }
+            };
+
+            return CreatedAtAction(nameof(GetTransaction), new { id = transactionDTO.Id }, transactionDTO);
         }
 
         // GET: api/transaction/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<TransactionDetailsDTO>> GetTransaction(int id)
         {
-            var transactionDTO = await _transactionService.GetTransactionById(id);
-            if (transactionDTO == null)
+            var transaction = await _transactionService.GetTransactionById(id);
+
+            var transactionDTO = new TransactionDetailsDTO
             {
-                return NotFound();
-            }
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                Reason = transaction.Reason,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            };
+
             return Ok(transactionDTO);
         }
 
         // GET: api/transaction/by-account/{accountId}
         [HttpGet("by-account/{accountId}")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByAccountId(int accountId)
+        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByAccountId(string accountId)
         {
             var transactions = await _transactionService.GetTransactionsByAccountId(accountId);
-
-            if (transactions == null || !transactions.Any())
+            var transactionDTOs = transactions.Select(transaction => new TransactionDetailsDTO
             {
-                return NoContent();
-            }
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                Reason = transaction.Reason,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
 
-            return Ok(transactions);
+            return Ok(transactionDTOs);
         }
 
         // GET: api/transaction
         [HttpGet]
         public async Task<ActionResult<List<TransactionAllDTO>>> GetAllTransactions()
         {
-            var transactionDTOs = await _transactionService.GetAllTransactionsAsync();
+            var transactions = await _transactionService.GetAllTransactionsAsync();
 
-            if (transactionDTOs == null || !transactionDTOs.Any())
+            var transactionDTOs = transactions.Select(transaction => new TransactionAllDTO
             {
-                return NoContent(); 
-            }
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
 
             return Ok(transactionDTOs);
         }
 
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByDateint(int accountId, DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<List<TransactionAllDTO>>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
             var transactions = await _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
-            if (transactions == null || !transactions.Any())
+
+            var transactionDTOs = transactions.Select(transaction => new TransactionAllDTO
             {
-                return NoContent();
-            }
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
 
-            return Ok(transactions);
+            return Ok(transactionDTOs);
         }
-
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetTransactionsByAmount(int accountId, decimal minAmount, decimal maxAmount)
+        public async Task<ActionResult<List<TransactionAllDTO>>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
             var transactions = await _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
-            if (transactions == null || !transactions.Any())
-            {
-                return NoContent();
-            }
 
-            return Ok(transactions);
+            var transactionDTOs = transactions.Select(transaction => new TransactionAllDTO
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
+
+            return Ok(transactionDTOs);
         }
 
         // GET: api/transaction/outgoing/{accountId}
         [HttpGet("outgoing/{accountId}")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetOutgoingTransactions(int accountId)
+        public async Task<ActionResult<List<TransactionAllDTO>>> GetOutgoingTransactions(string accountId)
         {
             var transactions = await _transactionService.GetOutgoingTransactions(accountId);
-            if (transactions == null || !transactions.Any())
-            {
-                return NoContent();
-            }
 
-            return Ok(transactions);
+            var transactionDTOs = transactions.Select(transaction => new TransactionAllDTO
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
+
+            return Ok(transactionDTOs);
         }
 
         // GET: api/transaction/incoming/{accountId}
         [HttpGet("incoming/{accountId}")]
-        public async Task<ActionResult<List<TransactionDetailsDTO>>> GetIncomingTransactions(int accountId)
+        public async Task<ActionResult<List<TransactionAllDTO>>> GetIncomingTransactions(string accountId)
         {
             var transactions = await _transactionService.GetIncomingTransactions(accountId);
-            if (transactions == null || !transactions.Any())
-            {
-                return NoContent();
-            }
 
-            return Ok(transactions);
+            var transactionDTOs = transactions.Select(transaction => new TransactionAllDTO
+            {
+                Id = transaction.Id,
+                Date = transaction.Date,
+                TotalAmount = transaction.TotalAmount,
+                IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
+                IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            }).ToList();
+
+            return Ok(transactionDTOs);
         }
 
         // DELETE: api/transaction/{id}
