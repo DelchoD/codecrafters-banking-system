@@ -13,8 +13,7 @@ void ConfigureServices(IServiceCollection services)
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireUppercase = true;
-        })
-        .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+        }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
     // Add authentication and authorization services
     services.AddAuthentication();
@@ -28,11 +27,11 @@ void ConfigureServices(IServiceCollection services)
     services.AddControllersWithViews();
 }
 
-void InitializeDatabase(IServiceProvider services)
+async Task InitializeDatabase(IServiceProvider services)
 {
     using var scope = services.CreateScope();
     var scopedServices = scope.ServiceProvider;
-    DatabaseSeeder.Initialize(scopedServices).Wait();
+    await DatabaseSeeder.Initialize(scopedServices);
 }
 
 var builder = WebApplication.CreateBuilder(args);
