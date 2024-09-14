@@ -1,4 +1,5 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Infrastructure.Data
@@ -16,6 +17,8 @@ namespace BankingManagementSystem.Infrastructure.Data
         public string DbPath { get; }
 
         public DbSet<Customer> Customers { get; set; }
+        
+        public DbSet<IdentityRole> Roles { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
 
