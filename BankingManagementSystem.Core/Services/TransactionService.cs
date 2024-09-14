@@ -7,7 +7,13 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingManagementSystem.Core.Services
 {
     using Contracts;
-    using Microsoft.EntityFrameworkCore.Update;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using BankingManagementSystem.Infrastructure.Data.Models;
+    using BankingManagementSystem.Core.Models.Transaction;
 
     public class TransactionService : ITransactionService
     {
@@ -20,36 +26,12 @@ namespace BankingManagementSystem.Core.Services
             _accountService = accountService;
         }
 
-        public async Task<List<TransactionDetailsDTO>> GetAllTransactionsAsync()
-        {
-            try
-            {
-                var transactions = await _context.Transactions.ToListAsync();
-                var transactionDTOs = transactions.Select(transaction => new TransactionDetailsDTO
-                {
-                    Id = transaction.Id,
-                    Date = transaction.Date,
-                    TotalAmount = transaction.TotalAmount,
-                    Reason = transaction.Reason,
-                    IBANFrom = new AccountTransactionDTO { IBAN = transaction.IBANFromId },
-                    IBANTo = new AccountTransactionDTO { IBAN = transaction.IBANToId }
-                }).ToList();
+        // CREATE AND UPDATE
 
-                return transactionDTOs;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                throw new InvalidOperationException("A database error occurred while retrieving transactions.", dbEx);
-            }
-        }
-
-        //CREATE AND UPDATE
-
-        public async Task<TransactionDetailsDTO> ProcessTransaction(TransactionCreateDTO transactionCreateDTO)
+        public async Task<Transaction> ProcessTransaction(TransactionCreateDTO transactionCreateDTO)
         {
             if (transactionCreateDTO == null)
                 throw new ArgumentNullException(nameof(transactionCreateDTO));
-
 
             var accountFrom = await _accountService.GetAccountByIBAN(transactionCreateDTO.IBANFrom.IBAN);
             var accountTo = await _accountService.GetAccountByIBAN(transactionCreateDTO.IBANTo.IBAN);
@@ -84,156 +66,91 @@ namespace BankingManagementSystem.Core.Services
 
             await _context.SaveChangesAsync();
 
-            var transactionDTO = new TransactionDetailsDTO
-            {
-                Id = transaction.Id,
-                Date = transaction.Date,
-                TotalAmount = transaction.TotalAmount,
-                Reason = transaction.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = transaction.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = transaction.IBANToId }
-            };
-
-            return transactionDTO;
-
+            return transaction;
         }
 
-        //READ
+        // READ
 
-        public async Task<List<TransactionDetailsDTO>> GetTransactionsByAccountId(int accountId)
+        public async Task<List<Transaction>> GetAllTransactionsAsync()
+        {
+            try
+            {
+                return await _context.Transactions.ToListAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new InvalidOperationException("A database error occurred while retrieving transactions.", dbEx);
+            }
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByAccountId(int accountId)
         {
             var account = await _accountService.GetAccountById(accountId);
             if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-            var transactionDTOs = account.TransactionsFrom.Select(transaction => new TransactionDetailsDTO
-            {
-                Id = transaction.Id,
-                Date = transaction.Date,
-                TotalAmount = transaction.TotalAmount,
-                Reason = transaction.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = transaction.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = transaction.IBANToId }
-            }).ToList();
 
-            return transactionDTOs;
+            return account.TransactionsFrom.ToList();
         }
 
-        public async Task<TransactionDetailsDTO> GetTransactionById(int transactionId)
+        public async Task<Transaction> GetTransactionById(int transactionId)
         {
             var transaction = await _context.Transactions.FindAsync(transactionId);
 
             if (transaction == null)
                 throw new KeyNotFoundException($"Transaction with ID '{transactionId}' was not found.");
 
-            var transactionDTO = new TransactionDetailsDTO
-            {
-                Id = transaction.Id,
-                Date = transaction.Date,
-                TotalAmount = transaction.TotalAmount,
-                Reason = transaction.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = transaction.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = transaction.IBANToId }
-            };
-
-            return transactionDTO;
+            return transaction;
         }
 
-        public async Task<List<TransactionDetailsDTO>> GetTransactionsByDate(int accountId, DateTime startDate, DateTime endDate)
+        public async Task<List<Transaction>> GetTransactionsByDate(int accountId, DateTime startDate, DateTime endDate)
         {
             var account = await _accountService.GetAccountById(accountId);
             if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
 
-            var filteredTransactions = account.TransactionsFrom
-             .Where(t => t.Date >= startDate && t.Date <= endDate)
-             .OrderByDescending(t => t.Date)
-             .ToList();
-
-
-            var transactionDTOs = filteredTransactions.Select(t => new TransactionDetailsDTO
-            {
-                Id = t.Id,
-                Date = t.Date,
-                TotalAmount = t.TotalAmount,
-                Reason = t.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = t.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = t.IBANToId }
-            }).ToList();
-
-            return transactionDTOs;
+            return account.TransactionsFrom
+                .Where(t => t.Date >= startDate && t.Date <= endDate)
+                .OrderByDescending(t => t.Date)
+                .ToList();
         }
 
-        public async Task<List<TransactionDetailsDTO>> GetTransactionsByAmount(int accountId, decimal minAmount, decimal maxAmount)
+        public async Task<List<Transaction>> GetTransactionsByAmount(int accountId, decimal minAmount, decimal maxAmount)
         {
             var account = await _accountService.GetAccountById(accountId);
             if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-            
-            var filteredTransactions = account.TransactionsFrom
-                    .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount)
-                    .Concat(account.TransactionsTo
-                        .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount))
-                    .OrderByDescending(t => t.TotalAmount)
-                    .ToList();
 
-            var transactionDTOs = filteredTransactions.Select(t => new TransactionDetailsDTO
-            {
-                Id = t.Id,
-                Date = t.Date,
-                TotalAmount = t.TotalAmount,
-                Reason = t.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = t.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = t.IBANToId }
-            }).ToList();
-
-            return transactionDTOs;
-
+            return account.TransactionsFrom
+                .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount)
+                .Concat(account.TransactionsTo
+                    .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount))
+                .OrderByDescending(t => t.TotalAmount)
+                .ToList();
         }
 
-        public async Task<List<TransactionDetailsDTO>> GetOutgoingTransactions(int accountId)
+        public async Task<List<Transaction>> GetOutgoingTransactions(int accountId)
         {
             var account = await _accountService.GetAccountById(accountId);
             if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-            var outgoingTransactions = account.TransactionsFrom.ToList();
-            var transactionDTOs = outgoingTransactions.Select(t => new TransactionDetailsDTO
-            {
-                Id = t.Id,
-                Date = t.Date,
-                TotalAmount = t.TotalAmount,
-                Reason = t.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = t.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = t.IBANToId }
-            }).ToList();
 
-            return transactionDTOs;
+            return account.TransactionsFrom.ToList();
         }
 
-        public async Task<List<TransactionDetailsDTO>> GetIncomingTransactions(int accountId)
+        public async Task<List<Transaction>> GetIncomingTransactions(int accountId)
         {
             var account = await _accountService.GetAccountById(accountId);
             if (account == null)
                 throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-            var incomingTransactions = account.TransactionsTo.ToList();
-            var transactionDTOs = incomingTransactions.Select(t => new TransactionDetailsDTO
-            {
-                Id = t.Id,
-                Date = t.Date,
-                TotalAmount = t.TotalAmount,
-                Reason = t.Reason,
-                IBANFrom = new AccountTransactionDTO { IBAN = t.IBANFromId },
-                IBANTo = new AccountTransactionDTO { IBAN = t.IBANToId }
-            }).ToList();
 
-            return transactionDTOs;
+            return account.TransactionsTo.ToList();
         }
 
         /*DELETE (according to the Internet, a transaction can only be deleted if it is invalid or fraudulent,
          * but in such a case, the funds are returned to the account that sent them)*/
         public async Task<bool> CancelTransaction(int transactionId)
         {
-            var transaction = await _context.Transactions
-                .FindAsync(transactionId);
+            var transaction = await _context.Transactions.FindAsync(transactionId);
 
             if (transaction == null)
                 return false;
