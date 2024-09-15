@@ -11,7 +11,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
     {
 
         [Required]
-        public string Date { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
@@ -33,7 +33,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
         [Required]
         public AccountTransactionDto IBANTo { get; set; } = null!;
 
-        public string? CreatorId { get; set; }
+        
 
     }
 }

@@ -8,6 +8,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
     {
         public string Reason { get; set; } = string.Empty;
 
+
         public string? IbanFrom { get; set; }
 
         public string? IbanTo { get; set; } 
