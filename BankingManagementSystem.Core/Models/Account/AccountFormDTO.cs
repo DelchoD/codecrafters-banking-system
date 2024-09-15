@@ -2,8 +2,8 @@
 
 namespace BankingManagementSystem.Core.Models.Account
 {
-    using static BankingManagementSystem.Core.Constants.ErrorMessages;
-    using static BankingManagementSystem.Core.Constants.ValidationConstants;
+    using static Constants.ErrorMessages;
+    using static Constants.ValidationConstants;
     public class AccountFormDto
     {
         [Required(ErrorMessage = RequireErrorMessage)]

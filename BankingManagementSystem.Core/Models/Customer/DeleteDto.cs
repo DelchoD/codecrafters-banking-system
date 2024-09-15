@@ -1,6 +1,6 @@
 ﻿namespace BankingManagementSystem.Core.Models.Customer
 {
-    public class CustomerDeleteDTO
+    public class DeleteDto
     {
         public string Id { get; set; } = string.Empty;
 
@@ -10,7 +10,7 @@
 
         public string LastName { get; set; } = string.Empty;
 
-        public string PersonalIDNumber { get; set; } = string.Empty;
+        public string PersonalIdNumber { get; set; } = string.Empty;
 
     }
 }

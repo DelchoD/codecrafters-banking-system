@@ -18,10 +18,10 @@
 
         public string CustomerId { get; set; } = string.Empty;
 
-        public ICollection<TransactionDetailsDTO> TransactionsFrom { get; set; } 
-            = new List<TransactionDetailsDTO>();
+        public ICollection<TransactionDetailsDto> TransactionsFrom { get; set; } 
+            = new List<TransactionDetailsDto>();
 
-        public ICollection<TransactionDetailsDTO> TransactionsTo { get; set; } 
-            = new List<TransactionDetailsDTO>();
+        public ICollection<TransactionDetailsDto> TransactionsTo { get; set; } 
+            = new List<TransactionDetailsDto>();
     }
 }

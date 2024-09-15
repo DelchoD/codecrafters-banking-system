@@ -3,19 +3,20 @@
     public static class ValidationConstants
     {
         //Customer
-        public const int CustomerFirstNameMinLength = 2;
-        public const int CustomerFirstNameMaxLength = 50;
-        public const int CustomerMiddleNameMinLength = 2;
-        public const int CustomerMiddleNameMaxLength = 50;
-        public const int CustomerLastNameMinLength = 2;
-        public const int CustomerLastNameMaxLength = 50;
-        public const int CustomerIdNumberMinLength = 10;
-        public const int CustomerIdNumberMaxLength = 10;
-        public const int CustomerAddressMinLength = 10;
-        public const int CustomerAddressMaxLength = 300;
-        public const int CustomerPhoneMaxLength = 10;
-        public const int CustomerPhoneMinLength = 3;
-        public const int CustomerPasswordMinLength = 6;
+        public const int FirstNameMinLength = 2;
+        public const int FirstNameMaxLength = 50;
+        public const int MiddleNameMinLength = 2;
+        public const int MiddleNameMaxLength = 50;
+        public const int LastNameMinLength = 2;
+        public const int LastNameMaxLength = 50;
+        public const int IdNumberMinLength = 10;
+        public const int AddressMinLength = 10;
+        public const int AddressMaxLength = 300;
+        public const int PhoneMaxLength = 10;
+        public const int PhoneMinLength = 3;
+        public const int PasswordMinLength = 6;
+        public const int IdNumberMaxLength = 10;
+
 
 
         //Account
