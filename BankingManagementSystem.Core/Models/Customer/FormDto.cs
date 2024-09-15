@@ -2,23 +2,23 @@
 
 namespace BankingManagementSystem.Core.Models.Customer
 {
-    using static BankingManagementSystem.Core.Constants.ErrorMessages;
-    using static BankingManagementSystem.Core.Constants.ValidationConstants;
-    public class CustomerFormDTO
+    using static Constants.ErrorMessages;
+    using static Constants.ValidationConstants;
+    public class FormDto
     {
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-            CustomerFirstNameMaxLength,
-            MinimumLength = CustomerFirstNameMinLength,
+            FirstNameMaxLength,
+            MinimumLength = FirstNameMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-           CustomerMiddleNameMaxLength,
-           MinimumLength = CustomerMiddleNameMinLength,
+           MiddleNameMaxLength,
+           MinimumLength = MiddleNameMinLength,
            ErrorMessage = StringLengthErrorMessage
         )]
         public string MiddleName { get; set; } = string.Empty;
@@ -26,8 +26,8 @@ namespace BankingManagementSystem.Core.Models.Customer
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-                  CustomerLastNameMaxLength,
-                  MinimumLength = CustomerLastNameMinLength,
+                  LastNameMaxLength,
+                  MinimumLength = LastNameMinLength,
                   ErrorMessage = StringLengthErrorMessage
         )]
         public string LastName { get; set; } = string.Empty;
@@ -41,21 +41,21 @@ namespace BankingManagementSystem.Core.Models.Customer
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-            CustomerPhoneMaxLength,
-            MinimumLength = CustomerPhoneMinLength,
+            PhoneMaxLength,
+            MinimumLength = PhoneMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string PhoneNumber { get; set; } = string.Empty;
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        [MinLength(CustomerPasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
+        [MinLength(PasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
         public string Password { get; set; } = string.Empty;
 
 
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        [MinLength(CustomerIdNumberMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
+        [MinLength(IdNumberMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
         public string PersonalIDNumber { get; set; } = string.Empty;
 
 
@@ -64,8 +64,8 @@ namespace BankingManagementSystem.Core.Models.Customer
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-           CustomerAddressMaxLength,
-           MinimumLength = CustomerAddressMinLength,
+           AddressMaxLength,
+           MinimumLength = AddressMinLength,
            ErrorMessage = StringLengthErrorMessage
         )]
         public string Address { get; set; } = string.Empty;

@@ -10,20 +10,20 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Customer : IdentityUser
     {
         [Required]
-        [MaxLength(CustomerFirstNameMaxLength)]
+        [MaxLength(FirstNameMaxLength)]
         public string FirstName { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(CustomerMiddleNameMaxLength)]
+        [MaxLength(MiddleNameMaxLength)]
         public string MiddleName { get; set; } = string.Empty;
 
 
         [Required]
-        [MaxLength(CustomerLastNameMaxLength)]
+        [MaxLength(LastNameMaxLength)]
         public string LastName { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(CustomerIdNumberMaxLength)]
+        [MaxLength(IdNumberMaxLength)]
         public string PersonalIdNumber { get; set; } = string.Empty;
 
         [Required]
@@ -31,14 +31,14 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public override string Email { get; set; } = string.Empty;
 
         [Required]
-        [MinLength(CustomerPasswordMinLength)]
+        [MinLength(PasswordMinLength)]
         public string Password { get; set; } = string.Empty;
 
         [Required]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        [MaxLength(CustomerAddressMaxLength)]
+        [MaxLength(AddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
         public ICollection<Account> Accounts { get; set; }

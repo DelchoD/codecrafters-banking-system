@@ -11,7 +11,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString(); 
 
         [Required]
-        [MaxLength(AccountIBANMaxLength)]
+        [MaxLength(AccountIbanMaxLength)]
         public string Iban { get; set; } = string.Empty;
 
         [Required]

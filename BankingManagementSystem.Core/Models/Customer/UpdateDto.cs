@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankingManagementSystem.Core.Models.User
+namespace BankingManagementSystem.Core.Models.Customer
 {
-    using static BankingManagementSystem.Core.Constants.ErrorMessages;
-    using static BankingManagementSystem.Core.Constants.ValidationConstants;
+    using static Constants.ErrorMessages;
+    using static Constants.ValidationConstants;
 
-    public class CustomerUpdateDTO
+    public class UpdateDto
     {
         [Required(ErrorMessage = RequireErrorMessage)]
         [EmailAddress(ErrorMessage = InvalidFormatErrorMessage)]
@@ -14,8 +14,8 @@ namespace BankingManagementSystem.Core.Models.User
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
-            CustomerPhoneMaxLength,
-            MinimumLength = CustomerPhoneMinLength,
+            PhoneMaxLength,
+            MinimumLength = PhoneMinLength,
             ErrorMessage = StringLengthErrorMessage
          )]
         public string PhoneNumber { get; set; } = string.Empty;
@@ -23,7 +23,7 @@ namespace BankingManagementSystem.Core.Models.User
         public string Address { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequireErrorMessage)]
-        [MinLength(CustomerPasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
+        [MinLength(PasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
         public string Password { get; set; } = string.Empty;
     }
 }

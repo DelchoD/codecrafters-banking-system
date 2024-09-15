@@ -1,53 +1,59 @@
 ﻿using BankingManagementSystem.Core.Models.Customer;
-using BankingManagementSystem.Core.Models.User;
-using BankingManagementSystem.Core.Services;
-using Microsoft.AspNetCore.Mvc;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Utils;
 
-[ApiController]
-[Route("api/customers")]
-public class CustomerController : ControllerBase
+namespace BankingManagementSystem.Controllers
 {
-    private readonly CustomerService _customerService;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
 
-    public CustomerController(CustomerService customerService)
+    [ApiController]
+    [Route("api/customers")]
+    public class CustomerController : ControllerBase
     {
-        _customerService = customerService;
-    }
+        private readonly ICustomerService _customerService;
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerAllDTO>> GetCustomerById(string id)
-    {
-        var customer = await _customerService.GetCustomerDTOById(id);
-        if (customer == null) return NotFound();
-        return Ok(customer);
-    }
+        public CustomerController(ICustomerService customerService)
+        {
+            _customerService = customerService;
+        }
 
-    [HttpGet]
-    public async Task<ActionResult<List<CustomerAllDTO>>> GetAllCustomers()
-    {
-        var customers = await _customerService.GetAllCustomers();
-        return Ok(customers);
-    }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AllDto>> GetCustomerById(string id)
+        {
+            var customer = await _customerService.GetCustomerById(id);
+            if (customer == null) return NotFound();
 
-    [HttpPost]
-    public async Task<ActionResult<CustomerAllDTO>> CreateCustomer([FromBody] CustomerFormDTO dto)
-    {
-        var customerAllDTO = await _customerService.RegisterCustomer(dto);
-        return CreatedAtAction(nameof(GetCustomerById), new { id = customerAllDTO.Id}, customerAllDTO);
-    }
+            return Ok(EntityMappers.ToCustomerAllDto(customer));
+        }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<CustomerAllDTO>> UpdateCustomer(string id, [FromBody] CustomerUpdateDTO dto)
-    {
-        await _customerService.UpdateCustomerProfile(id, dto);
-        var updatedCustomerDTO = await _customerService.GetCustomerDTOById(id);
-        return Ok(updatedCustomerDTO);
-    }
+        [HttpGet]
+        public async Task<ActionResult<List<AllDto>>> GetAllCustomers()
+        {
+            var customers = await _customerService.GetAllCustomers();
+            return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
+        }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteCustomer(string id)
-    {
-        await _customerService.DeleteCustomer(id);
-        return NoContent();
+        [HttpPost]
+        public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
+        {
+            var customer = await _customerService.RegisterCustomer(dto);
+            var customerDto = EntityMappers.ToCustomerAllDto(customer);
+            return CreatedAtAction(nameof(GetCustomerById), new { id = customerDto.Id }, customerDto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<AllDto>> UpdateCustomer(string id, [FromBody] UpdateDto dto)
+        {
+            var updateCustomerProfile = await _customerService.UpdateCustomerProfile(id, dto);
+            return Ok(EntityMappers.ToCustomerAllDto(updateCustomerProfile));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCustomer(string id)
+        {
+            await _customerService.DeleteCustomer(id);
+            return NoContent();
+        }
     }
 }

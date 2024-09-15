@@ -32,7 +32,7 @@ namespace BankingManagementSystem.Core.Services
         public async Task<List<Account>> GetAllAccountsAsync()
         {
             return await _context.Accounts.ToListAsync();
-        }   
+        }
 
         public async Task<Account> CreateAccountAsync(AccountCreateDto dto, string customerId)
         {
@@ -45,7 +45,7 @@ namespace BankingManagementSystem.Core.Services
                 Iban = dto.Iban,
                 Name = dto.Name,
                 Balance = dto.Balance,
-                CustomerId = customerId.ToString(),
+                CustomerId = customerId,
                 Customer = customer,
                 TransactionsFrom = new List<Transaction>(),
                 TransactionsTo = new List<Transaction>()

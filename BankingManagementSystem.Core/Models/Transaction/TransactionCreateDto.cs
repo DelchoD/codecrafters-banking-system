@@ -3,11 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankingManagementSystem.Core.Models.Transaction
 {
-    using static BankingManagementSystem.Core.Constants.ErrorMessages;
-    using static BankingManagementSystem.Core.Constants.ValidationConstants;
-
-
-    public class TransactionCreateDTO
+    using static Constants.ErrorMessages;
+    using static Constants.ValidationConstants;
+    
+    public class TransactionCreateDto
     {
 
         [Required]

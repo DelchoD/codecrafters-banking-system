@@ -1,9 +1,9 @@
 ﻿using BankingManagementSystem.Core.Models.Account;
 
-namespace BankingManagementSystem.Core.Models.User
+namespace BankingManagementSystem.Core.Models.Customer
 {
 
-    public class CustomerAllDTO
+    public class AllDto
     {
         public string Id { get; set; } = string.Empty;
 
@@ -15,7 +15,7 @@ namespace BankingManagementSystem.Core.Models.User
 
         public string Email { get; set; } = string.Empty;
 
-        public string PersonalIDNumber { get; set; } = string.Empty;
+        public string PersonalIdNumber { get; set; } = string.Empty;
 
         public ICollection<AccountDetailsDto> Accounts { get; set; }
          = new List<AccountDetailsDto>();
