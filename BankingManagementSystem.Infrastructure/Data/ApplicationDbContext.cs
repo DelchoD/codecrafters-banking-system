@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<Customer>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
