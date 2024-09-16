@@ -11,7 +11,6 @@ namespace BankingManagementSystem.Infrastructure.Data
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
             DbPath = Path.Join(path, "BankingManagementSystem.db");
-
         }
 
 
