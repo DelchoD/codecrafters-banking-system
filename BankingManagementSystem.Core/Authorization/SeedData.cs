@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BankingManagementSystem.Core.Authorization
 {
-    public class DatabaseSeeder
+    public class SeedData
     {
         public static async Task Initialize(IServiceProvider serviceProvider)
         {

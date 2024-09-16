@@ -32,7 +32,7 @@ async Task InitializeDatabase(IServiceProvider services)
 {
     using var scope = services.CreateScope();
     var scopedServices = scope.ServiceProvider;
-    await DatabaseSeeder.Initialize(scopedServices);
+    await SeedData.Initialize(scopedServices);
 }
 
 var builder = WebApplication.CreateBuilder(args);
@@ -93,10 +93,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
