@@ -27,30 +27,33 @@ namespace BankingManagementSystem.Core.Services
 
         // CREATE AND UPDATE
 
-        public async Task<Transaction> ProcessTransaction(TransactionCreateDTO transactionCreateDTO)
+        public async Task<Transaction> ProcessTransaction(TransactionCreateDto transactionCreateDto)
         {
-            if (transactionCreateDTO == null)
-                throw new ArgumentNullException(nameof(transactionCreateDTO));
+            if (transactionCreateDto == null)
+                throw new ArgumentNullException(nameof(transactionCreateDto));
 
-            var accountFrom = await _accountService.GetAccountByIbanAsync(transactionCreateDTO.IBANFrom.Iban);
-            var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDTO.IBANTo.Iban);
+            var accountFrom = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IBANFrom.Iban);
+            var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IBANTo.Iban);
 
             if (accountFrom == null)
-                throw new KeyNotFoundException($"Source account with IBAN '{transactionCreateDTO.IBANFrom.Iban}' was not found.");
+                throw new KeyNotFoundException(
+                    $"Source account with IBAN '{transactionCreateDto.IBANFrom.Iban}' was not found.");
 
             if (accountTo == null)
-                throw new KeyNotFoundException($"Destination account with IBAN '{transactionCreateDTO.IBANTo.Iban}' was not found.");
+                throw new KeyNotFoundException(
+                    $"Destination account with IBAN '{transactionCreateDto.IBANTo.Iban}' was not found.");
 
-            if (accountFrom.Balance < transactionCreateDTO.TotalAmount)
-                throw new InvalidOperationException($"Insufficient funds in source account with IBAN '{transactionCreateDTO.IBANFrom.Iban}'.");
+            if (accountFrom.Balance < transactionCreateDto.TotalAmount)
+                throw new InvalidOperationException(
+                    $"Insufficient funds in source account with IBAN '{transactionCreateDto.IBANFrom.Iban}'.");
 
             var transaction = new Transaction
             {
-                Date = transactionCreateDTO.Date,
-                TotalAmount = transactionCreateDTO.TotalAmount,
-                Reason = transactionCreateDTO.Reason,
-                IBANFromId = transactionCreateDTO.IBANFrom.Iban,
-                IBANToId = transactionCreateDTO.IBANTo.Iban
+                Date = transactionCreateDto.Date,
+                TotalAmount = transactionCreateDto.TotalAmount,
+                Reason = transactionCreateDto.Reason,
+                IBANFromId = transactionCreateDto.IBANFrom.Iban,
+                IBANToId = transactionCreateDto.IBANTo.Iban
             };
 
             accountFrom.Balance -= transaction.TotalAmount;
@@ -101,7 +104,8 @@ namespace BankingManagementSystem.Core.Services
             return transaction;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
+        public async Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate,
+            DateTime endDate)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
             if (account == null)
@@ -115,7 +119,8 @@ namespace BankingManagementSystem.Core.Services
             return filteredTransactions;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
+        public async Task<List<Transaction>> GetTransactionsByAmount(string accountId, decimal minAmount,
+            decimal maxAmount)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
             if (account == null)
@@ -127,7 +132,7 @@ namespace BankingManagementSystem.Core.Services
                     .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount))
                 .OrderByDescending(t => t.TotalAmount)
                 .ToList();
-            
+
             return filteredTransactions;
         }
 

@@ -1,12 +1,12 @@
 ﻿namespace BankingManagementSystem.Core.Services.Contracts
 {
     using BankingManagementSystem.Infrastructure.Data.Models;
-    using BankingManagementSystem.Core.Models.Transaction;
+    using Models.Transaction;
 
     public interface ITransactionService
     {
         Task<List<Transaction>> GetAllTransactionsAsync();
-        Task<Transaction> ProcessTransaction(TransactionCreateDTO transactionCreateDTO);
+        Task<Transaction> ProcessTransaction(TransactionCreateDto transactionCreateDto);
         Task<List<Transaction>> GetTransactionsByAccountId(string accountId);
         Task<Transaction> GetTransactionById(int transactionId);
         Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate);

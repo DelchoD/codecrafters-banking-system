@@ -5,13 +5,12 @@ namespace BankingManagementSystem.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "BankingManagementSystem.db");
-
+            DbPath = Path.Join(path, "BankingManagementSystem.db");
         }
 
 
@@ -21,21 +20,14 @@ namespace BankingManagementSystem.Infrastructure.Data
 
         public DbSet<Account> Accounts { get; set; }
 
-        public DbSet<Transaction> Transactions { get; set; } 
-
+        public DbSet<Transaction> Transactions { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={DbPath}"); 
+            optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
             base.OnConfiguring(optionsBuilder);
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-
     }
 }

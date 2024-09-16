@@ -1,10 +1,9 @@
 ﻿using BankingManagementSystem.Core.Models.Account;
-using BankingManagementSystem.Core.Services;
-using BankingManagementSystem.Infrastructure.Data.Models;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Utils;
 
 namespace BankingManagementSystem.Controllers
 {
-    using BankingManagementSystem.Core.Models.Transaction;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
 
@@ -12,10 +11,9 @@ namespace BankingManagementSystem.Controllers
     [Route("api/accounts")]
     public class AccountController : ControllerBase
     {
+        private readonly IAccountService _accountService;
 
-        private readonly AccountService _accountService;
-
-        public AccountController(AccountService accountService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
         }
@@ -27,7 +25,7 @@ namespace BankingManagementSystem.Controllers
             if (account is null)
                 return NotFound();
 
-            var accountDetails = MapAccountToDetailsDto(account);
+            var accountDetails = EntityMappers.MapAccountToDetailsDto(account);
             return Ok(accountDetails);
         }
 
@@ -35,7 +33,7 @@ namespace BankingManagementSystem.Controllers
         public async Task<ActionResult<List<AccountDetailsDto>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
-            var accountDetails = accounts.Select(MapAccountToDetailsDto).ToList();
+            var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto).ToList();
             return Ok(accountDetails);
         }
 
@@ -44,33 +42,6 @@ namespace BankingManagementSystem.Controllers
         {
             await _accountService.CloseAccountAsync(id);
             return NoContent();
-        }
-
-        public static AccountDetailsDto MapAccountToDetailsDto(Account account)
-        {
-            return new AccountDetailsDto
-            {
-                AccountId = account.Id,
-                Name = account.Name,
-                Iban = account.Iban,
-                Balance = account.Balance,
-                CustomerId = account.CustomerId,
-                TransactionsFrom = account.TransactionsFrom.Select(MapTransactionToAllDto).ToList(),
-                TransactionsTo = account.TransactionsTo.Select(MapTransactionToAllDto).ToList()
-            };
-        }
-
-        public static TransactionDetailsDTO MapTransactionToAllDto(Transaction transaction)
-        {
-            return new TransactionDetailsDTO
-            {
-                Id = transaction.Id,
-                TotalAmount = transaction.TotalAmount,
-                Date = transaction.Date,
-                IbanFrom = transaction.IBANFrom.Iban,
-                IbanTo = transaction.IBANTo.Iban,
-                Reason = transaction.Reason
-            };
         }
     }
 }

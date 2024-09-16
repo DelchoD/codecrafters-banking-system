@@ -3,7 +3,7 @@ using BankingManagementSystem.Core.Models.Account;
 
 namespace BankingManagementSystem.Core.Models.Transaction
 {
-    public class TransactionAllDTO
+    public class TransactionAllDto
     {
         public int Id { get; set; }
 
