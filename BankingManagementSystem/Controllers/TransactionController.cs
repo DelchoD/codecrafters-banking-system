@@ -18,6 +18,7 @@ namespace BankingManagementSystem.Controllers
 
         // POST: api/transaction
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction(
             [FromBody] TransactionCreateDto transactionCreateDto)
         {
@@ -35,6 +36,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/{id}
         [HttpGet("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<TransactionDetailsDto>> GetTransaction(int id)
         {
             var transaction = await _transactionService.GetTransactionById(id);
@@ -46,6 +48,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-account/{accountId}
         [HttpGet("by-account/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<List<TransactionDetailsDto>>> GetTransactionsByAccountId(string accountId)
         {
             var transactions = await _transactionService.GetTransactionsByAccountId(accountId);
@@ -56,6 +59,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetAllTransactions()
         {
             var transactions = await _transactionService.GetAllTransactionsAsync();
@@ -67,6 +71,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByDate(string accountId,
             DateTime startDate, DateTime endDate)
         {
@@ -79,6 +84,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByAmount(string accountId,
             decimal minAmount, decimal maxAmount)
         {
@@ -91,6 +97,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/outgoing/{accountId}
         [HttpGet("outgoing/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetOutgoingTransactions(string accountId)
         {
             var transactions = await _transactionService.GetOutgoingTransactions(accountId);
@@ -102,6 +109,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/incoming/{accountId}
         [HttpGet("incoming/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetIncomingTransactions(string accountId)
         {
             var transactions = await _transactionService.GetIncomingTransactions(accountId);
@@ -113,6 +121,7 @@ namespace BankingManagementSystem.Controllers
 
         // DELETE: api/transaction/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var isCancelled = await _transactionService.CancelTransaction(id);

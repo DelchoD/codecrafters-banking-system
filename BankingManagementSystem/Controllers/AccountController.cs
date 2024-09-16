@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingManagementSystem.Controllers
 {
-
     [ApiController]
     [Route("api/accounts")]
     public class AccountController : ControllerBase
@@ -18,6 +17,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<AccountDetailsDto>> GetAccountById(string id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
@@ -29,6 +29,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<AccountDetailsDto>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
@@ -37,6 +38,7 @@ namespace BankingManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult> DeleteAccount(string id)
         {
             await _accountService.CloseAccountAsync(id);

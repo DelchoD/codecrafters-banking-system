@@ -24,6 +24,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpGet("{id}")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult<AllDto>> GetCustomerById(string id)
             {
                 var customer = await _customerService.GetCustomerById(id);
@@ -33,6 +34,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpGet]
+            [Authorize(Roles = "Admin")]
             public async Task<ActionResult<List<AllDto>>> GetAllCustomers()
             {
                 var customers = await _customerService.GetAllCustomers();
@@ -40,6 +42,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpPost("{id}/createaccount")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
             {
                 var account = await _accountService.CreateAccountAsync(dto, customerId);
@@ -48,6 +51,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpPost]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
             {
                 var customer = await _customerService.RegisterCustomer(dto);
@@ -63,6 +67,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpDelete("{id}")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult> DeleteCustomer(string id)
             {
                 await _customerService.DeleteCustomer(id);
