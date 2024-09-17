@@ -8,5 +8,10 @@ namespace BankingManagementSystem.Repositories
         public AccountRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public async Task<Account> FirstOrDefaultAsync(Func<object, bool> func)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

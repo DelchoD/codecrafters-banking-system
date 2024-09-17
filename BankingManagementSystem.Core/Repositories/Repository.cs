@@ -43,5 +43,11 @@ namespace BankingManagementSystem.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public Task<T> FirstOrDefaultAsync(Func<object, bool> func)
+        {
+            //TODO: Implement this method
+            return new Task<T>();
+        }
     }
 }
