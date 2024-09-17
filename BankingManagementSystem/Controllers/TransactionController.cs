@@ -30,7 +30,7 @@ namespace BankingManagementSystem.Controllers
 
             var transactionDto = EntityMappers.ToTransactionDto(createdTransaction);
 
-            return CreatedAtAction(nameof(GetTransaction), new { id = transactionDto.Id }, transactionDto);
+            return Ok(transactionDto);
         }
 
         // GET: api/transaction/{id}
