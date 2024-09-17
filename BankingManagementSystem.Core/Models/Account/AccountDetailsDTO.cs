@@ -12,8 +12,6 @@
 
         public decimal Balance { get; set; }
 
-        public string CustomerId { get; set; } = string.Empty;
-
         public ICollection<TransactionDetailsDto> TransactionsFrom { get; set; } 
             = new List<TransactionDetailsDto>();
 
