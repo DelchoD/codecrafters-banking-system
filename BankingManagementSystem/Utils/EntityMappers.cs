@@ -15,7 +15,6 @@ public static class EntityMappers
             Name = account.Name,
             Iban = account.Iban,
             Balance = account.Balance,
-            CustomerId = account.CustomerId,
             TransactionsFrom = account.TransactionsFrom.Select(MapTransactionToAllDto).ToList(),
             TransactionsTo = account.TransactionsTo.Select(MapTransactionToAllDto).ToList()
         };
@@ -88,7 +87,6 @@ public static class EntityMappers
                 Name = account.Name,
                 Iban = account.Iban,
                 Balance = account.Balance,
-                CustomerId = account.CustomerId,
                 TransactionsFrom = account.TransactionsFrom.Select(MapTransactionsToDetailsDto).ToList(),
                 TransactionsTo = account.TransactionsTo.Select(MapTransactionsToDetailsDto).ToList()
             }).ToList(),

@@ -1,15 +1,10 @@
-﻿using BankingManagementSystem.Infrastructure.Data.Models;
-using BankingManagementSystem.Utils;
+﻿using BankingManagementSystem.Utils;
+using BankingManagementSystem.Core.Models.Transaction;
+using Microsoft.AspNetCore.Mvc;
+using BankingManagementSystem.Core.Services.Contracts;
 
 namespace BankingManagementSystem.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Core.Services.Contracts;
-    using BankingManagementSystem.Core.Models.Transaction;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
     [Route("api/transactions")]
     [ApiController]
     public class TransactionController : ControllerBase

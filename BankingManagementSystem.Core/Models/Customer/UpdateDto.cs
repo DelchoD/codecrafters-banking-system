@@ -11,7 +11,6 @@ namespace BankingManagementSystem.Core.Models.Customer
         [EmailAddress(ErrorMessage = InvalidFormatErrorMessage)]
         public string Email { get; set; } = string.Empty;
 
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
             PhoneMaxLength,

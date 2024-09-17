@@ -1,12 +1,11 @@
 using BankingManagementSystem.Core.Models.Account;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Core.Services
 {
-    using Contracts;
-    using Infrastructure.Data;
-
     public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext _context;

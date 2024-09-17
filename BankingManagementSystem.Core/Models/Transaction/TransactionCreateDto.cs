@@ -8,14 +8,11 @@ namespace BankingManagementSystem.Core.Models.Transaction
     
     public class TransactionCreateDto
     {
-
         [Required]
         public DateTime Date { get; set; }
 
-
         [Required(ErrorMessage = RequireErrorMessage)]
         public decimal TotalAmount { get; set; }
-
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
@@ -28,11 +25,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
         [Required]
         public AccountTransactionDto IBANFrom { get; set; } = null!;
 
-
         [Required]
         public AccountTransactionDto IBANTo { get; set; } = null!;
-
-        
-
     }
 }
