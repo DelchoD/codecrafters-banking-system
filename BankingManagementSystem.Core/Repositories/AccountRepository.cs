@@ -1,6 +1,5 @@
 ﻿using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
-using BankingManagementSystem.Repositories;
 
 namespace BankingManagementSystem.Core.Repositories
 {
