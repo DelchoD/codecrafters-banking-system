@@ -1,7 +1,7 @@
 ﻿using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 
-namespace BankingManagementSystem.Repositories
+namespace BankingManagementSystem.Core.Repositories
 {
     public class CustomerRepository : Repository<Customer>
     {
