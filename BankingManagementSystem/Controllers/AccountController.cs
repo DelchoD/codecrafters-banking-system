@@ -1,11 +1,10 @@
 ﻿using BankingManagementSystem.Core.Models.Account;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BankingManagementSystem.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
 
     [ApiController]
     [Route("api/accounts")]
@@ -18,7 +17,7 @@ namespace BankingManagementSystem.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<AccountDetailsDto>> GetAccountById(string id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
@@ -37,7 +36,7 @@ namespace BankingManagementSystem.Controllers
             return Ok(accountDetails);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> DeleteAccount(string id)
         {
             await _accountService.CloseAccountAsync(id);

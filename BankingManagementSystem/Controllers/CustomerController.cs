@@ -1,12 +1,10 @@
 ﻿using BankingManagementSystem.Core.Models.Customer;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BankingManagementSystem.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-
     [ApiController]
     [Route("api/customers")]
     public class CustomerController : ControllerBase

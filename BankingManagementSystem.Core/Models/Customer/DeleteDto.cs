@@ -11,6 +11,5 @@
         public string LastName { get; set; } = string.Empty;
 
         public string PersonalIdNumber { get; set; } = string.Empty;
-
     }
 }

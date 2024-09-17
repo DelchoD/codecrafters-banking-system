@@ -4,9 +4,9 @@ namespace BankingManagementSystem.Core.Models.Customer
 {
     using static Constants.ErrorMessages;
     using static Constants.ValidationConstants;
+
     public class FormDto
     {
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
             FirstNameMaxLength,
@@ -23,7 +23,6 @@ namespace BankingManagementSystem.Core.Models.Customer
         )]
         public string MiddleName { get; set; } = string.Empty;
 
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
                   LastNameMaxLength,
@@ -32,12 +31,9 @@ namespace BankingManagementSystem.Core.Models.Customer
         )]
         public string LastName { get; set; } = string.Empty;
 
-
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [EmailAddress(ErrorMessage = InvalidFormatErrorMessage)]
         public string Email { get; set; } = string.Empty;
-
 
         [Required(ErrorMessage = RequireErrorMessage)]
         [StringLength(
@@ -47,17 +43,13 @@ namespace BankingManagementSystem.Core.Models.Customer
          )]
         public string PhoneNumber { get; set; } = string.Empty;
 
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [MinLength(PasswordMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
         public string Password { get; set; } = string.Empty;
 
-
-
         [Required(ErrorMessage = RequireErrorMessage)]
         [MinLength(IdNumberMinLength, ErrorMessage = StringCountCharactersErrorMessage)]
         public string PersonalIDNumber { get; set; } = string.Empty;
-
 
         [Required(ErrorMessage = RequireErrorMessage)]
         public DateTime DateOfBirth { get; set; }
@@ -69,9 +61,5 @@ namespace BankingManagementSystem.Core.Models.Customer
            ErrorMessage = StringLengthErrorMessage
         )]
         public string Address { get; set; } = string.Empty;
-
-
-        public string? CreatorId { get; set; }
-
     }
 }

@@ -1,12 +1,11 @@
-﻿namespace BankingManagementSystem.Core.Services
+﻿using BankingManagementSystem.Core.Models.Customer;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Infrastructure.Data;
+using BankingManagementSystem.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace BankingManagementSystem.Core.Services
 {
-    using BankingManagementSystem.Infrastructure.Data.Models;
-    using Contracts;
-    using Infrastructure.Data;
-    using Microsoft.EntityFrameworkCore;
-    using Models.Customer;
-
-
     public class CustomerService : ICustomerService
     {
         private readonly ApplicationDbContext _context;
@@ -15,7 +14,6 @@
         {
             _context = context;
         }
-
 
         public async Task<Customer> RegisterCustomer(FormDto customerDto)
         {

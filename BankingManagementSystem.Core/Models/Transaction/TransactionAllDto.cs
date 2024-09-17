@@ -1,5 +1,4 @@
-﻿
-using BankingManagementSystem.Core.Models.Account;
+﻿using BankingManagementSystem.Core.Models.Account;
 
 namespace BankingManagementSystem.Core.Models.Transaction
 {
@@ -14,6 +13,5 @@ namespace BankingManagementSystem.Core.Models.Transaction
         public AccountTransactionDto IBANFrom { get; set; } = null!;
 
         public AccountTransactionDto IBANTo { get; set; } = null!;
-
     }
 }

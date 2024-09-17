@@ -2,7 +2,6 @@
 
 namespace BankingManagementSystem.Core.Models.Customer
 {
-
     public class AllDto
     {
         public string Id { get; set; } = string.Empty;

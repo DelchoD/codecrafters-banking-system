@@ -4,10 +4,6 @@
 
     public class AccountDetailsDto
     {
-        public string? CreatorId { get; set; }
-
-        public string? Creator { get; set; }
-
         public string AccountId { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;

@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace BankingManagementSystem.Infrastructure.Data.Models
 {
     using static Constants.ValidationConstants;
-
 
     public class Customer : IdentityUser
     {
@@ -16,7 +14,6 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [Required]
         [MaxLength(MiddleNameMaxLength)]
         public string MiddleName { get; set; } = string.Empty;
-
 
         [Required]
         [MaxLength(LastNameMaxLength)]

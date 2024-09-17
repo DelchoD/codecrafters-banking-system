@@ -18,7 +18,6 @@
         public const int IdNumberMaxLength = 10;
 
 
-
         //Account
         public const int AccountIbanMinLength = 5;
         public const int AccountIbanMaxLength = 34;

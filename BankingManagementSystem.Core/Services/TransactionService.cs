@@ -1,19 +1,11 @@
 ﻿using BankingManagementSystem.Infrastructure.Data;
-using BankingManagementSystem.Infrastructure.Data.Models;
-using BankingManagementSystem.Core.Models.Transaction;
-using BankingManagementSystem.Core.Models.Account;
 using Microsoft.EntityFrameworkCore;
+using BankingManagementSystem.Core.Models.Transaction;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Infrastructure.Data.Models;
 
 namespace BankingManagementSystem.Core.Services
 {
-    using Contracts;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using BankingManagementSystem.Infrastructure.Data.Models;
-    using BankingManagementSystem.Core.Models.Transaction;
-
     public class TransactionService : ITransactionService
     {
         private readonly ApplicationDbContext _context;
@@ -24,8 +16,6 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
             _accountService = accountService;
         }
-
-        // CREATE AND UPDATE
 
         public async Task<Transaction> ProcessTransaction(TransactionCreateDto transactionCreateDto)
         {
@@ -70,8 +60,6 @@ namespace BankingManagementSystem.Core.Services
 
             return transaction;
         }
-
-        // READ
 
         public async Task<List<Transaction>> GetAllTransactionsAsync()
         {
@@ -156,8 +144,10 @@ namespace BankingManagementSystem.Core.Services
             return account.TransactionsTo.ToList();
         }
 
-        /*DELETE (according to the Internet, a transaction can only be deleted if it is invalid or fraudulent,
-         * but in such a case, the funds are returned to the account that sent them)*/
+        /*
+         * according to the Internet, a transaction can only be deleted if it is invalid or fraudulent,
+         * but in such a case, the funds are returned to the account that sent them
+         */
         public async Task<bool> CancelTransaction(int transactionId)
         {
             var transaction = await _context.Transactions.FindAsync(transactionId);
