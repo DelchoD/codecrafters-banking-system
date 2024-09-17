@@ -1,6 +1,5 @@
 using BankingManagementSystem.Core.Models.Account;
 using BankingManagementSystem.Infrastructure.Data.Models;
-using BankingManagementSystem.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingManagementSystem.Core.Services
@@ -10,9 +9,9 @@ namespace BankingManagementSystem.Core.Services
 
     public class AccountService : IAccountService
     {
-        private readonly AccountRepository _context;
+        private readonly ApplicationDbContext _context;
 
-        public AccountService(AccountRepository context)
+        public AccountService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,7 +26,7 @@ namespace BankingManagementSystem.Core.Services
             if (iban is null)
                 throw new ArgumentNullException(nameof(iban));
 
-            return (await _context.FirstOrDefaultAsync(a => a.Iban == iban))!;
+            return (await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban))!;
         }
 
         public async Task<List<Account>> GetAllAccountsAsync()

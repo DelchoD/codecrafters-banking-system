@@ -1,19 +1,24 @@
-﻿namespace BankingManagementSystem.Repositories
+﻿using System.Linq.Expressions;
+
+namespace BankingManagementSystem.Core.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetByIdAsync(int id);
+        Task<T> FindAsync(int id);
+        
+        Task<T> FindAsync(string id);
 
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<List<T>> ToListAsync();
 
         Task AddAsync(T entity);
 
         void Update(T entity);
 
-        void Delete(T entity);
+        void Remove(T entity);
 
         Task SaveChangesAsync();
 
-        Task<T> FirstOrDefaultAsync(Func<object, bool> func);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+
     }
 }
