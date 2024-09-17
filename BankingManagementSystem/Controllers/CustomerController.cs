@@ -1,7 +1,12 @@
-﻿using BankingManagementSystem.Core.Models.Customer;
+﻿using BankingManagementSystem.Core.Models.Account;
+using BankingManagementSystem.Core.Models.Customer;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Utils;
-using Microsoft.AspNetCore.Mvc;
+
+namespace BankingManagementSystem.Controllers
+{
+    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
 
 namespace BankingManagementSystem.Controllers
 {
@@ -10,10 +15,12 @@ namespace BankingManagementSystem.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IAccountService _accountService;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IAccountService accountService)
         {
             _customerService = customerService;
+            _accountService = accountService;
         }
 
         [HttpGet("{id}")]
@@ -32,12 +39,20 @@ namespace BankingManagementSystem.Controllers
             return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
         }
 
+        [HttpPost("{id}/createaccount")]
+        public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
+        {
+            var account = await _accountService.CreateAccountAsync(dto, customerId);
+            var accountDto = EntityMappers.MapAccountToDetailsDto(account);
+            return Ok(accountDto);
+        }
+
         [HttpPost]
         public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
         {
             var customer = await _customerService.RegisterCustomer(dto);
             var customerDto = EntityMappers.ToCustomerAllDto(customer);
-            return CreatedAtAction(nameof(GetCustomerById), new { id = customerDto.Id }, customerDto);
+            return Ok(customerDto);
         }
 
         [HttpPut("{id}")]
