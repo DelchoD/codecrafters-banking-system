@@ -18,9 +18,11 @@ namespace BankingManagementSystem.Core.Services
         public async Task<Customer> RegisterCustomer(FormDto customerDto)
         {
             if (customerDto == null)
-            {
                 throw new ArgumentNullException(nameof(customerDto));
-            }
+
+            var existingCustomer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == customerDto.Email);
+            if (existingCustomer != null)
+                throw new InvalidOperationException("Email is already registered");
 
             try
             {
