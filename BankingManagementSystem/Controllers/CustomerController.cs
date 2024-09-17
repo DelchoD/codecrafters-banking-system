@@ -8,65 +8,66 @@ namespace BankingManagementSystem.Controllers
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
 
-namespace BankingManagementSystem.Controllers
-{
-    [ApiController]
-    [Route("api/customers")]
-    public class CustomerController : ControllerBase
+    namespace BankingManagementSystem.Controllers
     {
-        private readonly ICustomerService _customerService;
-        private readonly IAccountService _accountService;
-
-        public CustomerController(ICustomerService customerService, IAccountService accountService)
+        [ApiController]
+        [Route("api/customers")]
+        public class CustomerController : ControllerBase
         {
-            _customerService = customerService;
-            _accountService = accountService;
-        }
+            private readonly ICustomerService _customerService;
+            private readonly IAccountService _accountService;
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AllDto>> GetCustomerById(string id)
-        {
-            var customer = await _customerService.GetCustomerById(id);
-            if (customer == null) return NotFound();
+            public CustomerController(ICustomerService customerService, IAccountService accountService)
+            {
+                _customerService = customerService;
+                _accountService = accountService;
+            }
 
-            return Ok(EntityMappers.ToCustomerAllDto(customer));
-        }
+            [HttpGet("{id}")]
+            public async Task<ActionResult<AllDto>> GetCustomerById(string id)
+            {
+                var customer = await _customerService.GetCustomerById(id);
+                if (customer == null) return NotFound();
 
-        [HttpGet]
-        public async Task<ActionResult<List<AllDto>>> GetAllCustomers()
-        {
-            var customers = await _customerService.GetAllCustomers();
-            return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
-        }
+                return Ok(EntityMappers.ToCustomerAllDto(customer));
+            }
 
-        [HttpPost("{id}/createaccount")]
-        public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
-        {
-            var account = await _accountService.CreateAccountAsync(dto, customerId);
-            var accountDto = EntityMappers.MapAccountToDetailsDto(account);
-            return Ok(accountDto);
-        }
+            [HttpGet]
+            public async Task<ActionResult<List<AllDto>>> GetAllCustomers()
+            {
+                var customers = await _customerService.GetAllCustomers();
+                return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
+            }
 
-        [HttpPost]
-        public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
-        {
-            var customer = await _customerService.RegisterCustomer(dto);
-            var customerDto = EntityMappers.ToCustomerAllDto(customer);
-            return Ok(customerDto);
-        }
+            [HttpPost("{id}/createaccount")]
+            public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
+            {
+                var account = await _accountService.CreateAccountAsync(dto, customerId);
+                var accountDto = EntityMappers.MapAccountToDetailsDto(account);
+                return Ok(accountDto);
+            }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<AllDto>> UpdateCustomer(string id, [FromBody] UpdateDto dto)
-        {
-            var updateCustomerProfile = await _customerService.UpdateCustomerProfile(id, dto);
-            return Ok(EntityMappers.ToCustomerAllDto(updateCustomerProfile));
-        }
+            [HttpPost]
+            public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
+            {
+                var customer = await _customerService.RegisterCustomer(dto);
+                var customerDto = EntityMappers.ToCustomerAllDto(customer);
+                return Ok(customerDto);
+            }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteCustomer(string id)
-        {
-            await _customerService.DeleteCustomer(id);
-            return NoContent();
+            [HttpPut("{id}")]
+            public async Task<ActionResult<AllDto>> UpdateCustomer(string id, [FromBody] UpdateDto dto)
+            {
+                var updateCustomerProfile = await _customerService.UpdateCustomerProfile(id, dto);
+                return Ok(EntityMappers.ToCustomerAllDto(updateCustomerProfile));
+            }
+
+            [HttpDelete("{id}")]
+            public async Task<ActionResult> DeleteCustomer(string id)
+            {
+                await _customerService.DeleteCustomer(id);
+                return NoContent();
+            }
         }
     }
 }
