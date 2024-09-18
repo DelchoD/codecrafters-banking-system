@@ -29,5 +29,13 @@
         //Transaction
         public const int TransactionReasonMinLength = 5;
         public const int TransactionReasonMaxLength = 500;
+
+
+        //Loan Application
+        public const int LoanApplicationReasonMaxLength = 500;
+
+
+        //Risk assesment
+        public const int RiskAssesmentDetailsMaxLength = 300;
     }
 }
