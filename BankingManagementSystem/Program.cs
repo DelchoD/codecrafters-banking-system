@@ -85,7 +85,7 @@ appLifetime.ApplicationStopping.Register(() =>
     }
 });
 
-InitializeDatabase(app.Services);
+await InitializeDatabase(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
