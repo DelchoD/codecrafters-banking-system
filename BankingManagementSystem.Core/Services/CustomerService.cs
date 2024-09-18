@@ -3,16 +3,17 @@ using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using BankingManagementSystem.Core.Repositories;
 
 namespace BankingManagementSystem.Core.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly CustomerRepository _customerRepository;
 
-        public CustomerService(ApplicationDbContext context)
+        public CustomerService(CustomerRepository customerRepository)
         {
-            _context = context;
+            _customerRepository = customerRepository;
         }
 
         public async Task<Customer> RegisterCustomer(FormDto customerDto)
@@ -35,8 +36,8 @@ namespace BankingManagementSystem.Core.Services
                     DateOfBirth = customerDto.DateOfBirth,
                     Address = customerDto.Address,
                 };
-                _context.Customers.Add(customer);
-                await _context.SaveChangesAsync();
+                _customerRepository.AddAsync(customer);
+                await _customerRepository.SaveChangesAsync();
 
                 return customer;
             }
@@ -50,7 +51,7 @@ namespace BankingManagementSystem.Core.Services
         {
             try
             {
-                var customer = await _context.Customers.FindAsync(customerId);
+                var customer = await _customerRepository.FindAsync(customerId);
                 if (customer == null)
                 {
                     throw new KeyNotFoundException("Customer not found");
@@ -89,8 +90,8 @@ namespace BankingManagementSystem.Core.Services
                     customer.Address = customerUpdates.Address;
                 }
 
-                _context.Customers.Update(customer);
-                await _context.SaveChangesAsync();
+                _customerRepository.Update(customer);
+                await _customerRepository.SaveChangesAsync();
 
                 return customer;
             }
@@ -105,8 +106,8 @@ namespace BankingManagementSystem.Core.Services
             try
             {
                 var customer = await GetCustomerById(customerId);
-                _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
+                _customerRepository.Remove(customer);
+                await _customerRepository.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
@@ -119,7 +120,7 @@ namespace BankingManagementSystem.Core.Services
         {
             try
             {
-                var customers = await _context.Customers.ToListAsync();
+                var customers = await _customerRepository.ToListAsync();
                 return customers;
             }
             catch (Exception ex)

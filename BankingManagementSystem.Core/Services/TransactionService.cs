@@ -3,18 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using BankingManagementSystem.Core.Models.Transaction;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Infrastructure.Data.Models;
+using BankingManagementSystem.Core.Repositories;
 
 namespace BankingManagementSystem.Core.Services
 {
     public class TransactionService : ITransactionService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly TransactionRepository _transactionRepository;
         private readonly IAccountService _accountService;
+        private readonly AccountRepository _accountRepository;
 
-        public TransactionService(ApplicationDbContext context, IAccountService accountService)
+        public TransactionService(TransactionRepository transactionRepository, IAccountService accountService, AccountRepository accountRepository)
         {
-            _context = context;
+            _transactionRepository = transactionRepository;
             _accountService = accountService;
+            _accountRepository = accountRepository;
         }
 
         public async Task<Transaction> ProcessTransaction(TransactionCreateDto transactionCreateDto)
@@ -52,11 +55,12 @@ namespace BankingManagementSystem.Core.Services
             accountFrom.TransactionsFrom.Add(transaction);
             accountTo.TransactionsTo.Add(transaction);
 
-            _context.Transactions.Add(transaction);
-            _context.Accounts.Update(accountFrom);
-            _context.Accounts.Update(accountTo);
+           
 
-            await _context.SaveChangesAsync();
+            await _transactionRepository.AddAsync(transaction);
+            _accountRepository.Update(accountFrom);
+            _accountRepository.Update(accountTo);
+            await _transactionRepository.SaveChangesAsync();
 
             return transaction;
         }
@@ -65,7 +69,7 @@ namespace BankingManagementSystem.Core.Services
         {
             try
             {
-                return await _context.Transactions.ToListAsync();
+                return await _transactionRepository.ToListAsync();
             }
             catch (DbUpdateException dbEx)
             {
@@ -85,7 +89,7 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<Transaction> GetTransactionById(int transactionId)
         {
-            var transaction = await _context.Transactions.FindAsync(transactionId);
+            var transaction = await _transactionRepository.FindAsync(transactionId);
             if (transaction == null)
                 throw new KeyNotFoundException($"Transaction with ID '{transactionId}' was not found.");
 
@@ -150,7 +154,7 @@ namespace BankingManagementSystem.Core.Services
          */
         public async Task<bool> CancelTransaction(int transactionId)
         {
-            var transaction = await _context.Transactions.FindAsync(transactionId);
+            var transaction = await _transactionRepository.FindAsync(transactionId);
 
             if (transaction == null)
                 return false;
@@ -163,8 +167,8 @@ namespace BankingManagementSystem.Core.Services
             if (accountTo != null)
                 accountTo.Balance -= transaction.TotalAmount;
 
-            _context.Transactions.Remove(transaction);
-            await _context.SaveChangesAsync();
+            _transactionRepository.Remove(transaction);
+            await _transactionRepository.SaveChangesAsync();
 
             return true;
         }
