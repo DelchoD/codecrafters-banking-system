@@ -3,7 +3,7 @@ using BankingManagementSystem.Infrastructure.Data.Models;
 using BankingManagementSystem.Core.Authorization;
 using BankingManagementSystem.Extensions;
 using Microsoft.AspNetCore.Identity;
-using BankingManagementSystem.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 void ConfigureServices(IServiceCollection services)
 {

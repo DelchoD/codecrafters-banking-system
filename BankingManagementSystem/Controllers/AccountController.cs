@@ -1,7 +1,6 @@
 ﻿using BankingManagementSystem.Core.Models.Account;
-using BankingManagementSystem.Core.Services;
-using BankingManagementSystem.Infrastructure.Data.Models;
-using BankingManagementSystem.Core.Models.Transaction;
+using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,7 +36,7 @@ namespace BankingManagementSystem.Controllers
         public async Task<ActionResult<List<AccountDetailsDto>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
-            var accountDetails = accounts.Select(MapAccountToDetailsDto).ToList();
+            var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto).ToList();
             if (accountDetails.Count == 0)
                 return NotFound("No accounts found.");
 

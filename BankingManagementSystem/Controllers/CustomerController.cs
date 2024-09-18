@@ -2,6 +2,7 @@
 using BankingManagementSystem.Core.Models.Customer;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankingManagementSystem.Controllers
 {

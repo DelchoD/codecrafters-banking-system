@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BankingManagementSystem.Core.Models.Transaction;
-using BankingManagementSystem.Core.Models.Account;
 using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BankingManagementSystem.Controllers
