@@ -36,7 +36,7 @@ namespace BankingManagementSystem.Controllers
             return Ok(accountDetails);
         }
 
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAccount(string id)
         {
             await _accountService.CloseAccountAsync(id);
