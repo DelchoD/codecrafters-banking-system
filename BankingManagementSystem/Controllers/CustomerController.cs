@@ -39,10 +39,10 @@ namespace BankingManagementSystem.Controllers
                 return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
             }
 
-            [HttpPost("{id}/createaccount")]
-            public async Task<ActionResult> CreateAccount(string id, [FromBody] AccountCreateDto dto)
+            [HttpPost("{customerId}/create-account")]
+            public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
             {
-                var account = await _accountService.CreateAccountAsync(dto, id);
+                var account = await _accountService.CreateAccountAsync(dto, customerId);
                 var accountDto = EntityMappers.MapAccountToDetailsDto(account);
                 return Ok(accountDto);
             }
