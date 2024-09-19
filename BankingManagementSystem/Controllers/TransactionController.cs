@@ -34,8 +34,8 @@ namespace BankingManagementSystem.Controllers
         }
 
         // GET: api/transaction/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionDetailsDto>> GetTransaction(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TransactionDetailsDto>> GetTransactionById(int id)
         {
             var transaction = await _transactionService.GetTransactionById(id);
 
