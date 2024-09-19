@@ -42,7 +42,7 @@ namespace BankingManagementSystem.Controllers
                 return Ok(customers.Select(EntityMappers.ToCustomerAllDto).ToList());
             }
 
-            [HttpPost("{id}/createaccount")]
+            [HttpPost("{customerId}/create-account")]
             [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
             {
