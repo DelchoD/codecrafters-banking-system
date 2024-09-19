@@ -18,6 +18,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(AccountNameMaxLength)]
+        [MinLength(AccountNameMinLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
