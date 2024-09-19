@@ -49,7 +49,6 @@ namespace BankingManagementSystem.Core.Services
                 Iban = dto.Iban,
                 Name = dto.Name,
                 Balance = dto.Balance,
-                Id = customerId,
                 Customer = customer,
                 TransactionsFrom = new List<Transaction>(),
                 TransactionsTo = new List<Transaction>()
