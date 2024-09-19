@@ -1,7 +1,6 @@
 using BankingManagementSystem.Core.Models.Account;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Infrastructure.Data;
-using BankingManagementSystem.Infrastructure.Data.Constants;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,10 +24,6 @@ namespace BankingManagementSystem.Core.Services
         {
             if (iban is null)
                 throw new ArgumentNullException(nameof(iban));
-            if (iban.Length > ValidationConstants.AccountIbanMaxLength)
-                throw new ArgumentException("IBAN can't be more than 34 characters long.");
-            if (iban.Length > ValidationConstants.AccountIbanMinLength)
-                throw new ArgumentException("IBAN can't be less than 15 characters short.");
 
             return (await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban))!;
         }

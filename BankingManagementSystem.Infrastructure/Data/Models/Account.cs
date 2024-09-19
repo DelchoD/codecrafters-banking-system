@@ -13,6 +13,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(AccountIbanMaxLength)]
+        [MinLength(AccountIbanMinLength)]
         public string Iban { get; set; } = string.Empty;
 
         [Required]
@@ -29,10 +30,8 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [ForeignKey(nameof(CustomerId))]
         public Customer Customer { get; set; } = null!;
 
-        public List<Transaction> TransactionsFrom { get; set; }
-            = new List<Transaction>();
+        public List<Transaction> TransactionsFrom { get; set; } = new();
 
-        public List<Transaction> TransactionsTo { get; set; }
-         = new List<Transaction>();
+        public List<Transaction> TransactionsTo { get; set; } = new();
     }
 }
