@@ -28,6 +28,16 @@ namespace BankingManagementSystem.Controllers
             return Ok(accountDetails);
         }
 
+        [HttpGet("customer/{customerId}")]
+        public async Task<ActionResult<AccountDetailsDto>> GetAccountByCustomerId(string customerId)
+        {
+            var customer = await _customerService.GetCustomerById(customerId);
+            var accounts = _accountService.GetCustomerAccounts(customer);
+            var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto);
+
+            return Ok(accountDetails);
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<AccountDetailsDto>>> GetAllAccounts()
         {

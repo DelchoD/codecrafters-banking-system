@@ -5,6 +5,8 @@ namespace BankingManagementSystem.Core.Services.Contracts
 {
     public interface IAccountService
     {
+        List<Account> GetCustomerAccounts(Customer customer);
+
         Task<List<Account>> GetAllAccountsAsync();
 
         Task<bool> CloseAccountAsync(string accountId);

@@ -15,6 +15,11 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
         }
 
+        public List<Account> GetCustomerAccounts(Customer customer)
+        {
+            return customer.Accounts.ToList();
+        }
+
         public async Task<Account> GetAccountByIbanAsync(string iban)
         {
             if (iban is null)
