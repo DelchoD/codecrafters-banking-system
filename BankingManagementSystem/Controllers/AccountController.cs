@@ -11,12 +11,10 @@ namespace BankingManagementSystem.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private readonly ICustomerService _customerService;
 
-        public AccountController(IAccountService accountService, ICustomerService customerService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
-            _customerService = customerService;
         }
 
         [HttpGet("{id}")]
