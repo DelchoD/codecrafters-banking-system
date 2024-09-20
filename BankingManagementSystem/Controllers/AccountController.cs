@@ -31,8 +31,7 @@ namespace BankingManagementSystem.Controllers
         [HttpGet("customer/{customerId}")]
         public async Task<ActionResult<AccountDetailsDto>> GetAccountByCustomerId(string customerId)
         {
-            var customer = await _customerService.GetCustomerById(customerId);
-            var accounts = _accountService.GetCustomerAccounts(customer);
+            var accounts = await _accountService.GetCustomerAccounts(customerId);
             var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto);
 
             return Ok(accountDetails);

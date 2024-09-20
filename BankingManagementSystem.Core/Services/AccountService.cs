@@ -15,8 +15,15 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
         }
 
-        public List<Account> GetCustomerAccounts(Customer customer)
+        public async Task<List<Account>> GetCustomerAccounts(string customerId)
         {
+            var customer = await _context.Customers
+                .Include(c => c.Accounts)
+                .FirstOrDefaultAsync(c => c.Id == customerId);
+
+            if (customer is null)
+                throw new KeyNotFoundException($"Customer with ID: {customerId} not found.");
+
             return customer.Accounts.ToList();
         }
 
