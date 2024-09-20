@@ -5,15 +5,13 @@ namespace BankingManagementSystem.Core.Services.Contracts
 {
     public interface IAccountService
     {
-        List<Account> GetCustomerAccounts(Customer customer);
-
         Task<List<Account>> GetAllAccountsAsync();
 
         Task<bool> CloseAccountAsync(string accountId);
 
         Task<Account> UpdateAccountBalance(string accountId, decimal newBalance);
 
-        Task<Account?> GetAccountByIdAsync(string accountId);
+        Task<Account> GetAccountByIdAsync(string accountId);
 
         Task<Account> CreateAccountAsync(AccountCreateDto dto, string customerId);
       

@@ -18,8 +18,7 @@ namespace BankingManagementSystem.Core.Models.Transaction
         [StringLength(
           TransactionReasonMaxLength,
           MinimumLength = TransactionReasonMinLength,
-          ErrorMessage = StringLengthErrorMessage
-       )]
+          ErrorMessage = StringLengthErrorMessage)]
         public string Reason { get; set; } = string.Empty;
 
         [Required]

@@ -25,17 +25,8 @@ namespace BankingManagementSystem.Core.Services
             var accountFrom = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IbanFrom);
             var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IbanTo);
 
-            if (accountFrom == null)
-                throw new KeyNotFoundException(
-                    $"Source account with IBAN '{transactionCreateDto.IbanTo}' was not found.");
-
-            if (accountTo == null)
-                throw new KeyNotFoundException(
-                    $"Destination account with IBAN '{transactionCreateDto.IbanTo}' was not found.");
-
             if (accountFrom.Balance < transactionCreateDto.TotalAmount)
-                throw new InvalidOperationException(
-                    $"Insufficient funds in source account with IBAN '{transactionCreateDto.IbanTo}'.");
+                throw new InvalidOperationException($"Insufficient funds in source account with IBAN '{transactionCreateDto.IbanTo}'.");
 
             var transaction = new Transaction
             {
@@ -77,9 +68,6 @@ namespace BankingManagementSystem.Core.Services
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
 
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-
             return account.TransactionsFrom.ToList();
         }
 
@@ -92,12 +80,9 @@ namespace BankingManagementSystem.Core.Services
             return transaction;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate,
-            DateTime endDate)
+        public async Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
 
             var filteredTransactions = account.TransactionsFrom
                 .Where(t => t.Date >= startDate && t.Date <= endDate)
@@ -107,12 +92,9 @@ namespace BankingManagementSystem.Core.Services
             return filteredTransactions;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAmount(string accountId, decimal minAmount,
-            decimal maxAmount)
+        public async Task<List<Transaction>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
 
             var filteredTransactions = account.TransactionsFrom
                 .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount)
@@ -127,8 +109,6 @@ namespace BankingManagementSystem.Core.Services
         public async Task<List<Transaction>> GetOutgoingTransactions(string accountId)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
 
             var outgoingTransactions = account.TransactionsFrom.ToList();
 
@@ -138,8 +118,6 @@ namespace BankingManagementSystem.Core.Services
         public async Task<List<Transaction>> GetIncomingTransactions(string accountId)
         {
             var account = await _accountService.GetAccountByIdAsync(accountId);
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
 
             return account.TransactionsTo.ToList();
         }
@@ -158,10 +136,8 @@ namespace BankingManagementSystem.Core.Services
             var accountFrom = await _accountService.GetAccountByIbanAsync(transaction.IbanFrom);
             var accountTo = await _accountService.GetAccountByIbanAsync(transaction.IbanTo);
 
-            if (accountFrom != null)
-                accountFrom.Balance += transaction.TotalAmount;
-            if (accountTo != null)
-                accountTo.Balance -= transaction.TotalAmount;
+            accountFrom.Balance += transaction.TotalAmount;
+            accountTo.Balance -= transaction.TotalAmount;
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();

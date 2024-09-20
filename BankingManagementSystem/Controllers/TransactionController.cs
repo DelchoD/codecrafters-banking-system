@@ -18,13 +18,10 @@ namespace BankingManagementSystem.Controllers
 
         // POST: api/transaction
         [HttpPost]
-        public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction(
-            [FromBody] TransactionCreateDto transactionCreateDto)
+        public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction([FromBody] TransactionCreateDto transactionCreateDto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var createdTransaction = await _transactionService.ProcessTransaction(transactionCreateDto);
 
@@ -67,8 +64,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByDate(string accountId,
-            DateTime startDate, DateTime endDate)
+        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
             var transactions = await _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
 
@@ -79,8 +75,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByAmount(string accountId,
-            decimal minAmount, decimal maxAmount)
+        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
             var transactions = await _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
 
@@ -112,15 +107,13 @@ namespace BankingManagementSystem.Controllers
         }
 
         // DELETE: api/transaction/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var isCancelled = await _transactionService.CancelTransaction(id);
 
             if (!isCancelled)
-            {
                 return NotFound();
-            }
 
             return NoContent();
         }

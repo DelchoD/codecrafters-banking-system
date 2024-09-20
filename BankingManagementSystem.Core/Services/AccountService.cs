@@ -15,17 +15,16 @@ namespace BankingManagementSystem.Core.Services
             _context = context;
         }
 
-        public List<Account> GetCustomerAccounts(Customer customer)
-        {
-            return customer.Accounts.ToList();
-        }
-
         public async Task<Account> GetAccountByIbanAsync(string iban)
         {
             if (iban is null)
                 throw new ArgumentNullException(nameof(iban));
 
-            return (await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban))!;
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban);
+            if (account is null)
+                throw new KeyNotFoundException($"Account with IBAN {iban} not found.");
+
+            return account;
         }
 
         public async Task<List<Account>> GetAllAccountsAsync()
@@ -56,9 +55,13 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<Account?> GetAccountByIdAsync(string accountId)
+        public async Task<Account> GetAccountByIdAsync(string accountId)
         {
-            return await _context.Accounts.FindAsync(accountId);
+            var account = await _context.Accounts.FindAsync(accountId);
+            if (account is null)
+                throw new KeyNotFoundException($"Account with id {accountId} not found.");
+
+            return account;
         }
 
         public async Task<Account> UpdateAccountBalance(string accountId, decimal newBalance)

@@ -11,20 +11,20 @@ namespace BankingManagementSystem.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly ICustomerService _customerService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, ICustomerService customerService)
         {
             _accountService = accountService;
+            _customerService = customerService;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<AccountDetailsDto>> GetAccountById(string id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
-            if (account is null)
-                return NotFound();
-
             var accountDetails = EntityMappers.MapAccountToDetailsDto(account);
+
             return Ok(accountDetails);
         }
 
@@ -33,11 +33,12 @@ namespace BankingManagementSystem.Controllers
         {
             var accounts = await _accountService.GetAllAccountsAsync();
             var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto).ToList();
+
             return Ok(accountDetails);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAccount(string id)
+        public async Task<ActionResult> DeleteAccount(string id, string customerId)
         {
             //TODO: Add a check for the customer associated with the account
             await _accountService.CloseAccountAsync(id);
