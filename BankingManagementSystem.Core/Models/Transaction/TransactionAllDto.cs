@@ -1,6 +1,4 @@
-﻿using BankingManagementSystem.Core.Models.Account;
-
-namespace BankingManagementSystem.Core.Models.Transaction
+﻿namespace BankingManagementSystem.Core.Models.Transaction
 {
     public class TransactionAllDto
     {
@@ -10,8 +8,8 @@ namespace BankingManagementSystem.Core.Models.Transaction
 
         public decimal TotalAmount { get; set; }
 
-        public AccountTransactionDto IBANFrom { get; set; } = null!;
+        public string IbanFrom { get; set; } = null!;
 
-        public AccountTransactionDto IBANTo { get; set; } = null!;
+        public string IbanTo { get; set; } = null!;
     }
 }

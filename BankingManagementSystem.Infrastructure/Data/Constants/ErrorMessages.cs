@@ -1,4 +1,4 @@
-﻿namespace BankingManagementSystem.Core.Constants
+﻿namespace BankingManagementSystem.Infrastructure.Data.Constants
 {
     public static class ErrorMessages
     {

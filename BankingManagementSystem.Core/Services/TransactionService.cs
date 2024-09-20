@@ -22,28 +22,28 @@ namespace BankingManagementSystem.Core.Services
             if (transactionCreateDto == null)
                 throw new ArgumentNullException(nameof(transactionCreateDto));
 
-            var accountFrom = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IBANFrom.Iban);
-            var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IBANTo.Iban);
+            var accountFrom = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IbanFrom);
+            var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IbanTo);
 
             if (accountFrom == null)
                 throw new KeyNotFoundException(
-                    $"Source account with IBAN '{transactionCreateDto.IBANFrom.Iban}' was not found.");
+                    $"Source account with IBAN '{transactionCreateDto.IbanTo}' was not found.");
 
             if (accountTo == null)
                 throw new KeyNotFoundException(
-                    $"Destination account with IBAN '{transactionCreateDto.IBANTo.Iban}' was not found.");
+                    $"Destination account with IBAN '{transactionCreateDto.IbanTo}' was not found.");
 
             if (accountFrom.Balance < transactionCreateDto.TotalAmount)
                 throw new InvalidOperationException(
-                    $"Insufficient funds in source account with IBAN '{transactionCreateDto.IBANFrom.Iban}'.");
+                    $"Insufficient funds in source account with IBAN '{transactionCreateDto.IbanTo}'.");
 
             var transaction = new Transaction
             {
                 Date = transactionCreateDto.Date,
                 TotalAmount = transactionCreateDto.TotalAmount,
                 Reason = transactionCreateDto.Reason,
-                IBANFromId = transactionCreateDto.IBANFrom.Iban,
-                IBANToId = transactionCreateDto.IBANTo.Iban
+                IbanFrom = transactionCreateDto.IbanTo,
+                IbanTo = transactionCreateDto.IbanTo,
             };
 
             accountFrom.Balance -= transaction.TotalAmount;
@@ -155,8 +155,8 @@ namespace BankingManagementSystem.Core.Services
             if (transaction == null)
                 return false;
 
-            var accountFrom = await _accountService.GetAccountByIbanAsync(transaction.IBANFromId);
-            var accountTo = await _accountService.GetAccountByIbanAsync(transaction.IBANToId);
+            var accountFrom = await _accountService.GetAccountByIbanAsync(transaction.IbanFrom);
+            var accountTo = await _accountService.GetAccountByIbanAsync(transaction.IbanTo);
 
             if (accountFrom != null)
                 accountFrom.Balance += transaction.TotalAmount;

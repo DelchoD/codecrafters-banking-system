@@ -27,8 +27,8 @@ public static class EntityMappers
             Id = transaction.Id,
             TotalAmount = transaction.TotalAmount,
             Date = transaction.Date,
-            IbanFrom = transaction.IBANFrom.Iban,
-            IbanTo = transaction.IBANTo.Iban,
+            IbanFrom = transaction.IbanFrom,
+            IbanTo = transaction.IbanTo,
             Reason = transaction.Reason
         };
     }
@@ -41,8 +41,8 @@ public static class EntityMappers
             Date = transaction.Date,
             TotalAmount = transaction.TotalAmount,
             Reason = transaction.Reason,
-            IbanFrom = transaction.IBANFrom.Iban,
-            IbanTo = transaction.IBANTo.Iban,
+            IbanFrom = transaction.IbanFrom,
+            IbanTo = transaction.IbanTo,
         };
     }
 
@@ -53,8 +53,8 @@ public static class EntityMappers
             Id = transaction.Id,
             Date = transaction.Date,
             TotalAmount = transaction.TotalAmount,
-            IBANFrom = new AccountTransactionDto { Iban = transaction.IBANFromId },
-            IBANTo = new AccountTransactionDto { Iban = transaction.IBANToId }
+            IbanFrom = transaction.IbanFrom,
+            IbanTo = transaction.IbanTo,
         };
     }
 
@@ -65,8 +65,8 @@ public static class EntityMappers
             Id = transaction.Id,
             TotalAmount = transaction.TotalAmount,
             Date = transaction.Date,
-            IbanFrom = transaction.IBANFrom.Iban,
-            IbanTo = transaction.IBANTo.Iban,
+            IbanFrom = transaction.IbanFrom,
+            IbanTo = transaction.IbanTo,
             Reason = transaction.Reason
         };
     }
