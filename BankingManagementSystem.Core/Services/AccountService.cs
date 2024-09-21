@@ -71,7 +71,7 @@ namespace BankingManagementSystem.Core.Services
         {
             var account = await _context.Accounts.FindAsync(accountId);
             if (account is null)
-                throw new KeyNotFoundException($"Account with id {accountId} not found.");
+                throw new KeyNotFoundException($"Account with ID {accountId} not found");
 
             return account;
         }
@@ -87,11 +87,11 @@ namespace BankingManagementSystem.Core.Services
             return account;
         }
 
-        public async Task<bool> CloseAccountAsync(string accountId)
+        public async Task<bool> CloseAccountAsync(string accountId, string customerId)
         {
             var account = GetAccountByIdAsync(accountId).Result;
-            if (account is null)
-                throw new KeyNotFoundException($"Account with ID {accountId} not found");
+            if (account.CustomerId != customerId)
+                throw new InvalidOperationException($"Customer with id:{customerId} is not owner of account with id:{account}");
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
