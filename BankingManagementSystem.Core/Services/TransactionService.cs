@@ -33,7 +33,7 @@ namespace BankingManagementSystem.Core.Services
                 Date = transactionCreateDto.Date,
                 TotalAmount = transactionCreateDto.TotalAmount,
                 Reason = transactionCreateDto.Reason,
-                IbanFrom = transactionCreateDto.IbanTo,
+                IbanFrom = transactionCreateDto.IbanFrom,
                 IbanTo = transactionCreateDto.IbanTo,
             };
 
@@ -66,9 +66,17 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<List<Transaction>> GetTransactionsByAccountId(string accountId)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
+            var account = await _context.Accounts
+                .Where(a => a.Id == accountId)
+                .Include(a => a.TransactionsFrom)
+                .Include(a => a.TransactionsTo)
+                .FirstOrDefaultAsync();
 
-            return account.TransactionsFrom.ToList();
+            if (account == null)
+                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
+
+            var transactions = account.TransactionsFrom.Concat(account.TransactionsTo).ToList();
+            return transactions;
         }
 
         public async Task<Transaction> GetTransactionById(int transactionId)
