@@ -26,7 +26,7 @@ namespace BankingManagementSystem.Core.Services
             var accountTo = await _accountService.GetAccountByIbanAsync(transactionCreateDto.IbanTo);
 
             if (accountFrom.Balance < transactionCreateDto.TotalAmount)
-                throw new InvalidOperationException($"Insufficient funds in source account with IBAN '{transactionCreateDto.IbanTo}'.");
+                throw new InvalidOperationException($"Insufficient funds in source account with IBAN '{transactionCreateDto.IbanFrom}'.");
 
             var transaction = new Transaction
             {
