@@ -136,7 +136,9 @@ namespace BankingManagementSystem.Core.Services
          */
         public async Task<bool> CancelTransaction(int transactionId)
         {
-            var transaction = await _context.Transactions.FindAsync(transactionId);
+            var transaction = await _context.Transactions
+                .Where(t => t.Id == transactionId)
+                .FirstOrDefaultAsync();
 
             if (transaction == null)
                 return false;
