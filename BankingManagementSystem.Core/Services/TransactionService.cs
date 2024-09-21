@@ -64,18 +64,11 @@ namespace BankingManagementSystem.Core.Services
             }
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAccountId(string accountId)
+        public List<Transaction> GetTransactionsByAccountId(string accountId)
         {
-            var account = await _context.Accounts
-                .Where(a => a.Id == accountId)
-                .Include(a => a.TransactionsFrom)
-                .Include(a => a.TransactionsTo)
-                .FirstOrDefaultAsync();
-
-            if (account == null)
-                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
-
+            var account = GetAccountWithTransactionsById(accountId).Result;
             var transactions = account.TransactionsFrom.Concat(account.TransactionsTo).ToList();
+
             return transactions;
         }
 
@@ -88,21 +81,23 @@ namespace BankingManagementSystem.Core.Services
             return transaction;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
+        public List<Transaction> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
+            var account = GetAccountWithTransactionsById(accountId).Result;
 
             var filteredTransactions = account.TransactionsFrom
                 .Where(t => t.Date >= startDate && t.Date <= endDate)
+                .Concat(account.TransactionsTo)
+                    .Where(t => t.Date >= startDate && t.Date <= endDate)
                 .OrderByDescending(t => t.Date)
                 .ToList();
 
             return filteredTransactions;
         }
 
-        public async Task<List<Transaction>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
+        public List<Transaction> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
+            var account = GetAccountWithTransactionsById(accountId).Result;
 
             var filteredTransactions = account.TransactionsFrom
                 .Where(t => t.TotalAmount >= minAmount && t.TotalAmount <= maxAmount)
@@ -114,18 +109,16 @@ namespace BankingManagementSystem.Core.Services
             return filteredTransactions;
         }
 
-        public async Task<List<Transaction>> GetOutgoingTransactions(string accountId)
+        public List<Transaction> GetOutgoingTransactions(string accountId)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
+            var account = GetAccountWithTransactionsById(accountId).Result;
 
-            var outgoingTransactions = account.TransactionsFrom.ToList();
-
-            return outgoingTransactions;
+            return account.TransactionsFrom.ToList();
         }
 
-        public async Task<List<Transaction>> GetIncomingTransactions(string accountId)
+        public List<Transaction> GetIncomingTransactions(string accountId)
         {
-            var account = await _accountService.GetAccountByIdAsync(accountId);
+            var account = GetAccountWithTransactionsById(accountId).Result;
 
             return account.TransactionsTo.ToList();
         }
@@ -153,6 +146,20 @@ namespace BankingManagementSystem.Core.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<Account> GetAccountWithTransactionsById(string accountId)
+        {
+            var account = await _context.Accounts
+                .Where(a => a.Id == accountId)
+                .Include(a => a.TransactionsFrom)
+                .Include(a => a.TransactionsTo)
+                .FirstOrDefaultAsync();
+
+            if (account == null)
+                throw new KeyNotFoundException($"Account with ID '{accountId}' was not found.");
+
+            return account;
         }
     }
 }
