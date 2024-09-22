@@ -43,15 +43,11 @@ namespace BankingManagementSystem.Controllers
             return Ok(accountDetails);
         }
 
-        [HttpPut("{id}")]
+        [HttpDelete("{accountId}/{customerId}")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult> DeleteAccount(string id)
+        public async Task<ActionResult> DeleteAccount(string accountId, string customerId)
         {
-            var response = await GetAccountById(id);
-            if (response.Result is NotFoundResult)
-                return response.Result;
-
-            await _accountService.CloseAccountAsync(id);
+            await _accountService.CloseAccountAsync(accountId, customerId);
             return NoContent();
         }
     }

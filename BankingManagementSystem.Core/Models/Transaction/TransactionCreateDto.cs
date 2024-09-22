@@ -1,10 +1,10 @@
-﻿using BankingManagementSystem.Core.Models.Account;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using BankingManagementSystem.Infrastructure.Data.Constants;
 
 namespace BankingManagementSystem.Core.Models.Transaction
 {
-    using static Constants.ErrorMessages;
-    using static Constants.ValidationConstants;
+    using static ErrorMessages;
+    using static ValidationConstants;
     
     public class TransactionCreateDto
     {
@@ -23,9 +23,11 @@ namespace BankingManagementSystem.Core.Models.Transaction
         public string Reason { get; set; } = string.Empty;
 
         [Required]
-        public AccountTransactionDto IBANFrom { get; set; } = null!;
+        [MaxLength(AccountIbanMaxLength)]
+        public string IbanFrom { get; set; } = null!;
 
         [Required]
-        public AccountTransactionDto IBANTo { get; set; } = null!;
+        [MaxLength(AccountIbanMaxLength)]
+        public string IbanTo { get; set; } = null!;
     }
 }

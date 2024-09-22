@@ -52,7 +52,10 @@ namespace BankingManagementSystem.Core.Services
         {
             try
             {
-                var customer = await _context.Customers.FindAsync(customerId);
+                var customer = await _context.Customers
+                    .Where(c => c.Id == customerId)
+                    .Include(c => c.Accounts)
+                    .FirstOrDefaultAsync();
                 if (customer == null)
                 {
                     throw new KeyNotFoundException("Customer not found");
@@ -121,7 +124,9 @@ namespace BankingManagementSystem.Core.Services
         {
             try
             {
-                var customers = await _context.Customers.ToListAsync();
+                var customers = await _context.Customers
+                    .Include(c => c.Accounts)
+                    .ToListAsync();
                 return customers;
             }
             catch (Exception ex)

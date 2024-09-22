@@ -9,11 +9,11 @@ namespace BankingManagementSystem.Core.Services.Contracts
 
         Task<List<Account>> GetAllAccountsAsync();
 
-        Task<bool> CloseAccountAsync(string accountId);
+        Task<bool> CloseAccountAsync(string accountId, string customerId);
 
         Task<Account> UpdateAccountBalance(string accountId, decimal newBalance);
 
-        Task<Account?> GetAccountByIdAsync(string accountId);
+        Task<Account> GetAccountByIdAsync(string accountId);
 
         Task<Account> CreateAccountAsync(AccountCreateDto dto, string customerId);
       

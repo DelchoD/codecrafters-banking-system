@@ -10,7 +10,7 @@
 
         public string Address { get; set; } = string.Empty;
 
-        public ICollection<AccountDetailsDto> Accounts { get; set; }
+        public new ICollection<AccountDetailsDto> Accounts { get; set; }
             = new List<AccountDetailsDto>();
     }
 }
