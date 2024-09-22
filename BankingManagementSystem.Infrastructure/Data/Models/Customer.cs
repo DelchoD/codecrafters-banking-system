@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace BankingManagementSystem.Infrastructure.Data.Models
 {
     using static Constants.ValidationConstants;
+
 
     public class Customer : IdentityUser
     {
@@ -14,6 +16,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [Required]
         [MaxLength(MiddleNameMaxLength)]
         public string MiddleName { get; set; } = string.Empty;
+
 
         [Required]
         [MaxLength(LastNameMaxLength)]
@@ -39,10 +42,18 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [MaxLength(AddressMaxLength)]
         public string Address { get; set; } = string.Empty;
 
+        public CreditScore? CreditScore { get; set; } 
+
+
         public ICollection<Account> Accounts { get; set; }
            = new List<Account>();
 
         public ICollection<Transaction> Transactions { get; set; }
            = new List<Transaction>();
+
+        public ICollection<LoanApplication> LoanApplications { get; set; }
+            = new List<LoanApplication>();
+
+       
     }
 }
