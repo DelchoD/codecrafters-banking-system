@@ -31,6 +31,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public override string Email { get; set; } = string.Empty;
 
         [Required]
+        [MaxLength(PasswordMaxLength)]
         [MinLength(PasswordMinLength)]
         public string Password { get; set; } = string.Empty;
 

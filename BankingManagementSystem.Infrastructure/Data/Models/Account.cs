@@ -8,14 +8,17 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Account
     {
         [Key]
+        [MaxLength(IdNumberMaxLength)]
         public string Id { get; set; } = Guid.NewGuid().ToString(); 
 
         [Required]
         [MaxLength(AccountIbanMaxLength)]
+        [MinLength(AccountIbanMinLength)]
         public string Iban { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(AccountNameMaxLength)]
+        [MinLength(AccountNameMinLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
@@ -28,12 +31,8 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [ForeignKey(nameof(CustomerId))]
         public Customer Customer { get; set; } = null!;
 
-        [InverseProperty(nameof(Transaction.IBANFrom))]
-        public List<Transaction> TransactionsFrom { get; set; }
-            = new List<Transaction>();
+        public List<Transaction> TransactionsFrom { get; set; } = new();
 
-        [InverseProperty(nameof(Transaction.IBANTo))]
-        public List<Transaction> TransactionsTo { get; set; }
-         = new List<Transaction>();
+        public List<Transaction> TransactionsTo { get; set; } = new();
     }
 }

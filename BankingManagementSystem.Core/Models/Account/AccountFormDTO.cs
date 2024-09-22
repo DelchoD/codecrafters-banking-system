@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BankingManagementSystem.Infrastructure.Data.Constants;
 
 namespace BankingManagementSystem.Core.Models.Account
 {
-    using static Constants.ErrorMessages;
-    using static Constants.ValidationConstants;
+    using static ValidationConstants;
+    using static ErrorMessages;
 
     public class AccountFormDto
     {

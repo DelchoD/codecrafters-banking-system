@@ -8,6 +8,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
     public class Transaction
     {
         [Key]
+        [MaxLength(IdNumberMaxLength)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
         public int Id { get; set; }
 
@@ -23,6 +24,7 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
 
         [Required]
+        [MaxLength(AccountIbanMaxLength)]
         public string IBANFromId { get; set; } = string.Empty;
 
         [Required]
@@ -36,6 +38,10 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [Required]
         [ForeignKey(nameof(IBANToId))]
         public Account IBANTo { get; set; } = null!;
+
+
+        [MaxLength(AccountIbanMaxLength)]
+        public string IBANToId { get; set; } = string.Empty;
 
     }
 }
