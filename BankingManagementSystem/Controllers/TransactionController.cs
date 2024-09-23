@@ -21,13 +21,10 @@ namespace BankingManagementSystem.Controllers
         // POST: api/transaction
         [HttpPost]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction(
-            [FromBody] TransactionCreateDto transactionCreateDto)
+        public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction([FromBody] TransactionCreateDto transactionCreateDto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             var createdTransaction = await _transactionService.ProcessTransaction(transactionCreateDto);
 
@@ -51,9 +48,9 @@ namespace BankingManagementSystem.Controllers
         // GET: api/transaction/by-account/{accountId}
         [HttpGet("by-account/{accountId}")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<List<TransactionDetailsDto>>> GetTransactionsByAccountId(string accountId)
+        public ActionResult<List<TransactionDetailsDto>> GetTransactionsByAccountId(string accountId)
         {
-            var transactions = await _transactionService.GetTransactionsByAccountId(accountId);
+            var transactions = _transactionService.GetTransactionsByAccountId(accountId);
             var transactionDtos = transactions.Select(EntityMappers.ToTransactionDto).ToList();
 
             return Ok(transactionDtos);
@@ -74,10 +71,9 @@ namespace BankingManagementSystem.Controllers
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByDate(string accountId,
-            DateTime startDate, DateTime endDate)
+        public ActionResult<List<TransactionAllDto>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
-            var transactions = await _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
+            var transactions = _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
 
             var transactionDtos = transactions.Select(EntityMappers.ToTransactionAllDto).ToList();
 
@@ -87,10 +83,9 @@ namespace BankingManagementSystem.Controllers
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetTransactionsByAmount(string accountId,
-            decimal minAmount, decimal maxAmount)
+        public ActionResult<List<TransactionAllDto>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
-            var transactions = await _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
+            var transactions = _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
 
             var transactionDtos = transactions.Select(EntityMappers.ToTransactionAllDto).ToList();
 
@@ -100,9 +95,9 @@ namespace BankingManagementSystem.Controllers
         // GET: api/transaction/outgoing/{accountId}
         [HttpGet("outgoing/{accountId}")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetOutgoingTransactions(string accountId)
+        public ActionResult<List<TransactionAllDto>> GetOutgoingTransactions(string accountId)
         {
-            var transactions = await _transactionService.GetOutgoingTransactions(accountId);
+            var transactions = _transactionService.GetOutgoingTransactions(accountId);
 
             var transactionDtos = transactions.Select(EntityMappers.ToTransactionAllDto).ToList();
 
@@ -112,9 +107,9 @@ namespace BankingManagementSystem.Controllers
         // GET: api/transaction/incoming/{accountId}
         [HttpGet("incoming/{accountId}")]
         [Authorize(Roles = "User,Admin")]
-        public async Task<ActionResult<List<TransactionAllDto>>> GetIncomingTransactions(string accountId)
+        public ActionResult<List<TransactionAllDto>> GetIncomingTransactions(string accountId)
         {
-            var transactions = await _transactionService.GetIncomingTransactions(accountId);
+            var transactions = _transactionService.GetIncomingTransactions(accountId);
 
             var transactionDtos = transactions.Select(EntityMappers.ToTransactionAllDto).ToList();
 
@@ -122,16 +117,14 @@ namespace BankingManagementSystem.Controllers
         }
 
         // DELETE: api/transaction/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var isCancelled = await _transactionService.CancelTransaction(id);
 
             if (!isCancelled)
-            {
                 return NotFound();
-            }
 
             return NoContent();
         }

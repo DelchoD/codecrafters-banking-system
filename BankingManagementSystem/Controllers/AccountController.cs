@@ -24,10 +24,17 @@ namespace BankingManagementSystem.Controllers
         public async Task<ActionResult<AccountDetailsDto>> GetAccountById(string id)
         {
             var account = await _accountService.GetAccountByIdAsync(id);
-            if (account is null)
-                return NotFound("Account not found.");
-
             var accountDetails = EntityMappers.MapAccountToDetailsDto(account);
+
+            return Ok(accountDetails);
+        }
+
+        [HttpGet("customer/{customerId}")]
+        public async Task<ActionResult<AccountDetailsDto>> GetAccountByCustomerId(string customerId)
+        {
+            var accounts = await _accountService.GetCustomerAccounts(customerId);
+            var accountDetails = accounts.Select(EntityMappers.MapAccountToDetailsDto);
+
             return Ok(accountDetails);
         }
 

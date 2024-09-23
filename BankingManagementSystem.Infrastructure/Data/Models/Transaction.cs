@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingManagementSystem.Infrastructure.Data.Models
 {
-    using static Constants.ValidationConstants;
+    using static Data.Constants.ValidationConstants;
 
     public class Transaction
     {
@@ -22,12 +22,26 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [MaxLength(TransactionReasonMaxLength)]
         public string Reason { get; set; } = string.Empty;
 
-        [Required]
-        [MaxLength(AccountIbanMaxLength)]
-        public string IbanFrom { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(AccountIbanMaxLength)]
-        public string IbanTo { get; set; } = string.Empty;
+        public string IBANFromId { get; set; } = string.Empty;
+
+        [Required]
+        [ForeignKey(nameof(IBANFromId))]
+        public Account IBANFrom { get; set; } = null!;
+
+
+        [Required]
+        public string IBANToId { get; set; } = string.Empty;
+
+        [Required]
+        [ForeignKey(nameof(IBANToId))]
+        public Account IBANTo { get; set; } = null!;
+
+
+        [MaxLength(AccountIbanMaxLength)]
+        public string IBANToId { get; set; } = string.Empty;
+
     }
 }
