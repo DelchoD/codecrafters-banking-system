@@ -27,7 +27,6 @@ namespace BankingManagementSystem.Controllers
             public async Task<ActionResult<AllDto>> GetCustomerById(string id)
             {
                 var customer = await _customerService.GetCustomerById(id);
-                if (customer == null) return NotFound();
 
                 return Ok(EntityMappers.ToCustomerAllDto(customer));
             }
