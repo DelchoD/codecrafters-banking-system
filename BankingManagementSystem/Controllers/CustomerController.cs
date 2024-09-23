@@ -52,7 +52,6 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpPost]
-            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult<AllDto>> CreateCustomer([FromBody] FormDto dto)
             {
                 var customer = await _customerService.RegisterCustomer(dto);
