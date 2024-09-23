@@ -1,6 +1,7 @@
 using BankingManagementSystem.Extensions;
 using BankingManagementSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +9,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21))));
+
+
 
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationIdentity();
@@ -23,28 +25,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
-}
-
-// Hook into application shutdown to delete the SQLite database file
-var appLifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
-appLifetime.ApplicationStopping.Register(() =>
-{
-    var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "BankingManagementSystem.db");
-    if (File.Exists(dbPath))
+    try
     {
-        try
-        {
-            File.Delete(dbPath); // Delete the file on application shutdown
-            Console.WriteLine("Database file deleted on shutdown.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Failed to delete database: {ex.Message}");
-        }
+        dbContext.Database.Migrate(); // Apply migrations
     }
-});
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration failed: {ex.Message}");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

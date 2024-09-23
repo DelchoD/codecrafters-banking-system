@@ -16,7 +16,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                     MiddleName TEXT NOT NULL,
                     LastName TEXT NOT NULL,
                     PersonalIDNumber TEXT NOT NULL,
-                    DateOfBirth TEXT NOT NULL,
+                    DateOfBirth DATE NOT NULL,
                     Address TEXT NOT NULL,
                     UserName TEXT,
                     NormalizedUserName TEXT,
@@ -28,11 +28,11 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                     SecurityStamp TEXT,
                     ConcurrencyStamp TEXT,
                     PhoneNumber TEXT,
-                    PhoneNumberConfirmed INTEGER NOT NULL,
-                    TwoFactorEnabled INTEGER NOT NULL,
+                    PhoneNumberConfirmed INT NOT NULL,
+                    TwoFactorEnabled INT NOT NULL,
                     LockoutEnd TEXT,
-                    LockoutEnabled INTEGER NOT NULL,
-                    AccessFailedCount INTEGER NOT NULL
+                    LockoutEnabled INT NOT NULL,
+                    AccessFailedCount INT NOT NULL
                 );
             ");
 
@@ -40,7 +40,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                 CREATE TABLE IF NOT EXISTS Accounts (
                     IBAN TEXT NOT NULL PRIMARY KEY,
                     Name TEXT NOT NULL,
-                    Balance TEXT NOT NULL,
+                    Balance DECIMAL(18, 2) NOT NULL,
                     CustomerId TEXT NOT NULL,
                     FOREIGN KEY (CustomerId) REFERENCES Customers(Id) ON DELETE CASCADE
                 );
@@ -49,8 +49,8 @@ namespace BankingManagementSystem.Infrastructure.Migrations
             migrationBuilder.Sql(@"
                 CREATE TABLE IF NOT EXISTS Transactions (
                     Id TEXT NOT NULL PRIMARY KEY,
-                    Date TEXT NOT NULL,
-                    TotalAmount TEXT NOT NULL,
+                    Date DATE NOT NULL,
+                    TotalAmount DECIMAL(18, 2) NOT NULL,
                     Reason TEXT NOT NULL,
                     IBANFromId TEXT NOT NULL,
                     IBANToId TEXT NOT NULL,

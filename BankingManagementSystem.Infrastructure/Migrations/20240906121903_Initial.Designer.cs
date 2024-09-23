@@ -50,7 +50,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INT");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -61,13 +61,13 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("DATE");
 
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INT");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -80,7 +80,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INT");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
@@ -108,13 +108,13 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INT");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INT");
 
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
@@ -133,7 +133,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("DATE");
 
                     b.Property<string>("IBANFromId")
                         .IsRequired()
@@ -149,7 +149,7 @@ namespace BankingManagementSystem.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("DECIMAL(18,2)");
 
                     b.HasKey("Id");
 
