@@ -11,9 +11,6 @@ namespace BankingManagementSystem.Infrastructure.Data
         {
         }
 
-
-        public string DbPath { get; }
-
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Account> Accounts { get; set; }

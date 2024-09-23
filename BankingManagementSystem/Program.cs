@@ -27,7 +27,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     try
     {
-        dbContext.Database.Migrate(); // Apply migrations
+        dbContext.Database.Migrate(); // Прилагане на миграции
     }
     catch (Exception ex)
     {
