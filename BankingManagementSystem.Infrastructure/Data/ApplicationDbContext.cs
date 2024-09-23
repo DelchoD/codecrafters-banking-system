@@ -45,7 +45,7 @@ namespace BankingManagementSystem.Infrastructure.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("Server=localhost;Database=BankingManagementSystem;User ID=codecrafters;Password=12344321;Port:5000;",
+                optionsBuilder.UseMySql("Server=localhost;Database=BankingManagementSystem;username=root;Password=1801",
                     new MySqlServerVersion(new Version(8, 0, 21)),
                     options => options.MigrationsAssembly("BankingManagementSystem.Infrastructure"));
             }
