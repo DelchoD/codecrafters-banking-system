@@ -15,14 +15,12 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         public DateTime Date { get; set; }
 
-
-        [MaxLength(RiskAssesmentDetailsMaxLength)]
+        [MaxLength(RiskAssessmentDetailsMaxLength)]
         public string? Details { get; set; }
 
         public int LoanApplicationId { get; set; }
 
         [Required]
         public LoanApplication LoanApplication { get; set; } = null!;
-
     }
 }

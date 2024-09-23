@@ -4,15 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingManagementSystem.Infrastructure.Data.Models
 {
-    using static BankingManagementSystem.Infrastructure.Data.Constants.ValidationConstants;
+    using static Constants.ValidationConstants;
     
-
     public class LoanApplication
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
 
         public DateTime DateCreated { get; set; }
 
@@ -22,16 +20,9 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
 
         public byte RepaymentPeriod { get; set; }
 
-
         [Required]
         [MaxLength(LoanApplicationReasonMaxLength)]
         public string Reason { get; set; } = string.Empty;
-
-
-        public LoanType Type { get; set; }
-
-        public LoanStatus Status { get; set; }
-
 
         [Required]
         public string CustomerId { get; set; } = string.Empty;
@@ -40,7 +31,10 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         [ForeignKey(nameof(CustomerId))]
         public Customer Customer { get; set; } = null!;
 
-        public RiskAssessment? RiskAssessment { get; set; }
+        public LoanType Type { get; set; }
 
+        public LoanStatus Status { get; set; }
+
+        public RiskAssessment? RiskAssessment { get; set; }
     }
 }

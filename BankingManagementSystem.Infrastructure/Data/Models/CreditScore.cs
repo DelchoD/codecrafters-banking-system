@@ -17,6 +17,5 @@ namespace BankingManagementSystem.Infrastructure.Data.Models
         public string CustomerId { get; set; } = string.Empty;
 
         public Customer Customer { get; set; } = null!;
-
     }
 }

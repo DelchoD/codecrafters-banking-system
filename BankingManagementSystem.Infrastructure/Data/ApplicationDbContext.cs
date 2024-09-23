@@ -13,7 +13,6 @@ namespace BankingManagementSystem.Infrastructure.Data
             DbPath = Path.Join(path, "BankingManagementSystem.db");
         }
 
-
         public string DbPath { get; }
 
         public DbSet<Customer> Customers { get; set; }
@@ -28,7 +27,6 @@ namespace BankingManagementSystem.Infrastructure.Data
 
         public DbSet<CreditScore> CreditScores { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()
@@ -36,16 +34,13 @@ namespace BankingManagementSystem.Infrastructure.Data
                 .WithOne(c => c.Customer)
                 .HasForeignKey<CreditScore>(c => c.CustomerId);
 
-
             modelBuilder.Entity<LoanApplication>()
                 .HasOne(r => r.RiskAssessment)
                 .WithOne(r => r.LoanApplication)
                 .HasForeignKey<RiskAssessment>(r => r.LoanApplicationId);
 
-
             base.OnModelCreating(modelBuilder);
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

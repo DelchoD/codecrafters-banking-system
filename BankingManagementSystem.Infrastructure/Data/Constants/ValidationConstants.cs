@@ -38,7 +38,7 @@
         public const int LoanApplicationReasonMaxLength = 500;
 
 
-        //Risk assesment
-        public const int RiskAssesmentDetailsMaxLength = 300;
+        //Risk assessment
+        public const int RiskAssessmentDetailsMaxLength = 300;
     }
 }
