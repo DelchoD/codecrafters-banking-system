@@ -25,14 +25,13 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
     try
     {
-        context.SaveChanges();
+        dbContext.Database.Migrate(); // Apply migrations
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error saving to database: {ex.Message}");
+        Console.WriteLine($"Database migration failed: {ex.Message}");
     }
 }
 
