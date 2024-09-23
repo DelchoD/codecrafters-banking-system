@@ -8,7 +8,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-        optionsBuilder.UseMySql("Server=localhost;Database=BankingManagementSystem;Username=root;Password=1801",
+        optionsBuilder.UseMySql("Server=localhost;Database=BankingManagementSystem;Username=codecrafters;Password=1234",
             new MySqlServerVersion(new Version(8, 0, 21))); 
 
         return new ApplicationDbContext(optionsBuilder.Options);
