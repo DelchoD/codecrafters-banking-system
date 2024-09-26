@@ -19,6 +19,9 @@ namespace BankingManagementSystem.Core.Services
         {
             var customer = await _context.Customers
                 .Include(c => c.Accounts)
+                .ThenInclude(a => a.TransactionsFrom)
+                .Include(c => c.Accounts)
+                .ThenInclude(a => a.TransactionsTo)
                 .FirstOrDefaultAsync(c => c.Id == customerId);
 
             if (customer is null)
@@ -32,7 +35,11 @@ namespace BankingManagementSystem.Core.Services
             if (iban is null)
                 throw new ArgumentNullException(nameof(iban));
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.Iban == iban);
+            var account = await _context.Accounts
+                .Include(a => a.TransactionsFrom)
+                .Include(a => a.TransactionsTo)
+                .FirstOrDefaultAsync(a => a.Iban == iban);
+
             if (account is null)
                 throw new KeyNotFoundException($"Account with IBAN {iban} not found.");
 
@@ -41,7 +48,10 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<List<Account>> GetAllAccountsAsync()
         {
-            return await _context.Accounts.ToListAsync();
+            return await _context.Accounts
+                .Include(a => a.TransactionsFrom)
+                .Include(a => a.TransactionsTo)
+                .ToListAsync();
         }
 
         public async Task<Account> CreateAccountAsync(AccountCreateDto dto, string customerId)
@@ -69,7 +79,11 @@ namespace BankingManagementSystem.Core.Services
 
         public async Task<Account> GetAccountByIdAsync(string accountId)
         {
-            var account = await _context.Accounts.FindAsync(accountId);
+            var account = await _context.Accounts
+                .Include(a => a.TransactionsFrom)
+                .Include(a => a.TransactionsTo)
+                .FirstOrDefaultAsync(a => a.Id == accountId);
+
             if (account is null)
                 throw new KeyNotFoundException($"Account with ID {accountId} not found");
 
