@@ -1,12 +1,14 @@
-﻿using BankingManagementSystem.Utils;
+﻿using Microsoft.AspNetCore.Mvc;
 using BankingManagementSystem.Core.Models.Transaction;
-using Microsoft.AspNetCore.Mvc;
 using BankingManagementSystem.Core.Services.Contracts;
+using BankingManagementSystem.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankingManagementSystem.Controllers
 {
-    [Route("api/transactions")]
     [ApiController]
+    [Route("api/transactions")]
+    [Authorize(Roles = "User,Admin")]
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
@@ -18,6 +20,7 @@ namespace BankingManagementSystem.Controllers
 
         // POST: api/transaction
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<TransactionDetailsDto>> CreateTransaction([FromBody] TransactionCreateDto transactionCreateDto)
         {
             if (!ModelState.IsValid)
@@ -32,6 +35,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/{id}
         [HttpGet("{id:int}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<ActionResult<TransactionDetailsDto>> GetTransactionById(int id)
         {
             var transaction = await _transactionService.GetTransactionById(id);
@@ -43,6 +47,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-account/{accountId}
         [HttpGet("by-account/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult<List<TransactionDetailsDto>> GetTransactionsByAccountId(string accountId)
         {
             var transactions = _transactionService.GetTransactionsByAccountId(accountId);
@@ -53,6 +58,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<TransactionAllDto>>> GetAllTransactions()
         {
             var transactions = await _transactionService.GetAllTransactionsAsync();
@@ -64,6 +70,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-date
         [HttpGet("by-date")]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult<List<TransactionAllDto>> GetTransactionsByDate(string accountId, DateTime startDate, DateTime endDate)
         {
             var transactions = _transactionService.GetTransactionsByDate(accountId, startDate, endDate);
@@ -75,6 +82,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/by-amount
         [HttpGet("by-amount")]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult<List<TransactionAllDto>> GetTransactionsByAmount(string accountId, decimal minAmount, decimal maxAmount)
         {
             var transactions = _transactionService.GetTransactionsByAmount(accountId, minAmount, maxAmount);
@@ -86,6 +94,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/outgoing/{accountId}
         [HttpGet("outgoing/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult<List<TransactionAllDto>> GetOutgoingTransactions(string accountId)
         {
             var transactions = _transactionService.GetOutgoingTransactions(accountId);
@@ -97,6 +106,7 @@ namespace BankingManagementSystem.Controllers
 
         // GET: api/transaction/incoming/{accountId}
         [HttpGet("incoming/{accountId}")]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult<List<TransactionAllDto>> GetIncomingTransactions(string accountId)
         {
             var transactions = _transactionService.GetIncomingTransactions(accountId);
@@ -108,6 +118,7 @@ namespace BankingManagementSystem.Controllers
 
         // DELETE: api/transaction/{id}
         [HttpDelete("{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var isCancelled = await _transactionService.CancelTransaction(id);

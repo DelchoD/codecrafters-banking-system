@@ -2,6 +2,7 @@
 using BankingManagementSystem.Core.Models.Customer;
 using BankingManagementSystem.Core.Services.Contracts;
 using BankingManagementSystem.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankingManagementSystem.Controllers
 {
@@ -24,6 +25,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpGet("{id}")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult<AllDto>> GetCustomerById(string id)
             {
                 var customer = await _customerService.GetCustomerById(id);
@@ -32,6 +34,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpGet]
+            [Authorize(Roles = "Admin")]
             public async Task<ActionResult<List<AllDto>>> GetAllCustomers()
             {
                 var customers = await _customerService.GetAllCustomers();
@@ -39,6 +42,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpPost("{customerId}/create-account")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult> CreateAccount(string customerId, [FromBody] AccountCreateDto dto)
             {
                 var account = await _accountService.CreateAccountAsync(dto, customerId);
@@ -62,6 +66,7 @@ namespace BankingManagementSystem.Controllers
             }
 
             [HttpDelete("{id}")]
+            [Authorize(Roles = "User,Admin")]
             public async Task<ActionResult> DeleteCustomer(string id)
             {
                 await _customerService.DeleteCustomer(id);
