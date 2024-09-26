@@ -51,7 +51,8 @@ This module equips bank administrators with tools to generate financial reports 
 
 - Aid decision-making by providing detailed financial reports.
 - Support long-term strategic planning with predictive insights.
-- Project Timeline
+
+### Project Timeline
 - Development Duration: 1 month
 - Methodology: Agile, with continuous iterations and feedback loops.
 
