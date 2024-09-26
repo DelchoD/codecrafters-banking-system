@@ -57,11 +57,11 @@ This module equips bank administrators with tools to generate financial reports 
 
 ### :computer: Technology Stack
 **Frontend:**
-- React.js
-- HTML, CSS, JavaScript
+- React.js, Bootstrap
   
 **Backend:**
-- C#
+- ASP.NET Core​
+- SQLite
 
 ### :technologist: How to Contribute
 **Clone the repository:**
