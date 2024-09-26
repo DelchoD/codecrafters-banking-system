@@ -46,7 +46,7 @@ This module equips bank administrators with tools to generate financial reports 
 - Financial dashboards displaying performance metrics.
 - Predictive analytics for financial forecasting.
 - Customizable reports and insights tailored for bank management.
-- 
+
 **:dart: Objectives:**
 
 - Aid decision-making by providing detailed financial reports.
