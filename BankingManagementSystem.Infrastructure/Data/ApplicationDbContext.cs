@@ -1,19 +1,15 @@
 ﻿using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
+
 
 namespace BankingManagementSystem.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = Path.Join(path, "BankingManagementSystem.db");
         }
-
-        public string DbPath { get; }
 
         public DbSet<Customer> Customers { get; set; }
 
@@ -44,7 +40,12 @@ namespace BankingManagementSystem.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source={DbPath}");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql("Server=localhost;Database=BankingManagementSystem;username=codecrafters;Password=1234",
+                    new MySqlServerVersion(new Version(8, 0, 21)),
+                    options => options.MigrationsAssembly("BankingManagementSystem.Infrastructure"));
+            }
 
             base.OnConfiguring(optionsBuilder);
         }
