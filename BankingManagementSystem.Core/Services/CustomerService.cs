@@ -53,6 +53,9 @@ namespace BankingManagementSystem.Core.Services
                 var customer = await _context.Customers
                     .Where(c => c.Id == customerId)
                     .Include(c => c.Accounts)
+                    .ThenInclude(a => a.TransactionsFrom)
+                    .Include(c => c.Accounts)
+                    .ThenInclude(a => a.TransactionsTo)
                     .FirstOrDefaultAsync();
                 if (customer == null)
                 {
@@ -124,6 +127,9 @@ namespace BankingManagementSystem.Core.Services
             {
                 var customers = await _context.Customers
                     .Include(c => c.Accounts)
+                    .ThenInclude(a => a.TransactionsFrom)
+                    .Include(c => c.Accounts)
+                    .ThenInclude(a => a.TransactionsTo)
                     .ToListAsync();
                 return customers;
             }
