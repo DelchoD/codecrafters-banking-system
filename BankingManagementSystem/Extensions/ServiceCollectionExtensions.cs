@@ -4,7 +4,7 @@ using BankingManagementSystem.Infrastructure.Data;
 using BankingManagementSystem.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace BankingManagementSystem. Extensions
+namespace BankingManagementSystem.Extensions
 {
     public static class ServiceCollectionExtensions
     {

@@ -1,6 +1,39 @@
-using BankingManagementSystem.Extensions;
 using BankingManagementSystem.Infrastructure.Data;
+using BankingManagementSystem.Infrastructure.Data.Models;
+using BankingManagementSystem.Core.Authorization;
+using BankingManagementSystem.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+void ConfigureServices(IServiceCollection services)
+{
+    // Add Identity services to the app, using Customer as the user model
+    services.AddIdentity<Customer, IdentityRole>(options =>
+        {
+            // Optional: Configure password settings, etc.
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireUppercase = true;
+        }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+    // Add authentication and authorization services
+    services.AddAuthentication();
+    services.AddAuthorization(options =>
+    {
+        // Define policies based on roles
+        options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+        options.AddPolicy("RequireUserRole", policy => policy.RequireRole("User"));
+    });
+
+    services.AddControllersWithViews();
+}
+
+async Task InitializeDatabase(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var scopedServices = scope.ServiceProvider;
+    await SeedData.Initialize(scopedServices);
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,14 +41,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// builder.Services.AddDbContext<ApplicationDbContext>(options => 
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationIdentity();
+
+
+ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
@@ -46,16 +85,28 @@ appLifetime.ApplicationStopping.Register(() =>
     }
 });
 
+await InitializeDatabase(app.Services);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Middleware
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
